@@ -6,6 +6,7 @@ const StyledHeader = styled.div`
   height: 5rem;
   background: black;
   color: white;
+  font-size: 1.6rem;
 `;
 
 function Header() {
