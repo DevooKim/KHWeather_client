@@ -14,10 +14,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: "fixed",
     bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    // right: theme.spacing(2),
   },
   menuButton: {
-    // marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(5),
+    float: "left",
   },
   toolbar: {
     minHeight: 128,
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: "center"
+    textAlign: "center",
   },
 }));
 
@@ -86,22 +87,24 @@ export default function HideAppBar(props) {
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar>
-          <Toolbar className={classes.Toolbar}>
-            <Typography className={classes.title} variant="h6">
-              Scroll to Hide App Bar
-            </Typography>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={() => {
-                console.log("click");
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
+          <div style={{ margin: "0 auto" }}>
+            <Toolbar className={classes.Toolbar}>
+              <Typography className={classes.title} variant="h4">
+                Scroll to Hide App Bar
+              </Typography>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+                onClick={() => {
+                  console.log("click");
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+          </div>
         </AppBar>
       </HideOnScroll>
       <Toolbar id="back-to-top-anchor" />
