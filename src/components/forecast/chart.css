@@ -1,6 +1,6 @@
 .chartWrapper {
   position: relative;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   overflow-y: hidden;
 }
 
@@ -11,8 +11,6 @@
 
 .chartAreaWrapper {
   /* width: 600px; */
-  width: 150vw;
+  /* width: 150vw; */
   height: 30vh;
 }
-
-
