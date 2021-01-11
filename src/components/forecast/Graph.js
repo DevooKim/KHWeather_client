@@ -3,101 +3,99 @@ import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "./chart.css";
 
-const data = {
-  labels: [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-  ],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [
-        12,
-        10,
-        3,
-        5.6,
-        2,
-        15,
-        12,
-        19,
-        3,
-        5,
-        2,
-        3,
-        12,
-        19,
-        3,
-        5,
-        15,
-        3,
-        12,
-        19,
-        3,
-        5,
-        2,
-        3,
-      ],
-      fill: false,
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgba(255, 99, 132)",
-      hoverBorderColor: "rgba(255, 99, 132)",
-      pointStyle: "circle",
-      pointBorderWidth: 10,
-      hoverBorderWidth: 20,
-      yAxisID: "y-axis-1",
-    },
-    {
-      label: "# of No Votes",
-      data: [1, 2, 3, 1, 2, 2, 15],
-      fill: false,
-      backgroundColor: "rgb(54, 162, 235)",
-      borderColor: "rgba(54, 162, 235)",
-      hoverBorderColor: "rgba(54, 162, 235, 0.5)",
-      pointStyle: "circle",
-      pointBorderWidth: 10,
-      hoverBorderWidth: 15,
-      yAxisID: "y-axis-1",
-    },
-    {
-      type: "bar",
-      label: "강수량",
-      data: [10, 20, 30, 40, 50, 60, 70, 80, 90],
-      fill: false,
-      backgroundColor: "rgba(54, 162, 235, 0)",
-      borderColor: "#457AD1",
-      hoverBackgroundColor: "#457AD1",
-      hoverBorderColor: "#457AD1",
-      yAxisID: "y-axis-2",
-      datalabels: {
-        display: true,
-        align: "start",
-        anchor: "start",
-        offset: -30,
-        backgroundColor: "rgba(54, 162, 235, 1)",
-        borderColor: "rgba(54, 162, 235,)",
-        borderRadius: 4,
-        borderWidth: 2,
-        color: "#f1f1f1",
+function setData(day) {
+  // const labels =
+
+  const data = {
+    labels: day.dt,
+    datasets: [
+      {
+        label: day.key,
+        data: day.temp,
+        fill: false,
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgba(255, 99, 132)",
+        hoverBorderColor: "rgba(255, 99, 132)",
+        pointStyle: "circle",
+        pointBorderWidth: 10,
+        hoverBorderWidth: 20,
+        yAxisID: "y-axis-1",
       },
-    },
-  ],
-};
+    ],
+  };
+
+  return data;
+}
+// const data = {
+//   labels: [
+//     "1",
+//     "2",
+//     "3",
+//     "4",
+//     "5",
+//     "6",
+//     "1",
+//     "2",
+//     "3",
+//     "4",
+//     "5",
+//     "6",
+//     "1",
+//     "2",
+//     "3",
+//     "4",
+//     "5",
+//     "6",
+//   ],
+//   datasets: [
+//     {
+//       label: "# of Votes",
+//       data: [-9, -11, -11, -11, -7, -4, -4, -8],
+//       fill: false,
+//       backgroundColor: "rgb(255, 99, 132)",
+//       borderColor: "rgba(255, 99, 132)",
+//       hoverBorderColor: "rgba(255, 99, 132)",
+//       pointStyle: "circle",
+//       pointBorderWidth: 10,
+//       hoverBorderWidth: 20,
+//       yAxisID: "y-axis-1",
+//     },
+//     {
+//       label: "# of No Votes",
+//       data: [1, 2, 3, 1, 2, 2, 15],
+//       fill: false,
+//       backgroundColor: "rgb(54, 162, 235)",
+//       borderColor: "rgba(54, 162, 235)",
+//       hoverBorderColor: "rgba(54, 162, 235, 0.5)",
+//       pointStyle: "circle",
+//       pointBorderWidth: 10,
+//       hoverBorderWidth: 15,
+//       yAxisID: "y-axis-1",
+//     },
+//     {
+//       type: "bar",
+//       label: "강수량",
+//       data: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+//       fill: false,
+//       backgroundColor: "rgba(54, 162, 235, 0)",
+//       borderColor: "#457AD1",
+//       hoverBackgroundColor: "#457AD1",
+//       hoverBorderColor: "#457AD1",
+//       yAxisID: "y-axis-2",
+//       datalabels: {
+//         display: true,
+//         align: "start",
+//         anchor: "start",
+//         offset: -30,
+//         backgroundColor: "rgba(54, 162, 235, 1)",
+//         borderColor: "rgba(54, 162, 235,)",
+//         borderRadius: 4,
+//         borderWidth: 2,
+//         color: "#f1f1f1",
+//       },
+//     },
+//   ],
+// };
 
 const labeles = {
   backgroundColor: function (context) {
@@ -139,16 +137,16 @@ const options = {
         display: false,
         stacked: false,
         ticks: {
-          suggestedMin: -10,
+          suggestedMin: -30,
           suggestedMax: 30,
           stepSize: 1,
         },
       },
-      {
-        id: "y-axis-2",
-        display: false,
-        stacked: true,
-      },
+      // {
+      //   id: "y-axis-2",
+      //   display: false,
+      //   stacked: true,
+      // },
     ],
   },
   layout: {
@@ -165,8 +163,9 @@ const options = {
   tooltip: { enable: false },
 };
 
-function Graph() {
+function Graph({ yesterdays, todays, tomorrows }) {
   // const useStyle = ChartStyle
+  const data = setData(yesterdays);
   return (
     <>
       <div className="header">
