@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(2),
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    // marginRight: theme.spacing(2),
   },
   toolbar: {
     minHeight: 128,
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textAlign: "center"
   },
 }));
 

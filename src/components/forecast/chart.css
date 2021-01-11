@@ -1,0 +1,18 @@
+.chartWrapper {
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.chartWrapper > canvas {
+  position: absolute;
+  /* height: 30vh; */
+}
+
+.chartAreaWrapper {
+  /* width: 600px; */
+  width: 150vw;
+  height: 30vh;
+}
+
+

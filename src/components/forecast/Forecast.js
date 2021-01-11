@@ -1,9 +1,10 @@
 import React from 'react'
+import Graph from './Graph'
 
 function Forecast() {
   return (
     <>
-      <h3>Forecast</h3>
+      <Graph />
     </>
   )
 }
