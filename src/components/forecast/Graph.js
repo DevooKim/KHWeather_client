@@ -16,6 +16,9 @@ const data = {
       pointStyle: "circle",
       pointBorderWidth: 10,
       hoverBorderWidth: 15,
+      // clip: {
+      //   left: ""
+      // }
       // yAxisID: "y-axis-1",
     },
     {
@@ -70,6 +73,7 @@ const options = {
     borderRadius: 100,
     color: 'white',
     formatter: Math.round,
+    offset: 8,
     padding: 6
   }
   },
@@ -84,15 +88,15 @@ const options = {
   },
   layout: {
     padding: {
-      top: 50,
+      top: 16,
       bottom: 16,
       left: 16,
       right: 16
     }
   },
   // responsive: false,
-  // aspectRatio: 10,
-  maintainAspectRatio: false,  
+  aspectRatio: 3,
+  // maintainAspectRatio: false,  
   tooltip: { enable: false },
 };
 
@@ -105,7 +109,7 @@ function Graph() {
       </div>
       <div className="chartWrapper">
         <div className="chartAreaWrapper">
-          <Line data={data} options={options} height={"30vh"} width={"150vw"}/>
+          <Line data={data} options={options}/>
         </div>
       </div>
     </>
