@@ -163,7 +163,8 @@ const options = {
   tooltip: { enable: false },
 };
 
-function Graph({ yesterdays, todays, tomorrows }) {
+// function Graph({ yesterdays, todays, tomorrows }) {
+function Graph({ yesterdays }) {
   // const useStyle = ChartStyle
   const data = setData(yesterdays);
   return (

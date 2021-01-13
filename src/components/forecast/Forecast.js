@@ -17,6 +17,8 @@ function parseData(days) {
     dt: [],
     temp: [],
   };
+  // const dt = []
+  // const temp = []
 
   days.forEach((day) => {
     data.dt.push(getDate(day.dt));
@@ -37,7 +39,7 @@ function Forecast() {
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
   const [error, setError] = useState(null);
 
-  const [yesterdays, setYesterdays] = useState({ key: "yesterdays" });
+  const [yesterdays, setYesterdays] = useState(null);
   const [todays, setTodays] = useState({ key: "todays" });
   const [tomorrows, setTomorrows] = useState({ key: "tomorrows" });
 
@@ -51,9 +53,10 @@ function Forecast() {
         );
         setForecast(response.data);
 
-        setYesterdays(parseData(forecast.yesterdays));
-        setTodays(parseData(forecast.todays));
-        setTomorrows(parseData(forecast.tomorrows));
+        const f = parseData(response.data.yesterdays);
+        setYesterdays(f);
+        // setTodays(parseData(forecast.todays));
+        // setTomorrows(parseData(forecast.tomorrows));
       } catch (e) {
         setError(e);
       }
@@ -62,13 +65,22 @@ function Forecast() {
     fetchForecast();
   }, []);
 
-  // console.log(yesterdays);
-  return (
-    <>
-      {/* <div>{JSON.stringify(forecast)}</div> */}
-      <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
-    </>
-  );
+  console.log("y: " + JSON.stringify(yesterdays));
+  if (yesterdays) {
+    return (
+      <>
+        {/* <div>{JSON.stringify(forecast)}</div> */}
+        {/* <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} /> */}
+        <Graph yesterdays={yesterdays} />
+        <div>
+          {/* {yesterdays.map((y) => (
+            <div>{y.dt}</div>
+          ))} */}
+        </div>
+      </>
+    );
+  }
+  return <div></div>;
 }
 
 export default Forecast;
