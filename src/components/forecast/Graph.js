@@ -7,16 +7,22 @@ function setLabels(dt1, dt2, dt3) {
   return [...dt1, ...dt2, ...dt3];
 }
 
-function setData(day, dt) {
+function setTemp(yesterday, today, tomorrows) {
+  const current = [...yesterday, ...today, ...tomorrows];
+  const prev = [...yesterday, ...yesterday, ...today];
+  //plugin 이용해서 prev 앞쪽 인덱스는 투명화
+
+  return [current, prev];
+}
+function setData(labels, prev, current) {
   // const labels =
 
   const data = {
-    // labels: day.dt,
-    labels: dt,
+    labels: labels,
     datasets: [
       {
-        label: day.key,
-        data: day.temp,
+        label: "오늘 날씨",
+        data: current,
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132)",
@@ -26,81 +32,23 @@ function setData(day, dt) {
         hoverBorderWidth: 20,
         yAxisID: "y-axis-1",
       },
+      {
+        label: "어제 날씨",
+        data: prev,
+        fill: false,
+        backgroundColor: "rgba(54, 162, 235, 0.3)",
+        borderColor: "rgba(54, 162, 235, 0.3)",
+        hoverBorderColor: "rgba(54, 162, 235, 0.3)",
+        pointStyle: "circle",
+        pointBorderWidth: 10,
+        hoverBorderWidth: 15,
+        yAxisID: "y-axis-1",
+      },
     ],
   };
 
   return data;
 }
-// const data = {
-//   labels: [
-//     "1",
-//     "2",
-//     "3",
-//     "4",
-//     "5",
-//     "6",
-//     "1",
-//     "2",
-//     "3",
-//     "4",
-//     "5",
-//     "6",
-//     "1",
-//     "2",
-//     "3",
-//     "4",
-//     "5",
-//     "6",
-//   ],
-//   datasets: [
-//     {
-//       label: "# of Votes",
-//       data: [-9, -11, -11, -11, -7, -4, -4, -8],
-//       fill: false,
-//       backgroundColor: "rgb(255, 99, 132)",
-//       borderColor: "rgba(255, 99, 132)",
-//       hoverBorderColor: "rgba(255, 99, 132)",
-//       pointStyle: "circle",
-//       pointBorderWidth: 10,
-//       hoverBorderWidth: 20,
-//       yAxisID: "y-axis-1",
-//     },
-//     {
-//       label: "# of No Votes",
-//       data: [1, 2, 3, 1, 2, 2, 15],
-//       fill: false,
-//       backgroundColor: "rgb(54, 162, 235)",
-//       borderColor: "rgba(54, 162, 235)",
-//       hoverBorderColor: "rgba(54, 162, 235, 0.5)",
-//       pointStyle: "circle",
-//       pointBorderWidth: 10,
-//       hoverBorderWidth: 15,
-//       yAxisID: "y-axis-1",
-//     },
-//     {
-//       type: "bar",
-//       label: "강수량",
-//       data: [10, 20, 30, 40, 50, 60, 70, 80, 90],
-//       fill: false,
-//       backgroundColor: "rgba(54, 162, 235, 0)",
-//       borderColor: "#457AD1",
-//       hoverBackgroundColor: "#457AD1",
-//       hoverBorderColor: "#457AD1",
-//       yAxisID: "y-axis-2",
-//       datalabels: {
-//         display: true,
-//         align: "start",
-//         anchor: "start",
-//         offset: -30,
-//         backgroundColor: "rgba(54, 162, 235, 1)",
-//         borderColor: "rgba(54, 162, 235,)",
-//         borderRadius: 4,
-//         borderWidth: 2,
-//         color: "#f1f1f1",
-//       },
-//     },
-//   ],
-// };
 
 const labeles = {
   backgroundColor: function (context) {
@@ -111,7 +59,7 @@ const labeles = {
   },
   borderRadius: 16,
   borderWidth: 1,
-  color: "white",
+  color: "rgba(0,0,0)",
   font: {
     weight: "bold",
   },
@@ -124,7 +72,7 @@ const options = {
     datalabels: labeles,
   },
   legend: {
-    display: false,
+    display: true,
   },
   scales: {
     xAxes: [
@@ -162,20 +110,20 @@ const options = {
       right: 16,
     },
   },
-  // responsive: false,
+  responsive: false,
   // aspectRatio: 3,
   maintainAspectRatio: false,
   tooltip: { enable: false },
 };
 
 function Graph({ yesterdays, todays, tomorrows }) {
-  // const useStyle = ChartStyle
   const labels = setLabels(yesterdays.dt, todays.dt, tomorrows.dt);
-  const data = setData(yesterdays, labels);
+  const [current, prev] = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
+  const data = setData(labels, prev, current);
   return (
     <>
       <div className="header">
-        <h1 className="title">Multi Axis Line Chart</h1>
+        <h1 className="title">TITLE</h1>
       </div>
       <div className="chartWrapper">
         <div className="chartAreaWrapper">
@@ -183,6 +131,8 @@ function Graph({ yesterdays, todays, tomorrows }) {
             data={data}
             options={options}
             // style={{ width: "100%", height: "100%" }}
+            width={1000}
+            height={500}
           />
         </div>
       </div>
