@@ -40,8 +40,8 @@ function Forecast() {
   const [error, setError] = useState(null);
 
   const [yesterdays, setYesterdays] = useState(null);
-  const [todays, setTodays] = useState({ key: "todays" });
-  const [tomorrows, setTomorrows] = useState({ key: "tomorrows" });
+  const [todays, setTodays] = useState(null);
+  const [tomorrows, setTomorrows] = useState(null);
 
   useEffect(() => {
     const fetchForecast = async () => {
@@ -53,10 +53,13 @@ function Forecast() {
         );
         setForecast(response.data);
 
-        const f = parseData(response.data.yesterdays);
-        setYesterdays(f);
-        // setTodays(parseData(forecast.todays));
-        // setTomorrows(parseData(forecast.tomorrows));
+        const parseYesterday = parseData(response.data.yesterdays);
+        const parseToday = parseData(response.data.todays);
+        const parseTomorrow = parseData(response.data.tomorrows);
+
+        setYesterdays(parseYesterday);
+        setTodays(parseToday);
+        setTomorrows(parseTomorrow);
       } catch (e) {
         setError(e);
       }
@@ -66,17 +69,11 @@ function Forecast() {
   }, []);
 
   console.log("y: " + JSON.stringify(yesterdays));
-  if (yesterdays) {
+  if (yesterdays && todays && tomorrows) {
     return (
       <>
         {/* <div>{JSON.stringify(forecast)}</div> */}
-        {/* <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} /> */}
-        <Graph yesterdays={yesterdays} />
-        <div>
-          {/* {yesterdays.map((y) => (
-            <div>{y.dt}</div>
-          ))} */}
-        </div>
+        <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
       </>
     );
   }

@@ -3,11 +3,16 @@ import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "./chart.css";
 
-function setData(day) {
+function setLabels(dt1, dt2, dt3) {
+  return [...dt1, ...dt2, ...dt3];
+}
+
+function setData(day, dt) {
   // const labels =
 
   const data = {
-    labels: day.dt,
+    // labels: day.dt,
+    labels: dt,
     datasets: [
       {
         label: day.key,
@@ -163,10 +168,10 @@ const options = {
   tooltip: { enable: false },
 };
 
-// function Graph({ yesterdays, todays, tomorrows }) {
-function Graph({ yesterdays }) {
+function Graph({ yesterdays, todays, tomorrows }) {
   // const useStyle = ChartStyle
-  const data = setData(yesterdays);
+  const labels = setLabels(yesterdays.dt, todays.dt, tomorrows.dt);
+  const data = setData(yesterdays, labels);
   return (
     <>
       <div className="header">
