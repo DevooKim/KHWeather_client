@@ -10,8 +10,6 @@ function setLabels(dt1, dt2, dt3) {
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
   const prev = [...yesterday, ...yesterday, ...today];
-  //plugin 이용해서 prev 앞쪽 인덱스는 투명화
-
   return [current, prev];
 }
 function setData(labels, prev, current) {
@@ -41,7 +39,7 @@ function setData(labels, prev, current) {
         hoverBorderColor: "rgba(54, 162, 235, 0.3)",
         pointStyle: "circle",
         pointBorderWidth: 10,
-        hoverBorderWidth: 15,
+        hoverBorderWidth: 20,
         yAxisID: "y-axis-1",
       },
     ],
@@ -52,13 +50,21 @@ function setData(labels, prev, current) {
 
 const labeles = {
   backgroundColor: function (context) {
+    if (context.dataIndex % 8 === 0) return "white";
     return context.dataset.backgroundColor;
   },
   borderColor: function (context) {
     return context.dataset.backgroundColor;
   },
-  borderRadius: 16,
-  borderWidth: 1,
+  // borderRadius: 16,
+  borderRadius: function (context) {
+    if (context.dataIndex % 8 === 0) return 0;
+    return 16;
+  },
+  borderWidth: function (context) {
+    if (context.dataIndex % 8 === 0) return 3;
+    return 1;
+  },
   color: "rgba(0,0,0)",
   font: {
     weight: "bold",
@@ -71,35 +77,37 @@ const options = {
   plugins: {
     datalabels: labeles,
   },
-  legend: {
-    display: true,
-  },
   scales: {
     xAxes: [
       {
         ticks: {
-          fontColor: "black",
+          autoSkip: false,
+          fontColor: "green",
           fontSize: 16,
+          minRotation: 0,
+          maxRotation: 0,
+          callback: function (value, index) {
+            if (index % 8 === 0) return value;
+            return value[1];
+          },
         },
-        padding: 10,
+        gridLines: {
+          display: true,
+        },
       },
     ],
     yAxes: [
       {
         id: "y-axis-1",
         display: false,
-        stacked: false,
         ticks: {
           suggestedMin: -30,
           suggestedMax: 30,
           stepSize: 1,
         },
+        zeroLineColor: "rgba(0, 0, 0, 0.25)",
+        zeroLineWidth: 1,
       },
-      // {
-      //   id: "y-axis-2",
-      //   display: false,
-      //   stacked: true,
-      // },
     ],
   },
   layout: {
@@ -111,7 +119,6 @@ const options = {
     },
   },
   responsive: false,
-  // aspectRatio: 3,
   maintainAspectRatio: false,
   tooltip: { enable: false },
 };
@@ -122,18 +129,12 @@ function Graph({ yesterdays, todays, tomorrows }) {
   const data = setData(labels, prev, current);
   return (
     <>
-      <div className="header">
+      {/* <div className="header">
         <h1 className="title">TITLE</h1>
-      </div>
+      </div> */}
       <div className="chartWrapper">
         <div className="chartAreaWrapper">
-          <Line
-            data={data}
-            options={options}
-            // style={{ width: "100%", height: "100%" }}
-            width={1000}
-            height={500}
-          />
+          <Line data={data} options={options} width={1500} height={500} />
         </div>
       </div>
     </>
