@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Graph from "./Graph";
 import axios from "axios";
 import dotenv from "dotenv";
+import useAsync from "../hooks/useAsync";
 
 dotenv.config();
 const hostUrl = process.env.REACT_APP_HOST_URL;
@@ -32,59 +33,50 @@ function getDate(day) {
   return `${date.getHours()}시`;
 }
 
+async function getForecasts() {
+  const response = await axios.get(
+    // `${hostUrl}/weather/${geo.lat}/${geo.lon}`
+    `${hostUrl}/weather/36.354687/127.420997`
+  );
+
+  const yesterdays = parseData(response.data.yesterdays);
+  const todays = parseData(response.data.todays);
+  const tomorrows = parseData(response.data.tomorrows);
+  const lastUpdateHour = new Date().getHours(); //서버에서 캐싱될 때 마다 시간 업데이트해서 전송
+  return { yesterdays, todays, tomorrows, lastUpdate: lastUpdateHour };
+}
+
 function Forecast() {
-  // const [forecast, setForecast] = useState(null);
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
-  const [error, setError] = useState(null);
+  const [state, refetch] = useAsync(getForecasts, []);
 
-  const [yesterdays, setYesterdays] = useState(null);
-  const [todays, setTodays] = useState(null);
-  const [tomorrows, setTomorrows] = useState(null);
+  const { loading, data, error } = state;
 
-  useEffect(() => {
-    const fetchForecast = async () => {
-      try {
-        //좌표 가져오는 기능
+  if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
+  if (error) return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
+  if (!data) return null;
 
-        const response = await axios.get(
-          // `http://localhost:8001/weather/${geo.lat}/${geo.lon}`
-          `${hostUrl}/weather/${geo.lat}/${geo.lon}`
-        );
-        const parseYesterday = parseData(response.data.yesterdays);
-        const parseToday = parseData(response.data.todays);
-        const parseTomorrow = parseData(response.data.tomorrows);
+  const { yesterdays, todays, tomorrows, lastUpdate } = data;
+  const hourIndex = setHourIndex(lastUpdate);
 
-        setYesterdays(parseYesterday);
-        setTodays(parseToday);
-        setTomorrows(parseTomorrow);
-      } catch (e) {
-        setError(e);
-      }
-    };
+  const diffTemp = yesterdays.temp[hourIndex] - todays.temp[hourIndex];
+  let diffText = "";
 
-    fetchForecast();
-  }, []);
-
-  const currentHour = setHourIndex(new Date().getHours());
-
-  if (yesterdays && todays && tomorrows) {
-    const diffTemp = yesterdays.temp[currentHour] - todays.temp[currentHour];
-    let diffText = "";
-    if (diffTemp < 0) {
-      diffText = `지금 기온은 어제보다 ${Math.abs(diffTemp)}도 높습니다.`;
-    } else if (diffTemp > 0) {
-      diffText = `지금 기온은 어제보다 ${Math.abs(diffTemp)}도 낮습니다.`;
-    } else {
-      diffText = `지금 기온은 어제와 동일합니다.`;
-    }
-    return (
-      <>
-        <h1 style={{ textAlign: "center" }}>{diffText}</h1>
-        <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
-      </>
-    );
+  if (diffTemp < 0) {
+    diffText = `지금 기온은 어제보다 ${Math.abs(diffTemp)}도 높습니다.`;
+  } else if (diffTemp > 0) {
+    diffText = `지금 기온은 어제보다 ${Math.abs(diffTemp)}도 낮습니다.`;
+  } else {
+    diffText = `지금 기온은 어제와 동일합니다.`;
   }
-  return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
+
+  return (
+    <>
+      <h1 style={{ textAlign: "center" }}>{diffText}</h1>
+      <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
+      <button onClick={refetch}>다시 불러오기</button>
+    </>
+  );
 }
 
 export default Forecast;

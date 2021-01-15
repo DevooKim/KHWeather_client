@@ -13,8 +13,6 @@ function setTemp(yesterday, today, tomorrows) {
   return [current, prev];
 }
 function setData(labels, prev, current) {
-  // const labels =
-
   const data = {
     labels: labels,
     datasets: [
