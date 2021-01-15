@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Graph from "./Graph";
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
+const hostUrl = process.env.REACT_APP_HOST_URL;
 
 function setHourIndex(now) {
   return Math.ceil((now % 24) / 3) % 8;
@@ -43,7 +47,8 @@ function Forecast() {
         //좌표 가져오는 기능
 
         const response = await axios.get(
-          `http://localhost:8001/weather/${geo.lat}/${geo.lon}`
+          // `http://localhost:8001/weather/${geo.lat}/${geo.lon}`
+          `${hostUrl}/weather/${geo.lat}/${geo.lon}`
         );
         const parseYesterday = parseData(response.data.yesterdays);
         const parseToday = parseData(response.data.todays);

@@ -132,6 +132,7 @@ function Graph({ yesterdays, todays, tomorrows }) {
       {/* <div className="header">
         <h1 className="title">TITLE</h1>
       </div> */}
+
       <div className="chartWrapper">
         <div className="chartAreaWrapper">
           <Line data={data} options={options} width={1500} height={500} />
