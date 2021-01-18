@@ -4,7 +4,10 @@ import axios from "axios";
 import dotenv from "dotenv";
 import useAsync from "../../hooks/useAsync";
 import parseForecasts from "../../utils/parseForecasts";
-import setStateText from "../../utils/setStateText";
+import { setStateText, getCurrentWeather } from "../../utils/setStateText";
+import { IconContext } from "react-icons";
+import { WiNightSnow } from "react-icons/wi";
+import "./Forecast.css";
 
 dotenv.config();
 const hostUrl = process.env.REACT_APP_HOST_URL;
@@ -34,10 +37,24 @@ function Forecast() {
 
   const { yesterdays, todays, tomorrows, lastUpdate } = data;
   const stateText = setStateText(lastUpdate, yesterdays.temp, todays.temp);
+  const currentWeather = getCurrentWeather(lastUpdate, todays);
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>{stateText}</h1>
+      <div className="chart__header">
+        <h1 style={{ textAlign: "center" }}>{stateText}</h1>
+        <div className="chart__headerMiddle">
+          <IconContext.Provider value={{ size: "7rem" }}>
+            <WiNightSnow />
+          </IconContext.Provider>
+          <p>-1℃</p>
+        </div>
+        <div className="chart__headerBottom">
+          <p>맑음</p>
+          <p>체감온도 -5℃</p>
+          {/* <div>{JSON.stringify(currentWeather)}</div> */}
+        </div>
+      </div>
       <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
       <button onClick={refetch}>다시 불러오기</button>
     </>

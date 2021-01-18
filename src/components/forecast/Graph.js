@@ -81,6 +81,9 @@ const options = {
         ticks: {
           autoSkip: false,
           fontColor: "green",
+          // fontColor: function (value, index) {
+          //   return "green";
+          // },
           fontSize: 16,
           minRotation: 0,
           maxRotation: 0,
@@ -116,7 +119,7 @@ const options = {
       right: 16,
     },
   },
-  responsive: false,
+  // responsive: false,
   maintainAspectRatio: false,
   tooltip: { enable: false },
 };
@@ -127,13 +130,11 @@ function Graph({ yesterdays, todays, tomorrows }) {
   const data = setData(labels, prev, current);
   return (
     <>
-      {/* <div className="header">
-        <h1 className="title">TITLE</h1>
-      </div> */}
-
       <div className="chartWrapper">
+        <p>업데이트: 12시30분</p>
         <div className="chartAreaWrapper">
-          <Line data={data} options={options} width={1500} height={500} />
+          {/* <Line data={data} options={options} width={1500} height={500} /> */}
+          <Line data={data} options={options} />
         </div>
       </div>
     </>

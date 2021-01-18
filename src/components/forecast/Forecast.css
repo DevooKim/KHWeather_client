@@ -1,0 +1,28 @@
+.chart__header {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart__header > h1 {
+  margin-bottom: -0.5rem;
+}
+
+.chart__headerMiddle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: -2.5rem;
+}
+
+.chart__headerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.chart__headerBottom > p {
+  padding: 10px;
+  font-weight: 800;
+}

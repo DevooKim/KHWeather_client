@@ -2,17 +2,16 @@
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
+  border: 1px solid black;
 }
 
 .chartWrapper > canvas {
   position: absolute;
-  /* height: 30vh; */
+  height: 350px;
 }
 
 .chartAreaWrapper {
-  width: 1000px;
-  /* width: 150vw; */
-  /* height: 30vh; */
-  height: 500px;
+  width: 1300px;
+  height: 350px;
   margin: 0 auto;
 }
