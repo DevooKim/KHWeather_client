@@ -2,6 +2,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "./chart.css";
+import { getDate } from "../../utils/getDate";
 
 function setLabels(dt1, dt2, dt3) {
   return [...dt1, ...dt2, ...dt3];
@@ -124,14 +125,17 @@ const options = {
   tooltip: { enable: false },
 };
 
-function Graph({ yesterdays, todays, tomorrows }) {
+function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
   const labels = setLabels(yesterdays.dt, todays.dt, tomorrows.dt);
   const [current, prev] = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
   const data = setData(labels, prev, current);
   return (
     <>
       <div className="chartWrapper">
-        <p>업데이트: 12시30분</p>
+        <p>{`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
+          lastUpdate,
+          "MINUTUES"
+        )}분`}</p>
         <div className="chartAreaWrapper">
           {/* <Line data={data} options={options} width={1500} height={500} /> */}
           <Line data={data} options={options} />

@@ -1,4 +1,4 @@
-export const setStateText = (hour, yesterdayTemps, todayTemps) => {
+const setStateText = (hour, yesterdayTemps, todayTemps) => {
   const hourIndex = setHourIndex(hour);
   const diffTemp = yesterdayTemps[hourIndex] - todayTemps[hourIndex];
   let stateText = "";
@@ -14,22 +14,24 @@ export const setStateText = (hour, yesterdayTemps, todayTemps) => {
   return stateText;
 };
 
-export const getCurrentWeather = (hour, todays) => {
-  const hourIndex = setHourIndex(hour);
-  const current = {
-    dt: todays.dt[hourIndex],
-    temp: todays.temp[hourIndex],
-    feels_like: todays.feels_like[hourIndex],
-    humidity: todays.humidity[hourIndex],
-    clouds: todays.clouds[hourIndex],
-    visibility: todays.visibility[hourIndex],
-    rain: todays.rain[hourIndex],
-    snow: todays.snow[hourIndex],
-    weather: todays.weather[hourIndex],
-  };
-  return current;
-};
+// export const getCurrentWeather = (hour, todays) => {
+//   const hourIndex = setHourIndex(hour);
+//   const current = {
+//     dt: todays.dt[hourIndex],
+//     temp: todays.temp[hourIndex],
+//     feels_like: todays.feels_like[hourIndex],
+//     humidity: todays.humidity[hourIndex],
+//     clouds: todays.clouds[hourIndex],
+//     visibility: todays.visibility[hourIndex],
+//     rain: todays.rain[hourIndex],
+//     snow: todays.snow[hourIndex],
+//     weather: todays.weather[hourIndex],
+//   };
+//   return current;
+// };
 
 function setHourIndex(now) {
   return Math.ceil((now % 24) / 3) % 8;
 }
+
+export default setStateText;

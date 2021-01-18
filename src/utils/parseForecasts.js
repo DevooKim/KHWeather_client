@@ -1,3 +1,4 @@
+import { getDate } from "./getDate";
 const parseForecasts = (days) => {
   const key = `${getDate(days[0].dt, "MONTH") + 1}월 ${getDate(
     days[0].dt,
@@ -30,20 +31,6 @@ const parseForecasts = (days) => {
   });
 
   return data;
-};
-
-const getDate = (day, action) => {
-  const date = new Date(day);
-  switch (action) {
-    case "MONTH":
-      return date.getMonth();
-    case "DATE":
-      return date.getDate();
-    case "HOURS":
-      return date.getHours();
-    default:
-      throw new Error`Unhandled ${action}`();
-  }
 };
 
 export default parseForecasts;

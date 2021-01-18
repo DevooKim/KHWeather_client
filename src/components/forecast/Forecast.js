@@ -4,9 +4,10 @@ import axios from "axios";
 import dotenv from "dotenv";
 import useAsync from "../../hooks/useAsync";
 import parseForecasts from "../../utils/parseForecasts";
-import { setStateText, getCurrentWeather } from "../../utils/setStateText";
+import setStateText from "../../utils/setStateText";
 import { IconContext } from "react-icons";
-import { WiNightSnow } from "react-icons/wi";
+import WeatherIcons from "./WeatherIcons";
+import WeatherCondition from "./WeatherCondition";
 import "./Forecast.css";
 
 dotenv.config();
@@ -21,8 +22,9 @@ async function getForecasts() {
   const yesterdays = parseForecasts(response.data.yesterdays);
   const todays = parseForecasts(response.data.todays);
   const tomorrows = parseForecasts(response.data.tomorrows);
-  const lastUpdateHour = new Date().getHours(); //서버에서 캐싱될 때 마다 시간 업데이트해서 전송
-  return { yesterdays, todays, tomorrows, lastUpdate: lastUpdateHour };
+  const current = response.data.current[0];
+  const lastUpdateHour = response.data.lastUpdate;
+  return { yesterdays, todays, tomorrows, current, lastUpdate: lastUpdateHour };
 }
 
 function Forecast() {
@@ -35,9 +37,8 @@ function Forecast() {
   if (error) return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
   if (!data) return null;
 
-  const { yesterdays, todays, tomorrows, lastUpdate } = data;
+  const { yesterdays, todays, tomorrows, current, lastUpdate } = data;
   const stateText = setStateText(lastUpdate, yesterdays.temp, todays.temp);
-  const currentWeather = getCurrentWeather(lastUpdate, todays);
 
   return (
     <>
@@ -45,17 +46,21 @@ function Forecast() {
         <h1 style={{ textAlign: "center" }}>{stateText}</h1>
         <div className="chart__headerMiddle">
           <IconContext.Provider value={{ size: "7rem" }}>
-            <WiNightSnow />
+            <WeatherIcons weatherIcon={current.weather[0].icon} />
           </IconContext.Provider>
-          <p>-1℃</p>
+          <p>{current.temp}℃</p>
         </div>
         <div className="chart__headerBottom">
-          <p>맑음</p>
-          <p>체감온도 -5℃</p>
-          {/* <div>{JSON.stringify(currentWeather)}</div> */}
+          <WeatherCondition condition={current.weather[0].main} />
+          <p>체감온도 {current.feels_like}℃</p>
         </div>
       </div>
-      <Graph yesterdays={yesterdays} todays={todays} tomorrows={tomorrows} />
+      <Graph
+        yesterdays={yesterdays}
+        todays={todays}
+        tomorrows={tomorrows}
+        lastUpdate={lastUpdate}
+      />
       <button onClick={refetch}>다시 불러오기</button>
     </>
   );
