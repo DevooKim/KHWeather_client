@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState } from "react";
 import Graph from "./Graph";
 import axios from "axios";
 import dotenv from "dotenv";
 import useAsync from "../../hooks/useAsync";
+
 import parseForecasts from "../../utils/parseForecasts";
-import setStateText from "../../utils/setStateText";
+import getDate from "../../utils/getDate";
+import StateText from "./StateText";
 import { IconContext } from "react-icons";
 import WeatherIcons from "./WeatherIcons";
 import WeatherCondition from "./WeatherCondition";
@@ -38,12 +40,15 @@ function Forecast() {
   if (!data) return null;
 
   const { yesterdays, todays, tomorrows, current, lastUpdate } = data;
-  const stateText = setStateText(lastUpdate, yesterdays.temp, todays.temp);
-
+  const currentHour = getDate(current.dt, "HOURS");
   return (
     <>
       <div className="chart__header">
-        <h1 style={{ textAlign: "center" }}>{stateText}</h1>
+        <StateText
+          hour={currentHour}
+          yesterdayTemps={yesterdays.temp}
+          todayTemps={todays.temp}
+        />
         <div className="chart__headerMiddle">
           <IconContext.Provider value={{ size: "7rem" }}>
             <WeatherIcons weatherIcon={current.weather[0].icon} />

@@ -1,4 +1,4 @@
-export const getDate = (day, action) => {
+export default function getDate(day, action) {
   const date = new Date(day);
   switch (action) {
     case "MONTH":
@@ -7,9 +7,9 @@ export const getDate = (day, action) => {
       return date.getDate();
     case "HOURS":
       return date.getHours();
-    case "MINUTUES":
+    case "MINUTES":
       return date.getMinutes();
     default:
       throw new Error`Unhandled ${action}`();
   }
-};
+}

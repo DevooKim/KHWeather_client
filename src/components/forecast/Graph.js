@@ -2,7 +2,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "./chart.css";
-import { getDate } from "../../utils/getDate";
+import getDate from "../../utils/getDate";
 
 function setLabels(dt1, dt2, dt3) {
   return [...dt1, ...dt2, ...dt3];
@@ -134,7 +134,7 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
       <div className="chartWrapper">
         <p>{`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
           lastUpdate,
-          "MINUTUES"
+          "MINUTES"
         )}분`}</p>
         <div className="chartAreaWrapper">
           {/* <Line data={data} options={options} width={1500} height={500} /> */}

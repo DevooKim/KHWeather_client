@@ -1,4 +1,4 @@
-import { getDate } from "./getDate";
+import getDate from "./getDate";
 const parseForecasts = (days) => {
   const key = `${getDate(days[0].dt, "MONTH") + 1}월 ${getDate(
     days[0].dt,

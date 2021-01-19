@@ -5,6 +5,10 @@
   border: 1px solid black;
 }
 
+.chartWrapper > p {
+  font-weight: 700;
+}
+
 .chartWrapper > canvas {
   position: absolute;
   height: 350px;
