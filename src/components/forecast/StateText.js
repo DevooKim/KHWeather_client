@@ -1,4 +1,5 @@
-function StateText({ hour, yesterdayTemps, todayTemps }) {
+import setHourIndex from "../../utils/getHourIndex";
+export default function StateText({ hour, yesterdayTemps, todayTemps }) {
   const hourIndex = setHourIndex(hour);
   const diffTemp = yesterdayTemps[hourIndex] - todayTemps[hourIndex];
 
@@ -10,9 +11,3 @@ function StateText({ hour, yesterdayTemps, todayTemps }) {
     return <h1>현재 기온은 어제와 동일합니다.</h1>;
   }
 }
-
-function setHourIndex(now) {
-  return Math.ceil((now % 24) / 3) % 8;
-}
-
-export default StateText;
