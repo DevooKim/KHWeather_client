@@ -19,3 +19,9 @@
   height: 350px;
   margin: 0 auto;
 }
+
+.chartIcons {
+  position: absolute;
+  padding-left: 20px;
+  padding-top: 60px;
+}

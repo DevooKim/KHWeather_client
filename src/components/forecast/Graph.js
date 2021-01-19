@@ -4,6 +4,8 @@ import "chartjs-plugin-datalabels";
 import "./chart.css";
 import getDate from "../../utils/getDate";
 import setHourIndex from "../../utils/getHourIndex";
+import { IconContext } from "react-icons";
+import { WiCloudy } from "react-icons/wi";
 
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
@@ -134,8 +136,8 @@ const setOptions = (labeles) => {
           id: "y-axis-1",
           display: false,
           ticks: {
-            suggestedMin: -30,
-            suggestedMax: 30,
+            suggestedMin: -20,
+            suggestedMax: 40,
             stepSize: 1,
           },
           zeroLineColor: "rgba(0, 0, 0, 0.25)",
@@ -177,6 +179,16 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
           "MINUTES"
         )}분`}</p>
         <div className="chartAreaWrapper">
+          <div className="chartIcons">
+            <IconContext.Provider value={{ size: "2.5rem", margin: "0.5rem" }}>
+              <WiCloudy />
+              <WiCloudy />
+              <WiCloudy />
+              <WiCloudy />
+              <WiCloudy />
+              <WiCloudy />
+            </IconContext.Provider>
+          </div>
           <Line data={data} options={options} />
         </div>
       </div>
