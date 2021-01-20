@@ -1,18 +1,37 @@
 .chartWrapper {
   position: relative;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
+  border: 1px solid black;
+}
+
+.chartWrapper > p {
+  font-weight: 700;
 }
 
 .chartWrapper > canvas {
   position: absolute;
-  /* height: 30vh; */
+  height: 350px;
 }
 
 .chartAreaWrapper {
-  /* width: 600px; */
-  width: 150vw;
-  height: 30vh;
+  position: relative;
+  width: 1300px;
+  /* width: 100rem; */
+  height: 350px;
+  /* margin: 0 auto; */
 }
 
-
+.chartIcons {
+  display: flex;
+  position: absolute;
+  justify-content: space-between;
+  top: 40px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: min-content;
+  padding-top: 20px;
+  padding-left: 16px;
+  background-color: white;
+}

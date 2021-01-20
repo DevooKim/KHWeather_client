@@ -1,111 +1,215 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
-import './chart.css'
+import "./chart.css";
+import getDate from "../../utils/getDate";
+import setHourIndex from "../../utils/getHourIndex";
+import WeatherIcons from "./WeatherIcons";
+import { IconContext } from "react-icons";
 
-const data = {
-  labels: ["1", "2", "3", "4", "5", "6","1", "2", "3", "4", "5", "6","1", "2", "3", "4", "5", "6"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, -19, 3, 5.6, 2, 3,12, -19, 3, 5, 2, 3,12, -19, 3, 5, 2, 3,12, -19, 3, 5, 2, 3],
-      fill: false,
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgba(255, 99, 132)",
-      hoverBorderColor: "rgba(255, 99, 132, 0.5)",
-      pointStyle: "circle",
-      pointBorderWidth: 10,
-      hoverBorderWidth: 15,
-      // yAxisID: "y-axis-1",
-    },
-    {
-      label: "# of No Votes",
-      data: [1, 2, 3, 1, 2, 2, 15],
-      fill: false,
-      backgroundColor: "rgb(54, 162, 235)",
-      borderColor: "rgba(54, 162, 235)",
-      hoverBorderColor: "rgba(54, 162, 235, 0.5)",
-      pointStyle: "circle",
-      pointBorderWidth: 10,
-      hoverBorderWidth: 15,
-      // yAxisID: "y-axis-2",
-    },
-    {
-      type: "bar",
-      label: "강수량",
-      data: [10, 20, 30, 40, 50, 60, 70, 80, 90],
-      fill: false,
-      backgroundColor: "rgba(54, 162, 235, 0)",
-      borderColor: '#457AD1',
-      hoverBackgroundColor: '#457AD1',
-      hoverBorderColor: '#457AD1',
-      datalabels: {
-        display: true,
-        align: 'end',
-        anchor: 'start',
-        offset: 50,
-        backgroundColor: "rgba(54, 162, 235, 1)",
-        borderColor: "rgba(54, 162, 235,)",
-        borderRadius: 4,
-        borderWidth: 2,
-        color: '#f1f1f1'
+function setTemp(yesterday, today, tomorrows) {
+  const current = [...yesterday, ...today, ...tomorrows];
+  const prev = [...yesterday, ...yesterday, ...today];
+  return { current, prev };
+}
+
+const setData = (now, labels, temps) => {
+  return {
+    labels: labels,
+    datasets: [
+      {
+        label: "오늘 날씨",
+        data: temps.current,
+        fill: false,
+        backgroundColor: "rgb(101, 81, 0)",
+        borderColor: "rgba(101, 81, 0)",
+        pointStyle: "circle",
+        yAxisID: "y-axis-1",
+      },
+      {
+        label: "어제 날씨",
+        data: temps.prev,
+        fill: false,
+        backgroundColor: "rgba(54, 162, 235, 0.3)",
+        borderColor: "rgba(54, 162, 235, 0.3)",
+        pointStyle: "circle",
+        yAxisID: "y-axis-1",
+        datalabels: {
+          backgroundColor: (context) => {
+            if (context.dataIndex === now) return "pink";
+            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+
+            return "white";
+          },
+          borderColor: (context) => {
+            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+
+            return "rgba(54, 162, 235, 0.3)";
+          },
+          color: (context) => {
+            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+
+            return "black";
+          },
+        },
+      },
+    ],
+  };
+};
+
+const setLabelesOption = (now) => {
+  return {
+    align: (context) => {
+      if (context.active) {
+        const index = context.dataIndex;
+        const datasets = context.chart.data.datasets;
+        const v0 = datasets[0].data[index];
+        const v1 = datasets[1].data[index];
+        const invert = v0 - v1 > 0;
+        return context.datasetIndex === 0
+          ? invert
+            ? "end"
+            : "start"
+          : invert
+          ? "start"
+          : "end";
       }
-    }
-  ],
+      return "center";
+    },
+    backgroundColor: (context) => {
+      if (context.dataIndex === now) return "pink";
+      if (context.active) return "white";
+      if (context.dataIndex % 8 !== 0) return "white";
 
+      return context.dataset.backgroundColor;
+    },
+    borderColor: (context) => {
+      return context.dataset.backgroundColor;
+    },
+    borderRadius: (context) => {
+      return context.active ? 0 : 16;
+    },
+    borderWidth: 3,
+    color: (context) => {
+      if (context.active) return "black";
+      if (context.dataIndex % 8 === 0) return "white";
+
+      return context.dataset.backgroundColor;
+    },
+    font: {
+      weight: "bold",
+    },
+    padding: 3,
+    offset: 8,
+    textAlign: "center",
+    formatter: (value, context) => {
+      value = Math.round(value);
+      return context.active
+        ? context.dataset.label + "\n" + value + "℃"
+        : Math.round(value);
+    },
+    listeners: {
+      click: (context) => {
+        console.log("click: " + context.dataIndex);
+        return <div>test</div>;
+      },
+    },
+  };
 };
 
-const options = {
-  plugins: {
-    datalabels: {
-    //   color: "white",
-    //   font: {
-    //     size: 14
-    //   },
-    //   formatter: Math.round,
-    //   // offset: 8,
-    //   padding: 5,
-    //   textAlign: 'center',
-    // },
-    borderRadius: 100,
-    color: 'white',
-    formatter: Math.round,
-    padding: 6
-  }
-  },
-  legend: {
-    display: false
-  },
-  scales: {
-    yAxes: [{
-      display: false,
-      stacked: false
-    }],
-  },
-  layout: {
-    padding: {
-      top: 50,
-      bottom: 16,
-      left: 16,
-      right: 16
-    }
-  },
-  // responsive: false,
-  // aspectRatio: 10,
-  maintainAspectRatio: false,  
-  tooltip: { enable: false },
+const setOptions = (labeles) => {
+  return {
+    plugins: {
+      datalabels: labeles,
+    },
+    scales: {
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+            fontColor: "black",
+            fontSize: 16,
+            minRotation: 0,
+            maxRotation: 0,
+            callback: (value, index) => {
+              if (index % 8 === 0) return value;
+              return value[1];
+            },
+          },
+          lineWidth: 10,
+          gridLines: {
+            display: true,
+            zeroLineWidth: 2,
+            lineWidth: 2,
+            color: "black",
+            zeroLineColor: "black",
+          },
+        },
+      ],
+      yAxes: [
+        {
+          id: "y-axis-1",
+          display: false,
+          ticks: {
+            suggestedMin: -20,
+            suggestedMax: 40,
+            stepSize: 1,
+          },
+          zeroLineColor: "rgba(0, 0, 0, 0.25)",
+          zeroLineWidth: 1,
+        },
+      ],
+    },
+    layout: {
+      padding: {
+        top: 16,
+        bottom: 16,
+        left: 16,
+        right: 16,
+      },
+    },
+    hover: {
+      mode: "index",
+      intersect: false,
+    },
+    // responsive: false,
+    maintainAspectRatio: false,
+    tooltip: { enable: false },
+  };
 };
 
-function Graph() {
-  // const useStyle = ChartStyle
+function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
+  const currentIndex = setHourIndex(getDate(lastUpdate, "HOURS")) + 8;
+
+  const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
+  const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
+  const data = setData(currentIndex, labels, temps);
+  const labelsOption = setLabelesOption(currentIndex);
+  const options = setOptions(labelsOption);
   return (
     <>
-      <div className="header">
-        <h1 className="title">Multi Axis Line Chart</h1>
-      </div>
       <div className="chartWrapper">
+        <p>
+          {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
+            lastUpdate,
+            "MINUTES"
+          )}분`}
+        </p>
         <div className="chartAreaWrapper">
-          <Line data={data} options={options} height={"30vh"} width={"150vw"}/>
+          <div className="chartIcons">
+            <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
+              {yesterdays.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              ))}
+              {todays.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              ))}
+              {tomorrows.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              ))}
+            </IconContext.Provider>
+          </div>
+          <Line data={data} options={options} key={lastUpdate} />
         </div>
       </div>
     </>
