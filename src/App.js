@@ -7,7 +7,6 @@ import Footer from "./components/footer/Footer";
 function App() {
   return (
     <div style={{ width: "50%", margin: "0 auto" }}>
-      {/* <div> */}
       <Header />
       <Forecast></Forecast>
       <Daily />

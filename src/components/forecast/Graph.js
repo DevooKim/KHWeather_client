@@ -4,8 +4,8 @@ import "chartjs-plugin-datalabels";
 import "./chart.css";
 import getDate from "../../utils/getDate";
 import setHourIndex from "../../utils/getHourIndex";
+import WeatherIcons from "./WeatherIcons";
 import { IconContext } from "react-icons";
-import { WiCloudy } from "react-icons/wi";
 
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
@@ -135,8 +135,13 @@ const setOptions = (labeles) => {
               return value[1];
             },
           },
+          lineWidth: 10,
           gridLines: {
             display: true,
+            zeroLineWidth: 2,
+            lineWidth: 2,
+            color: "black",
+            zeroLineColor: "black",
           },
         },
       ],
@@ -183,19 +188,24 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
   return (
     <>
       <div className="chartWrapper">
-        <p>{`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
-          lastUpdate,
-          "MINUTES"
-        )}분`}</p>
+        <p>
+          {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
+            lastUpdate,
+            "MINUTES"
+          )}분`}
+        </p>
         <div className="chartAreaWrapper">
           <div className="chartIcons">
-            <IconContext.Provider value={{ size: "2.5rem", margin: "0.5rem" }}>
-              <WiCloudy />
-              <WiCloudy />
-              <WiCloudy />
-              <WiCloudy />
-              <WiCloudy />
-              <WiCloudy />
+            <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
+              {yesterdays.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather[0].icon} />
+              ))}
+              {todays.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather[0].icon} />
+              ))}
+              {tomorrows.weather.map((weather) => (
+                <WeatherIcons weatherIcon={weather[0].icon} />
+              ))}
             </IconContext.Provider>
           </div>
           <Line data={data} options={options} />
