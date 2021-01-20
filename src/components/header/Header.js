@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     // right: theme.spacing(2),
   },
   menuButton: {
-    marginLeft: theme.spacing(5),
-    float: "left",
+    marginLeft: theme.spacing(1),
+    float: "right",
   },
   toolbar: {
     minHeight: 128,
@@ -90,9 +90,9 @@ export default function HideAppBar(props) {
           <div style={{ margin: "0 auto" }}>
             <Toolbar className={classes.Toolbar}>
               <Typography className={classes.title} variant="h4">
-                Scroll to Hide App Bar
+                KHWeather
               </Typography>
-              <IconButton
+              {/* <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
@@ -102,17 +102,11 @@ export default function HideAppBar(props) {
                 }}
               >
                 <MenuIcon />
-              </IconButton>
+              </IconButton> */}
             </Toolbar>
           </div>
         </AppBar>
       </HideOnScroll>
-      <Toolbar id="back-to-top-anchor" />
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
     </React.Fragment>
   );
 }
