@@ -25,11 +25,6 @@ const setData = (now, labels, temps) => {
         borderColor: "rgba(101, 81, 0)",
         pointStyle: "circle",
         yAxisID: "y-axis-1",
-        datalabels: {
-          align: function (context) {
-            return context.active ? "start" : "center";
-          },
-        },
       },
       {
         label: "어제 날씨",
@@ -40,9 +35,6 @@ const setData = (now, labels, temps) => {
         pointStyle: "circle",
         yAxisID: "y-axis-1",
         datalabels: {
-          align: (context) => {
-            return context.active ? "end" : "center";
-          },
           backgroundColor: (context) => {
             if (context.dataIndex === now) return "pink";
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
@@ -67,6 +59,23 @@ const setData = (now, labels, temps) => {
 
 const setLabelesOption = (now) => {
   return {
+    align: (context) => {
+      if (context.active) {
+        const index = context.dataIndex;
+        const datasets = context.chart.data.datasets;
+        const v0 = datasets[0].data[index];
+        const v1 = datasets[1].data[index];
+        const invert = v0 - v1 > 0;
+        return context.datasetIndex === 0
+          ? invert
+            ? "end"
+            : "start"
+          : invert
+          ? "start"
+          : "end";
+      }
+      return "center";
+    },
     backgroundColor: (context) => {
       if (context.dataIndex === now) return "pink";
       if (context.active) return "white";
@@ -75,6 +84,8 @@ const setLabelesOption = (now) => {
       return context.dataset.backgroundColor;
     },
     borderColor: (context) => {
+      console.log(context);
+
       return context.dataset.backgroundColor;
     },
     borderRadius: (context) => {
