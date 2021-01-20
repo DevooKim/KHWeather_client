@@ -17,6 +17,10 @@
   margin-bottom: -2rem;
 }
 
+.chart__headerMiddle > p {
+  font-size: x-large;
+}
+
 .chart__headerBottom {
   display: flex;
   align-items: center;
