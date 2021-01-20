@@ -84,8 +84,6 @@ const setLabelesOption = (now) => {
       return context.dataset.backgroundColor;
     },
     borderColor: (context) => {
-      console.log(context);
-
       return context.dataset.backgroundColor;
     },
     borderRadius: (context) => {
