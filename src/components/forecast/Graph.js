@@ -111,6 +111,7 @@ const setLabelesOption = (now) => {
     listeners: {
       click: (context) => {
         console.log("click: " + context.dataIndex);
+        return <div>test</div>;
       },
     },
   };
@@ -198,17 +199,17 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
           <div className="chartIcons">
             <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
               {yesterdays.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather[0].icon} />
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}
               {todays.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather[0].icon} />
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}
               {tomorrows.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather[0].icon} />
+                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}
             </IconContext.Provider>
           </div>
-          <Line data={data} options={options} />
+          <Line data={data} options={options} key={lastUpdate} />
         </div>
       </div>
     </>
