@@ -1,33 +1,14 @@
 import React, { useState } from "react";
 import Graph from "./Graph";
-import axios from "axios";
-import dotenv from "dotenv";
 import useAsync from "../../hooks/useAsync";
 
-import parseForecasts from "../../utils/parseForecasts";
+import getForecasts from "../../utils/getForecasts";
 import getDate from "../../utils/getDate";
 import StateText from "./StateText";
 import { IconContext } from "react-icons";
 import WeatherIcons from "./WeatherIcons";
 import WeatherCondition from "./WeatherCondition";
 import "./Forecast.css";
-
-dotenv.config();
-const hostUrl = process.env.REACT_APP_HOST_URL;
-
-async function getForecasts() {
-  const response = await axios.get(
-    // `${hostUrl}/weather/${geo.lat}/${geo.lon}`
-    `${hostUrl}/weather/36.354687/127.420997`
-  );
-
-  const yesterdays = parseForecasts(response.data.yesterdays);
-  const todays = parseForecasts(response.data.todays);
-  const tomorrows = parseForecasts(response.data.tomorrows);
-  const current = response.data.current[0];
-  const lastUpdateHour = response.data.lastUpdate;
-  return { yesterdays, todays, tomorrows, current, lastUpdate: lastUpdateHour };
-}
 
 function Forecast() {
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
