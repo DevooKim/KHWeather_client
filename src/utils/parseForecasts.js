@@ -15,6 +15,7 @@ const parseForecasts = (days) => {
     visibility: [],
     rain: [],
     snow: [],
+    pop: [],
     weather: [],
   };
 
@@ -26,8 +27,17 @@ const parseForecasts = (days) => {
     data.humidity.push(day.humidity);
     data.clouds.push(day.clouds);
     data.visibility.push(day.visibility);
-    data.rain.push(day.rain);
-    data.snow.push(day.snow);
+    if (day.rain !== undefined) {
+      data.rain.push(day.rain["1h"]);
+    } else {
+      data.rain.push(null);
+    }
+    if (day.snow !== undefined) {
+      data.snow.push(day.rain["1h"]);
+    } else {
+      data.snow.push(null);
+    }
+    data.pop.push(day.pop);
     data.weather.push({ ...day.weather[0], key: counter++ });
   });
 

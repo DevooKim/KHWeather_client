@@ -13,7 +13,7 @@ function setTemp(yesterday, today, tomorrows) {
   return { current, prev };
 }
 
-const setData = (now, labels, temps) => {
+const setData = (now, labels, temps, test) => {
   return {
     labels: labels,
     datasets: [
@@ -52,6 +52,26 @@ const setData = (now, labels, temps) => {
             return "black";
           },
         },
+      },
+      {
+        type: "bar",
+        label: "강수량",
+        data: test,
+        backgroundColor: "green",
+        borderColor: "green",
+        datalabels: {
+          align: "end",
+          anchor: "end",
+          // offset: 30,
+          borderWidth: 1,
+          borderRadius: 0,
+          backgroundColor: "white",
+          color: "black",
+          formatter: (value) => {
+            return value;
+          },
+        },
+        yAxisID: "y-axis-2",
       },
     ],
   };
@@ -158,6 +178,15 @@ const setOptions = (labeles) => {
           zeroLineColor: "rgba(0, 0, 0, 0.25)",
           zeroLineWidth: 1,
         },
+        {
+          id: "y-axis-2",
+          display: false,
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 50,
+            // stepSize: 0.1,
+          },
+        },
       ],
     },
     layout: {
@@ -183,7 +212,11 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
 
   const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
   const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
-  const data = setData(currentIndex, labels, temps);
+  const data = setData(currentIndex, labels, temps, [
+    ...yesterdays.rain,
+    ...todays.rain,
+    ...tomorrows.rain,
+  ]);
   const labelsOption = setLabelesOption(currentIndex);
   const options = setOptions(labelsOption);
   return (

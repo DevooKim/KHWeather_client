@@ -22,6 +22,8 @@ function Forecast() {
 
   const { yesterdays, todays, tomorrows, current, lastUpdate } = data;
   const currentHour = getDate(current.dt, "HOURS");
+  const rain = current.rain ? current.rain["1h"] : null;
+  const snow = current.snow ? current.snow["1h"] : null;
   return (
     <>
       <div className="chart__header">
@@ -37,7 +39,11 @@ function Forecast() {
           <p>{current.temp}℃</p>
         </div>
         <div className="chart__headerBottom">
-          <WeatherCondition condition={current.weather[0].main} />
+          <WeatherCondition
+            condition={current.weather[0]}
+            rain={rain}
+            snow={snow}
+          />
           <p>체감온도 {current.feels_like}℃</p>
         </div>
       </div>
