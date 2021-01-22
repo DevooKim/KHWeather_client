@@ -3,10 +3,15 @@
   overflow-x: auto;
   overflow-y: hidden;
   background-color: #e0f7fa;
-  border: 0.5px solid black;
+  /* border: 0.5px solid black; */
+  margin: 10px;
+  border-style: solid;
+  border-image: linear-gradient(to right, #01c9ca 0%, #3886ff 100%);
+  border-image-slice: 1;
 }
 
-.chartWrapper > p {
+.chartWrapper > span {
+  margin-left: 20px;
   font-weight: 700;
 }
 

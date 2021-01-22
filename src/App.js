@@ -11,8 +11,8 @@ function App() {
       <div style={{ width: "50%", margin: "0 auto" }}>
         <Forecast></Forecast>
         <Daily />
-        <Footer></Footer>
       </div>
+      <Footer></Footer>
     </>
   );
 }

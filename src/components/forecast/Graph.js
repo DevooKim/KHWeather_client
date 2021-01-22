@@ -36,7 +36,7 @@ const setData = (now, labels, temps, test) => {
         yAxisID: "y-axis-1",
         datalabels: {
           backgroundColor: (context) => {
-            if (context.dataIndex === now) return "pink";
+            if (context.dataIndex === now) return "rgba(227, 108, 52)";
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
 
             return "white";
@@ -48,8 +48,9 @@ const setData = (now, labels, temps, test) => {
           },
           color: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+            if (context.dataIndex % 8 === 0) return "white";
 
-            return "black";
+            return "rgba(0,0,0,0.7)";
           },
         },
       },
@@ -97,7 +98,8 @@ const setLabelesOption = (now) => {
       return "center";
     },
     backgroundColor: (context) => {
-      if (context.dataIndex === now) return "pink";
+      // if (context.dataIndex === now) return "pink";
+      if (context.dataIndex === now) return "rgba(227, 108, 52)";
       if (context.active) return "white";
       if (context.dataIndex % 8 !== 0) return "white";
 
@@ -143,13 +145,20 @@ const setOptions = (labeles) => {
     plugins: {
       datalabels: labeles,
     },
+    legend: {
+      labels: {
+        fontSize: 12,
+        fontStyle: "bold",
+      },
+    },
     scales: {
       xAxes: [
         {
           ticks: {
             autoSkip: false,
             fontColor: "black",
-            fontSize: 16,
+            fontSize: 14,
+            fontStyle: "bold",
             minRotation: 0,
             maxRotation: 0,
             padding: 10,
@@ -223,13 +232,14 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
   const options = setOptions(labelsOption);
   return (
     <>
+      {/* <div className={`gradient-border all`}> */}
       <div className="chartWrapper">
-        <p>
+        <span>
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,
             "MINUTES"
           )}분`}
-        </p>
+        </span>
         <div className="chartAreaWrapper">
           <div className="chartIcons">
             <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
@@ -247,6 +257,7 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
           <Line data={data} options={options} key={lastUpdate} />
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 }
