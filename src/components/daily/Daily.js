@@ -2,6 +2,7 @@ import React from "react";
 import useAsync from "../../hooks/useAsync";
 import DayInfo from "./DayInfo";
 import getForecasts from "../../utils/getForecasts";
+import "./Daily.css";
 
 function Daily() {
   const [state, refetch] = useAsync(getForecasts, []);
@@ -14,12 +15,12 @@ function Daily() {
   const { daily } = data;
 
   return (
-    <>
-      <h3>Daily</h3>
+    <div className="daily">
+      <div className="daily__title">주간 날씨</div>
       {daily.map((day) => (
         <DayInfo days={day} key={day.dt} />
       ))}
-    </>
+    </div>
   );
 }
 

@@ -47,13 +47,14 @@ function Forecast() {
           <p>체감온도 {current.feels_like}℃</p>
         </div>
       </div>
+      <button onClick={refetch}>다시 불러오기</button>
+
       <Graph
         yesterdays={yesterdays}
         todays={todays}
         tomorrows={tomorrows}
         lastUpdate={lastUpdate}
       />
-      <button onClick={refetch}>다시 불러오기</button>
     </>
   );
 }

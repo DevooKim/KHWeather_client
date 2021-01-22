@@ -21,8 +21,8 @@ const setData = (now, labels, temps, test) => {
         label: "오늘 날씨",
         data: temps.current,
         fill: false,
-        backgroundColor: "rgb(101, 81, 0)",
-        borderColor: "rgba(101, 81, 0)",
+        backgroundColor: "rgb(0, 137, 123)",
+        borderColor: "rgba(0, 137, 123)",
         pointStyle: "circle",
         yAxisID: "y-axis-1",
       },
@@ -114,7 +114,8 @@ const setLabelesOption = (now) => {
       if (context.active) return "black";
       if (context.dataIndex % 8 === 0) return "white";
 
-      return context.dataset.backgroundColor;
+      // return context.dataset.backgroundColor;
+      return "black";
     },
     font: {
       weight: "bold",
@@ -161,8 +162,8 @@ const setOptions = (labeles) => {
             display: true,
             zeroLineWidth: 2,
             lineWidth: 2,
-            color: "black",
-            zeroLineColor: "black",
+            color: "rgba(1,1,1,0.5)",
+            zeroLineColor: "rgba(1,1,1,0.5)",
           },
         },
       ],

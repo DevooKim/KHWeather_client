@@ -1,0 +1,9 @@
+.daily {
+  margin-top: 2rem;
+}
+.daily__title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 10px;
+}
