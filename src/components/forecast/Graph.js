@@ -30,8 +30,8 @@ const setData = (now, labels, temps, test) => {
         label: "어제 날씨",
         data: temps.prev,
         fill: false,
-        backgroundColor: "rgba(54, 162, 235, 0.3)",
-        borderColor: "rgba(54, 162, 235, 0.3)",
+        backgroundColor: "rgba(54, 162, 235, 0.6)",
+        borderColor: "rgba(54, 162, 235, 0.6)",
         pointStyle: "circle",
         yAxisID: "y-axis-1",
         datalabels: {
@@ -57,16 +57,16 @@ const setData = (now, labels, temps, test) => {
         type: "bar",
         label: "강수량",
         data: test,
-        backgroundColor: "green",
-        borderColor: "green",
+        backgroundColor: "rgba(255, 171, 145)",
+        borderColor: "rgba(255, 171, 145)",
         datalabels: {
           align: "end",
           anchor: "end",
           // offset: 30,
           borderWidth: 1,
           borderRadius: 0,
-          backgroundColor: "white",
-          color: "black",
+          backgroundColor: "rgba(255, 171, 145)",
+          color: "rgba(0,0,0,0.8)",
           formatter: (value) => {
             return value;
           },
@@ -152,6 +152,7 @@ const setOptions = (labeles) => {
             fontSize: 16,
             minRotation: 0,
             maxRotation: 0,
+            padding: 10,
             callback: (value, index) => {
               if (index % 8 === 0) return value;
               return value[1];
