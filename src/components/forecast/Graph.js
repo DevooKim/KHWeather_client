@@ -30,14 +30,18 @@ const setData = (now, labels, temps, test) => {
         label: "어제 날씨",
         data: temps.prev,
         fill: false,
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
-        borderColor: "rgba(54, 162, 235, 0.6)",
+        backgroundColor: "rgba(54, 162, 235, 0.4)",
+        borderColor: "rgba(54, 162, 235, 0.4)",
         pointStyle: "circle",
         yAxisID: "y-axis-1",
         datalabels: {
           backgroundColor: (context) => {
-            if (context.dataIndex === now) return "rgba(227, 108, 52)";
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+            if (context.active) return "white";
+
+            if (context.dataIndex === now) return "rgba(158, 18, 0)";
+            else if (context.dataIndex % 8 === 0)
+              return "rgba(54, 162, 235,0.8)";
 
             return "white";
           },
@@ -48,7 +52,6 @@ const setData = (now, labels, temps, test) => {
           },
           color: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.dataIndex % 8 === 0) return "white";
 
             return "rgba(0,0,0,0.7)";
           },
@@ -98,12 +101,13 @@ const setLabelesOption = (now) => {
       return "center";
     },
     backgroundColor: (context) => {
-      // if (context.dataIndex === now) return "pink";
-      if (context.dataIndex === now) return "rgba(227, 108, 52)";
       if (context.active) return "white";
-      if (context.dataIndex % 8 !== 0) return "white";
+      if (context.dataIndex === now) return "rgba(158, 18, 0)";
+      else if (context.dataIndex % 8 === 0)
+        return "context.dataset.backgroundColor";
 
-      return context.dataset.backgroundColor;
+      // return "context.dataset.backgroundColor";
+      return "white";
     },
     borderColor: (context) => {
       return context.dataset.backgroundColor;
@@ -115,8 +119,8 @@ const setLabelesOption = (now) => {
     color: (context) => {
       if (context.active) return "black";
       if (context.dataIndex % 8 === 0) return "white";
+      if (context.dataIndex === now) return "white";
 
-      // return context.dataset.backgroundColor;
       return "black";
     },
     font: {

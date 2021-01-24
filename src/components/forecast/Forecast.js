@@ -22,8 +22,8 @@ function Forecast() {
 
   const { yesterdays, todays, tomorrows, current, lastUpdate } = data;
   const currentHour = getDate(current.dt, "HOURS");
-  const rain = current.rain ? current.rain["1h"] : null;
-  const snow = current.snow ? current.snow["1h"] : null;
+  const rain = current.rain ? current.rain["1h"] + "mm" : null;
+  const snow = current.snow ? current.snow["1h"] + "mm" : null;
   return (
     <>
       <div className="chart__header">

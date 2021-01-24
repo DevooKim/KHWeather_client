@@ -6,7 +6,7 @@ p {
   border-bottom: 1px solid black;
   margin-left: 70px;
   margin-right: 70px;
-  /* margin: 0 auto; */
+  background-color: #f5f5f5;
 }
 
 .dayInfo {
@@ -21,49 +21,52 @@ p {
   padding-left: 2rem;
 }
 
-.icon__rain {
+.icon__box {
   flex: 0.3;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.icon__rain > p {
+.icon__box > p {
   width: 3rem;
   margin-left: 1.5rem;
-  color: skyblue;
+  font-size: 0.8rem;
+  /* color: skyblue; */
 }
 
-.wind {
-  flex: 0.15;
+.wind__box {
+  width: 7rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.wind > p {
-  margin-left: 0.5rem;
-  color: skyblue;
+.wind__box > p {
+  color: #2ba7fa;
 }
-.temps {
+.temps__box {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  /* width: 5rem; */
+  width: 7rem;
   margin-right: 1rem;
 }
 
-.temps > .max {
+.temp {
+  display: flex;
+  width: 4rem;
+  justify-content: flex-end;
+}
+.temp > p {
   width: 1.5rem;
+  margin-left: 1rem;
+}
+
+.temp > .max {
   color: red;
 }
 
-.temps > .min {
-  width: 1.5rem;
+.temp > .min {
   color: blue;
-}
-
-.temps > p {
-  margin-left: 1.5rem;
 }

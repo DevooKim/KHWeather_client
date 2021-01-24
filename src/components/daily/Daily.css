@@ -1,10 +1,13 @@
-.daily {
-  margin-top: 2rem;
-}
 .daily__title {
   text-align: center;
   font-size: 2rem;
   font-weight: 800;
-  margin: 10px;
-  background-color: beige;
+  background-color: #e8e3bc;
+}
+
+.daily {
+  margin-top: 2rem;
+  /* border-style: solid;
+  border-image: linear-gradient(to right, #01c9ca 0%, #3886ff 100%);
+  border-image-slice: 1; */
 }

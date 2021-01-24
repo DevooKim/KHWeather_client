@@ -1,5 +1,6 @@
 import React from "react";
 import WeatherIcons from "../forecast/WeatherIcons";
+import WeatherCondition from "../forecast/WeatherCondition";
 
 import { IconContext } from "react-icons";
 import getDate from "../../utils/getDate";
@@ -14,25 +15,28 @@ function DayInfo({ days }) {
         <div className="day">
           <p>{day}</p>
         </div>
-        <div className="icon__rain">
+        <div className="icon__box">
           <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
             <WeatherIcons weatherIcon={days.weather[0].icon} />
           </IconContext.Provider>
           {/* {getPop(days.pop, days.humidity)} */}
+          <WeatherCondition condition={days.weather[0]} />
         </div>
-        <div className="wind">
+        <div className="wind__box">
           <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
             <WiStrongWind />
           </IconContext.Provider>
 
           <p>{days.wind_speed}m/s</p>
         </div>
-        <div className="temps">
+        <div className="temps__box">
           <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
             <WiThermometer />
           </IconContext.Provider>
-          <p className="max">{days.temp.max}</p>
-          <p className="min">{days.temp.min}</p>
+          <div className="temp">
+            <p className="max">{days.temp.max}</p>
+            <p className="min">{days.temp.min}</p>
+          </div>
         </div>
       </div>
     </div>

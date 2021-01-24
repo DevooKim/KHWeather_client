@@ -10,7 +10,7 @@ function WeatherCondition({ condition, rain, snow }) {
     case "Rain":
       return (
         <p>
-          {WeatherID(condition.id)} {rain}mm
+          {WeatherID(condition.id)} {rain}
         </p>
       );
     case "Snow":
