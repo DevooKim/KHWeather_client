@@ -9,8 +9,3 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f1eefd;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
