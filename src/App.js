@@ -3,6 +3,7 @@ import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
+import Test from "./Test";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Forecast></Forecast>
         <Daily />
       </div>
+      <Test />
       <Footer></Footer>
     </>
   );

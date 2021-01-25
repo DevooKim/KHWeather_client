@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Graph from "./Graph";
 import useAsync from "../../hooks/useAsync";
 
@@ -12,9 +12,14 @@ import "./Forecast.css";
 
 function Forecast() {
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
-  const [state, refetch] = useAsync(getForecasts, []);
+  const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
 
   const { loading, data, error } = state;
+
+  const sendGeo = (e) => {
+    e.preventDefault();
+    refetch();
+  };
 
   if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
   if (error) return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
@@ -59,4 +64,4 @@ function Forecast() {
   );
 }
 
-export default Forecast;
+export default React.memo(Forecast);
