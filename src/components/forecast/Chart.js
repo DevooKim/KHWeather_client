@@ -52,6 +52,8 @@ const setData = (now, labels, temps, test) => {
           },
           color: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
+            if (context.active) return "rgba(0,0,0,0.7)";
+            if (context.dataIndex === now) return "white";
 
             return "rgba(0,0,0,0.7)";
           },
