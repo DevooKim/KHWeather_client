@@ -1,6 +1,6 @@
-import setHourIndex from "../../utils/getHourIndex";
+import getHourIndex from "../../utils/getHourIndex";
 export default function StateText({ hour, yesterdayTemps, todayTemps }) {
-  const hourIndex = setHourIndex(hour);
+  const hourIndex = getHourIndex(hour);
   const diffTemp = yesterdayTemps[hourIndex] - todayTemps[hourIndex];
 
   if (diffTemp < 0) {

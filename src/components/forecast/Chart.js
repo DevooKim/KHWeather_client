@@ -1,10 +1,10 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
-import "./chart.css";
+import "../../theme/Chart.css";
 import getDate from "../../utils/getDate";
-import setHourIndex from "../../utils/getHourIndex";
-import WeatherIcons from "./WeatherIcons";
+import getHourIndex from "../../utils/getHourIndex";
+import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
 
 function setTemp(yesterday, today, tomorrows) {
@@ -222,8 +222,10 @@ const setOptions = (labeles) => {
   };
 };
 
-function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
-  const currentIndex = setHourIndex(getDate(lastUpdate, "HOURS")) + 8;
+function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
+  const hour = getDate(lastUpdate, "HOURS");
+  const min = getDate(lastUpdate, "MINUTES");
+  const currentIndex = getHourIndex(hour, min, true) + 8;
 
   const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
   const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
@@ -266,4 +268,4 @@ function Graph({ yesterdays, todays, tomorrows, lastUpdate }) {
   );
 }
 
-export default Graph;
+export default Chart;

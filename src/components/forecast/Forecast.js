@@ -1,25 +1,19 @@
 import React, { useRef, useState } from "react";
-import Graph from "./Graph";
+import Chart from "./Chart";
 import useAsync from "../../hooks/useAsync";
 
 import getForecasts from "../../utils/getForecasts";
 import getDate from "../../utils/getDate";
 import StateText from "./StateText";
 import { IconContext } from "react-icons";
-import WeatherIcons from "./WeatherIcons";
-import WeatherCondition from "./WeatherCondition";
-import "./Forecast.css";
+import WeatherIcons from "../weathers/WeatherIcons";
+import WeatherCondition from "../weathers/WeatherCondition";
+import "../../theme/Forecast.css";
 
-function Forecast() {
-  const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
+function Forecast({ geo, region }) {
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
 
   const { loading, data, error } = state;
-
-  const sendGeo = (e) => {
-    e.preventDefault();
-    refetch();
-  };
 
   if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
   if (error) return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
@@ -31,6 +25,7 @@ function Forecast() {
   const snow = current.snow ? current.snow["1h"] + "mm" : null;
   return (
     <>
+      <p>{region}</p>
       <div className="chart__header">
         <StateText
           hour={currentHour}
@@ -54,7 +49,7 @@ function Forecast() {
       </div>
       {/* <button onClick={refetch}>다시 불러오기</button> */}
 
-      <Graph
+      <Chart
         yesterdays={yesterdays}
         todays={todays}
         tomorrows={tomorrows}

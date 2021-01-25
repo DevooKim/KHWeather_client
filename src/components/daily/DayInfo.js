@@ -1,10 +1,10 @@
 import React from "react";
-import WeatherIcons from "../forecast/WeatherIcons";
-import WeatherCondition from "../forecast/WeatherCondition";
+import WeatherIcons from "../weathers/WeatherIcons";
+import WeatherCondition from "../weathers/WeatherCondition";
 
 import { IconContext } from "react-icons";
 import getDate from "../../utils/getDate";
-import "./DayInfo.css";
+import "../../theme/DayInfo.css";
 import { WiStrongWind, WiThermometer } from "react-icons/wi";
 
 function DayInfo({ days }) {
