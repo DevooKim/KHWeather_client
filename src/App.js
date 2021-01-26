@@ -22,7 +22,6 @@ function App() {
       const getRegion = await Coord2RegionCode(getGeo);
       setGeo({ ...getGeo });
       setRegion(getRegion);
-      console.log(geo);
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +35,7 @@ function App() {
         <Forecast geo={geo} region={region} />
         <Daily geo={geo} />
       </div>
+      {/* <Test /> */}
       <Footer></Footer>
     </>
   );
