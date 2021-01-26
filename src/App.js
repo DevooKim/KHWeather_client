@@ -31,8 +31,8 @@ function App() {
   return (
     <>
       <Header />
-      <Address address={address} onChange={onChange} onCoder={onCoder} />
       <div style={{ width: "50%", margin: "0 auto" }}>
+        <Address address={address} onChange={onChange} onCoder={onCoder} />
         <Forecast geo={geo} region={region} />
         <Daily geo={geo} />
       </div>

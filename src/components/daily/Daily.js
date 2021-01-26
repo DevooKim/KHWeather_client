@@ -9,8 +9,8 @@ function Daily({ geo }) {
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
   const { loading, data, error } = state;
 
-  if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
-  if (error) return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
+  if (loading) return null;
+  if (error) return null;
   if (!data) return null;
 
   const { daily } = data;
