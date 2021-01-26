@@ -47,7 +47,7 @@ function App() {
           />
         </div>
         <Forecast geo={geo} region={region} />
-        {/* <Daily geo={geo} /> */}
+        <Daily geo={geo} />
       </div>
       <Footer></Footer>
     </>
