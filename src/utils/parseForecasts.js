@@ -33,7 +33,7 @@ const parseForecasts = (days) => {
       data.rain.push(null);
     }
     if (day.snow !== undefined) {
-      data.snow.push(day.rain["1h"]);
+      data.snow.push(day.snow["1h"]);
     } else {
       data.snow.push(null);
     }
