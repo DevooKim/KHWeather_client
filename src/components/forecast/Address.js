@@ -28,8 +28,10 @@ function Address({
             key={index}
             onClick={onClick({
               address_name: v.address_name,
-              lat: v.y,
-              lon: v.x,
+              coordinate: {
+                lat: v.y,
+                lon: v.x,
+              },
             })}
           >
             {v.address_name}

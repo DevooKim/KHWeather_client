@@ -13,14 +13,18 @@ function App() {
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
   const [overlay, setOverlay] = useState(false);
   const [address, setAddress] = useState([{ address_name: "" }]);
+
   const onChange = async (e) => {
     try {
       setInput(e.target.value);
 
       if (e.target.value) {
         const getGeoArr = await AddressSearch(e.target.value);
-        if (getGeoArr) setAddress([...getGeoArr]);
-
+        if (getGeoArr.length > 0) {
+          setAddress([...getGeoArr]);
+        } else {
+          setAddress([{ address_name: "검색 결과가 없습니다" }]);
+        }
         setOverlay(true);
       } else {
         setAddress([{ address_name: "" }]);
@@ -32,12 +36,14 @@ function App() {
   };
 
   const onClick = (value) => {
-    return (e) => {
-      const { address_name, lat, lon } = value;
-      setInput("");
-      setOverlay(false);
-      setGeo({ lat, lon });
-      setRegion(address_name);
+    return () => {
+      const { address_name, coordinate } = value;
+      if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
+        setInput("");
+        setOverlay(false);
+        setGeo({ ...coordinate });
+        setRegion(address_name);
+      }
     };
   };
 
