@@ -8,30 +8,48 @@ import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
 
 function App() {
-  const [address, setAddress] = useState("");
+  const [input, setInput] = useState("");
   const [region, setRegion] = useState("대전광역시 서구 둔산동");
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
   const [overlay, setOverlay] = useState(false);
-  const onChange = (e) => {
-    setAddress(e.target.value);
-    if (e.target.value) {
-      setOverlay(true);
-    } else {
-      setOverlay(false);
+  const [address, setAddress] = useState([{ address_name: "" }]);
+  const onChange = async (e) => {
+    try {
+      setInput(e.target.value);
+
+      if (e.target.value) {
+        const getGeoArr = await AddressSearch(e.target.value);
+        if (getGeoArr) setAddress([...getGeoArr]);
+
+        setOverlay(true);
+      } else {
+        setAddress([{ address_name: "" }]);
+        setOverlay(false);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  const onCoder = async () => {
-    try {
-      const getGeo = await AddressSearch(address, setGeo);
-      const getRegion = await Coord2RegionCode(getGeo);
-      setGeo({ ...getGeo });
-      setRegion(getRegion);
-      setAddress("");
-    } catch (error) {
-      console.log(error);
-    }
+  const onClick = (value) => {
+    return (e) => {
+      const { address_name, lat, lon } = value;
+      setInput("");
+      setOverlay(false);
+      setGeo({ lat, lon });
+      setRegion(address_name);
+    };
   };
+
+  // const onSubmit = async () => {
+  //   try {
+  //     const getRegion = await Coord2RegionCode(geo);
+  //     setRegion(getRegion);
+  //     setInput("");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -40,13 +58,15 @@ function App() {
         <div className="address">
           <p>{region}</p>
           <Address
-            address={address}
+            input={input}
             onChange={onChange}
-            onCoder={onCoder}
+            // onSubmit={onSubmit}
+            onClick={onClick}
             overlay={overlay}
+            address={address}
           />
         </div>
-        <Forecast geo={geo} region={region} />
+        <Forecast geo={geo} />
         <Daily geo={geo} />
       </div>
       <Footer></Footer>

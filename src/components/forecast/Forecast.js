@@ -6,7 +6,7 @@ import ForecastInfo from "./ForecastInfo";
 
 import "../../theme/Forecast.css";
 
-function Forecast({ geo, region }) {
+function Forecast({ geo }) {
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
 
   const { loading, data, error } = state;

@@ -10,10 +10,13 @@ const headers = {
 export const AddressSearch = async (address) => {
   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${address}`;
 
-  const response = await axios.get(url, { headers });
-
-  const data = response.data.documents[0];
-  return { lat: data.y, lon: data.x };
+  try {
+    const response = await axios.get(url, { headers });
+    const data = response.data.documents;
+    return data;
+  } catch (e) {
+    return [];
+  }
 };
 
 export const Coord2RegionCode = async (coord) => {
