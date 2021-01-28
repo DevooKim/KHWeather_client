@@ -38,6 +38,7 @@ function App() {
   const onClick = (value) => {
     return () => {
       const { address_name, coordinate } = value;
+      console.log(value);
       if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
         setInput("");
         setOverlay(false);

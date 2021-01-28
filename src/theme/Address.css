@@ -1,8 +1,28 @@
-.Address {
+/* .address {
   display: relative;
+} */
+.address__input {
+  width: 13rem;
+  height: 2rem;
 }
 
-.address__overlay {
-  background-color: black;
-  color: white;
+.address__input > input {
+  border: none;
+  outline-width: 0;
+  width: 100%;
+  font-size: 1rem;
+  margin-top: 5px;
+  padding: 3px;
+  padding-left: 5px;
+}
+
+.overlay {
+  position: relative;
+  width: 100%;
+  background-color: rgb(203, 207, 138);
+  padding: 2px;
+  padding-left: 5px;
+  color: black;
+  border-bottom: 1px solid black;
+  z-index: 100;
 }

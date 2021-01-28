@@ -10,21 +10,22 @@ function Address({
   address,
 }) {
   // console.log(test);
-  const overlayStyle = overlay ? { position: "fixed" } : { display: "none" };
+  const overlayStyle = overlay ? {} : { display: "none" };
   return (
-    <div className="Address">
-      <div className="address__input">
-        <input
-          name="Geo"
-          placeholder="주소 입력"
-          onChange={onChange}
-          value={input}
-        />
-        {/* <button onClick={onSubmit}>입력</button> */}
-      </div>
+    <div className="address__input">
+      {/* <div className="address__input"> */}
+      <input
+        name="Geo"
+        placeholder="주소 입력"
+        onChange={onChange}
+        value={input}
+      />
+      {/* <button onClick={onSubmit}>입력</button> */}
+      {/* </div> */}
       <div className="address__overlay" style={overlayStyle}>
         {address.map((v, index) => (
           <div
+            className="overlay"
             key={index}
             onClick={onClick({
               address_name: v.address_name,
