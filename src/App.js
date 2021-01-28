@@ -17,7 +17,7 @@ function App() {
   const onChange = async (e) => {
     try {
       setInput(e.target.value);
-
+      // inputRef.current.onFocus = true;
       if (e.target.value) {
         const getGeoArr = await AddressSearch(e.target.value);
         if (getGeoArr.length > 0) {

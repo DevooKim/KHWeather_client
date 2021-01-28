@@ -9,8 +9,8 @@ function Address({
   overlay = false,
   address,
 }) {
-  // console.log(test);
   const overlayStyle = overlay ? {} : { display: "none" };
+
   return (
     <div className="address__input">
       {/* <div className="address__input"> */}

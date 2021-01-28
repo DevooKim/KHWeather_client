@@ -3,3 +3,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.address > p {
+  font-size: 1.2rem;
+}
