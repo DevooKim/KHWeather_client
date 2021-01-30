@@ -3,12 +3,10 @@ import Chart from "./Chart";
 import useAsync from "../../hooks/useAsync";
 import getForecasts from "../../utils/getForecasts";
 import ForecastInfo from "./ForecastInfo";
-
 import "../../theme/Forecast.css";
 
-function Forecast({ geo }) {
+function Forecast({ geo, theme }) {
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
-
   const { loading, data, error } = state;
   if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
   if (error) {
@@ -22,11 +20,15 @@ function Forecast({ geo }) {
   return (
     <>
       <ForecastInfo yesterdays={yesterdays} todays={todays} current={current} />
-      <Chart
+      {/* <Chart
         yesterdays={yesterdays}
         todays={todays}
         tomorrows={tomorrows}
         lastUpdate={lastUpdate}
+      /> */}
+      <Chart
+        forecasts={{ yesterdays, todays, tomorrows, lastUpdate }}
+        theme={theme}
       />
     </>
   );

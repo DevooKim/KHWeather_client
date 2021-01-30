@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
 import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
@@ -6,8 +7,13 @@ import Footer from "./components/footer/Footer";
 import Address from "./components/forecast/Address";
 import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
+import { light, dark } from "./Theme.js";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
+  const [themeMode, toggleTheme] = useTheme();
+  const theme = themeMode === "light" ? light : dark;
+
   const [input, setInput] = useState("");
   const [region, setRegion] = useState("대전광역시 서구 둔산동");
   const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
@@ -17,7 +23,6 @@ function App() {
   const onChange = async (e) => {
     try {
       setInput(e.target.value);
-      // inputRef.current.onFocus = true;
       if (e.target.value) {
         const getGeoArr = await AddressSearch(e.target.value);
         if (getGeoArr.length > 0) {
@@ -59,8 +64,9 @@ function App() {
   // };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Header />
+      <button onClick={toggleTheme}>다크모드</button>
       <div style={{ width: "50%", margin: "0 auto" }}>
         <div className="address">
           <p>{region}</p>
@@ -73,11 +79,11 @@ function App() {
             address={address}
           />
         </div>
-        <Forecast geo={geo} />
+        <Forecast geo={geo} theme={theme} />
         <Daily geo={geo} />
       </div>
       <Footer></Footer>
-    </>
+    </ThemeProvider>
   );
 }
 

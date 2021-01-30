@@ -2,10 +2,10 @@
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5;
   border-style: solid;
   border-image: linear-gradient(to right, #01c9ca 0%, #3886ff 100%);
-  border-image-slice: 1;
+  border-image-slice: 1; */
 }
 
 .chartWrapper > span {
@@ -37,5 +37,5 @@
   height: min-content;
   padding-top: 20px;
   padding-left: 16px;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
 }

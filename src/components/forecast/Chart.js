@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import "../../theme/Chart.css";
@@ -6,6 +7,24 @@ import getDate from "../../utils/getDate";
 import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
+import { SportsRugbySharp } from "@material-ui/icons";
+
+let globalTheme = undefined;
+
+const ChartWrapper = styled.div`
+  background-color: ${(props) => props.theme.chartColor.bgColor};
+  border-image: linear-gradient(
+    to right,
+    ${(props) => props.theme.chartColor.borderFirst} 0%,
+    ${(props) => props.theme.chartColor.borderSecond} 100%
+  );
+  border-style: solid;
+  border-image-slice: 1;
+`;
+
+const ChartIcons = styled.div`
+  background-color: ${(props) => props.theme.chartColor.bgColor};
+`;
 
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
@@ -13,7 +32,7 @@ function setTemp(yesterday, today, tomorrows) {
   return { current, prev };
 }
 
-const setData = (now, labels, temps, test) => {
+const setData = (now, labels, temps, precipitation) => {
   return {
     labels: labels,
     datasets: [
@@ -21,8 +40,8 @@ const setData = (now, labels, temps, test) => {
         label: "오늘 날씨",
         data: temps.current,
         fill: false,
-        backgroundColor: "rgb(0, 137, 123)",
-        borderColor: "rgba(0, 137, 123)",
+        backgroundColor: globalTheme.chartColor.today,
+        borderColor: globalTheme.chartColor.today,
         pointStyle: "circle",
         yAxisID: "y-axis-1",
       },
@@ -30,49 +49,52 @@ const setData = (now, labels, temps, test) => {
         label: "어제 날씨",
         data: temps.prev,
         fill: false,
-        backgroundColor: "rgba(54, 162, 235, 0.4)",
-        borderColor: "rgba(54, 162, 235, 0.4)",
+        backgroundColor: globalTheme.chartColor.yesterday.line,
+        borderColor: globalTheme.chartColor.yesterday.line,
         pointStyle: "circle",
         yAxisID: "y-axis-1",
         datalabels: {
           backgroundColor: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.active) return "white";
+            if (context.active) return globalTheme.chartColor.pointColor;
 
-            if (context.dataIndex === now) return "rgba(158, 18, 0)";
+            if (context.dataIndex === now) return globalTheme.chartColor.now;
             else if (context.dataIndex % 8 === 0)
-              return "rgba(54, 162, 235,0.8)";
+              // return "rgba(54, 162, 235,0.8)";
+              return globalTheme.chartColor.yesterday.bg;
 
-            return "white";
+            return globalTheme.chartColor.pointColor;
           },
           borderColor: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
 
-            return "rgba(54, 162, 235, 0.3)";
+            // return "rgba(54, 162, 235, 0.3)";
+            return globalTheme.chartColor.yesterday.line;
           },
           color: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.active) return "rgba(0,0,0,0.7)";
-            if (context.dataIndex === now) return "white";
+            if (context.active) return globalTheme.chartColor.color; //"rgba(0,0,0,0.7)";
+            if (context.dataIndex === now)
+              return globalTheme.chartColor.pointColor;
 
-            return "rgba(0,0,0,0.7)";
+            return globalTheme.chartColor.halfBlack; //"rgba(0,0,0,0.7)";
           },
         },
       },
       {
         type: "bar",
         label: "강수량",
-        data: test,
-        backgroundColor: "rgba(255, 171, 145)",
-        borderColor: "rgba(255, 171, 145)",
+        data: precipitation,
+        backgroundColor: globalTheme.chartColor.precipitation,
+        borderColor: globalTheme.chartColor.precipitation,
         datalabels: {
           align: "end",
           anchor: "end",
           // offset: 30,
           borderWidth: 1,
           borderRadius: 0,
-          backgroundColor: "rgba(255, 171, 145)",
-          color: "rgba(0,0,0,0.8)",
+          backgroundColor: globalTheme.chartColor.precipitation,
+          color: globalTheme.chartColor.halfBlack, //"rgba(0,0,0,0.8)",
           formatter: (value) => {
             return value;
           },
@@ -103,13 +125,13 @@ const setLabelesOption = (now) => {
       return "center";
     },
     backgroundColor: (context) => {
-      if (context.active) return "white";
-      if (context.dataIndex === now) return "rgba(158, 18, 0)";
+      if (context.active) return globalTheme.chartColor.pointColor;
+      if (context.dataIndex === now) return globalTheme.chartColor.now;
       else if (context.dataIndex % 8 === 0)
         return "context.dataset.backgroundColor";
 
       // return "context.dataset.backgroundColor";
-      return "white";
+      return globalTheme.chartColor.pointColor;
     },
     borderColor: (context) => {
       return context.dataset.backgroundColor;
@@ -119,11 +141,11 @@ const setLabelesOption = (now) => {
     },
     borderWidth: 3,
     color: (context) => {
-      if (context.active) return "black";
-      if (context.dataIndex % 8 === 0) return "white";
-      if (context.dataIndex === now) return "white";
+      if (context.active) return globalTheme.chartColor.color;
+      if (context.dataIndex % 8 === 0) return globalTheme.chartColor.pointColor; //"white";
+      if (context.dataIndex === now) return globalTheme.chartColor.pointColor; //"white";
 
-      return "black";
+      return globalTheme.chartColor.color;
     },
     font: {
       weight: "bold",
@@ -140,7 +162,8 @@ const setLabelesOption = (now) => {
     listeners: {
       click: (context) => {
         console.log("click: " + context.dataIndex);
-        return <div>test</div>;
+        // return <div>test</div>;
+        return;
       },
     },
   };
@@ -155,6 +178,7 @@ const setOptions = (labeles) => {
       labels: {
         fontSize: 12,
         fontStyle: "bold",
+        fontColor: globalTheme.chartColor.halfBlack,
       },
     },
     scales: {
@@ -162,7 +186,7 @@ const setOptions = (labeles) => {
         {
           ticks: {
             autoSkip: false,
-            fontColor: "black",
+            fontColor: globalTheme.chartColor.color,
             fontSize: 14,
             fontStyle: "bold",
             minRotation: 0,
@@ -178,8 +202,8 @@ const setOptions = (labeles) => {
             display: true,
             zeroLineWidth: 2,
             lineWidth: 2,
-            color: "rgba(1,1,1,0.5)",
-            zeroLineColor: "rgba(1,1,1,0.5)",
+            color: globalTheme.chartColor.halfBlack, //"rgba(1,1,1,0.5)",
+            zeroLineColor: globalTheme.chartColor.halfBlack, //"rgba(1,1,1,0.5)",
           },
         },
       ],
@@ -192,7 +216,7 @@ const setOptions = (labeles) => {
             suggestedMax: 40,
             stepSize: 1,
           },
-          zeroLineColor: "rgba(0, 0, 0, 0.25)",
+          zeroLineColor: globalTheme.chartColor.color, //"rgba(0, 0, 0, 0.25)",
           zeroLineWidth: 1,
         },
         {
@@ -224,7 +248,10 @@ const setOptions = (labeles) => {
   };
 };
 
-function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
+// function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
+function Chart({ forecasts, theme }) {
+  globalTheme = theme;
+  const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
   const hour = getDate(lastUpdate, "HOURS");
   const min = getDate(lastUpdate, "MINUTES");
   const currentIndex = getHourIndex(hour, min, true) + 8;
@@ -240,8 +267,8 @@ function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
   const options = setOptions(labelsOption);
   return (
     <>
-      {/* <div className={`gradient-border all`}> */}
-      <div className="chartWrapper">
+      {/* <div className="chartWrapper"> */}
+      <ChartWrapper className="chartWrapper">
         <span>
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,
@@ -249,7 +276,8 @@ function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
           )}분`}
         </span>
         <div className="chartAreaWrapper">
-          <div className="chartIcons">
+          {/* <div className="chartIcons"> */}
+          <ChartIcons className="chartIcons">
             <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
               {yesterdays.weather.map((weather) => (
                 <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
@@ -261,11 +289,11 @@ function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
                 <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}
             </IconContext.Provider>
-          </div>
+            {/* </div> */}
+          </ChartIcons>
           <Line data={data} options={options} key={lastUpdate} />
         </div>
-      </div>
-      {/* </div> */}
+      </ChartWrapper>
     </>
   );
 }
