@@ -65,26 +65,34 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header />
-      <button onClick={toggleTheme}>다크모드</button>
-      <div style={{ width: "50%", margin: "0 auto" }}>
-        <div className="address">
-          <p>{region}</p>
-          <Address
-            input={input}
-            onChange={onChange}
-            // onSubmit={onSubmit}
-            onClick={onClick}
-            overlay={overlay}
-            address={address}
-          />
+      <GlobalStyled>
+        <Header />
+
+        <button onClick={toggleTheme}>다크모드</button>
+        <div style={{ width: "50%", margin: "0 auto" }}>
+          <div className="address">
+            <p>{region}</p>
+            <Address
+              input={input}
+              onChange={onChange}
+              // onSubmit={onSubmit}
+              onClick={onClick}
+              overlay={overlay}
+              address={address}
+            />
+          </div>
+          <Forecast geo={geo} theme={theme} />
+          <Daily geo={geo} theme={theme} />
         </div>
-        <Forecast geo={geo} theme={theme} />
-        <Daily geo={geo} />
-      </div>
-      <Footer></Footer>
+        <Footer></Footer>
+      </GlobalStyled>
     </ThemeProvider>
   );
 }
+
+const GlobalStyled = styled.div`
+  background-color: ${(props) => props.theme.colors.bgColor};
+  color: ${(props) => props.theme.colors.color};
+`;
 
 export default App;

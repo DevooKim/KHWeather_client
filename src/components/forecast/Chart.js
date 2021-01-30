@@ -278,7 +278,9 @@ function Chart({ forecasts, theme }) {
         <div className="chartAreaWrapper">
           {/* <div className="chartIcons"> */}
           <ChartIcons className="chartIcons">
-            <IconContext.Provider value={{ size: "2.5rem", color: "black" }}>
+            <IconContext.Provider
+              value={{ size: "2.5rem", color: globalTheme.colors.icon }}
+            >
               {yesterdays.weather.map((weather) => (
                 <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}

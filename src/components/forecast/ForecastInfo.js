@@ -5,7 +5,8 @@ import WeatherIcons from "../weathers/WeatherIcons";
 import WeatherCondition from "../weathers/WeatherCondition";
 import getDate from "../../utils/getDate";
 
-function ForecastInfo({ yesterdays, todays, current }) {
+function ForecastInfo({ forecasts, theme }) {
+  const { yesterdays, todays, current } = forecasts;
   const currentHour = getDate(current.dt, "HOURS");
   const rain = current.rain ? current.rain["1h"] + "mm" : null;
   const snow = current.snow ? current.snow["1h"] + "mm" : null;
@@ -18,7 +19,9 @@ function ForecastInfo({ yesterdays, todays, current }) {
           todayTemps={todays.temp}
         />
         <div className="chart__headerMiddle">
-          <IconContext.Provider value={{ size: "7rem" }}>
+          <IconContext.Provider
+            value={{ size: "7rem", color: theme.colors.icon }}
+          >
             <WeatherIcons weatherIcon={current.weather[0].icon} />
           </IconContext.Provider>
           <p>{current.temp}℃</p>

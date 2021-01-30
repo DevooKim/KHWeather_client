@@ -19,7 +19,7 @@ function Forecast({ geo, theme }) {
 
   return (
     <>
-      <ForecastInfo yesterdays={yesterdays} todays={todays} current={current} />
+      <ForecastInfo forecasts={{ yesterdays, todays, current }} theme={theme} />
       {/* <Chart
         yesterdays={yesterdays}
         todays={todays}

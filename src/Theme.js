@@ -3,7 +3,8 @@ export const light = {
     header: "#aebfbe",
     bgColor: "#f1eefd",
     footerColor: "#aebfbe",
-    color: "black",
+    color: "black", //color = icon
+    icon: "black",
   },
   chartColor: {
     bgColor: "#f5f5f5",
@@ -20,14 +21,15 @@ export const light = {
     precipitation: "rgba(255, 171, 145)",
     now: "rgba(158, 18, 0)",
   },
-  //   dailyColor: {
-  //     title: ,
-  //     bgColor: ,
-  //     color: ,
-  //     wind: ,
-  //     max: ,
-  //     min: ,
-  //   }
+  dailyColor: {
+    title: "#e8e3bc",
+    bgColor: "#f5f5f5",
+    border: "#000000",
+    color: "#000000",
+    wind: "#2ba7fa",
+    max: "#ED2415",
+    min: "#1A37F0",
+  },
 };
 export const dark = {
   colors: {
@@ -35,6 +37,7 @@ export const dark = {
     bgColor: "black",
     footerColor: "black",
     color: "white",
+    icon: "white",
   },
   chartColor: {
     bgColor: "black",
@@ -52,12 +55,13 @@ export const dark = {
     precipitation: "pink",
     now: "black",
   },
-  //   dailyColor: {
-  //     title: ,
-  //     bgColor: ,
-  //     color: ,
-  //     wind: ,
-  //     max: ,
-  //     min: ,
-  //   }
+  dailyColor: {
+    title: "black",
+    bgColor: "black",
+    border: "black",
+    color: "black",
+    wind: "black",
+    max: "black",
+    min: "black",
+  },
 };
