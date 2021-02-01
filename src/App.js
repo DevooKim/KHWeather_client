@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import Header from "./components/header/Header";
+import Header from "./components/header/HeaderMaterial";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
-import Address from "./components/forecast/Address";
+// import Address from "./components/forecast/Address";
 import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
 import { light, dark } from "./Theme.js";
@@ -23,6 +23,7 @@ function App() {
   const onChange = async (e) => {
     try {
       setInput(e.target.value);
+      console.log(e.target.value);
       if (e.target.value) {
         const getGeoArr = await AddressSearch(e.target.value);
         if (getGeoArr.length > 0) {
@@ -41,16 +42,17 @@ function App() {
   };
 
   const onClick = (value) => {
-    return () => {
-      const { address_name, coordinate } = value;
-      console.log(value);
-      if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
-        setInput("");
-        setOverlay(false);
-        setGeo({ ...coordinate });
-        setRegion(address_name);
-      }
-    };
+    console.log(value);
+    // return () => {
+    const { address_name, coordinate } = value;
+    console.log(value);
+    if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
+      setInput("");
+      setOverlay(false);
+      setGeo({ ...coordinate });
+      setRegion(address_name);
+    }
+    // };
   };
 
   // const onSubmit = async () => {
@@ -66,20 +68,25 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyled>
-        <Header>
-          <Button onClick={toggleTheme}>다크모드</Button>
-        </Header>
+        <Header
+          input={input}
+          onChange={onChange}
+          // onSubmit={onSubmit}
+          onClickInput={onClick}
+          overlay={overlay}
+          address={address}
+        />
         <ContentStyled>
           <div className="address">
             <p>{region}</p>
-            <Address
+            {/* <Address
               input={input}
               onChange={onChange}
               // onSubmit={onSubmit}
               onClick={onClick}
               overlay={overlay}
               address={address}
-            />
+            /> */}
           </div>
           <Forecast geo={geo} theme={theme} />
           <Daily geo={geo} theme={theme} />
