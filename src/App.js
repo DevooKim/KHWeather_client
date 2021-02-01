@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Header from "./components/header/HeaderMaterial";
 import Daily from "./components/daily/Daily";
@@ -10,86 +10,75 @@ import "./theme/App.css";
 import { light, dark } from "./Theme.js";
 import { useTheme } from "./hooks/useTheme";
 
+const initialState = {
+  input: "",
+  region: "대전광역시 서구 둔산동",
+  geo: { lat: 36.354687, lon: 127.420997 },
+  address: [{ address_name: "" }],
+};
 function App() {
   const [themeMode, toggleTheme] = useTheme();
   const theme = themeMode === "light" ? light : dark;
+  const [state, setState] = useState(initialState);
 
-  const [input, setInput] = useState("");
-  const [region, setRegion] = useState("대전광역시 서구 둔산동");
-  const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
-  const [overlay, setOverlay] = useState(false);
-  const [address, setAddress] = useState([{ address_name: "" }]);
-
-  const onChange = async (e) => {
+  const onChange = useCallback(async (e) => {
     try {
-      setInput(e.target.value);
-      console.log(e.target.value);
+      setState((prev) => ({
+        ...prev,
+        input: e.target.value,
+      }));
       if (e.target.value) {
         const getGeoArr = await AddressSearch(e.target.value);
         if (getGeoArr.length > 0) {
-          setAddress([...getGeoArr]);
+          setState((prev) => ({
+            ...prev,
+            address: [...getGeoArr],
+          }));
         } else {
-          setAddress([{ address_name: "검색 결과가 없습니다" }]);
+          setState((prev) => ({
+            ...prev,
+            address: [{ address_name: "검색 결과가 없습니다." }],
+          }));
         }
-        setOverlay(true);
       } else {
-        setAddress([{ address_name: "" }]);
-        setOverlay(false);
+        setState((prev) => ({
+          ...prev,
+          address: [{ address_name: "" }],
+        }));
       }
     } catch (e) {
       console.log(e);
     }
-  };
+  }, []);
 
-  const onClick = (value) => {
-    console.log(value);
-    // return () => {
+  const onClick = useCallback((value) => {
     const { address_name, coordinate } = value;
     console.log(value);
     if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
-      setInput("");
-      setOverlay(false);
-      setGeo({ ...coordinate });
-      setRegion(address_name);
+      setState((prev) => ({
+        ...prev,
+        input: "",
+        geo: { ...coordinate },
+        region: address_name,
+      }));
     }
-    // };
-  };
-
-  // const onSubmit = async () => {
-  //   try {
-  //     const getRegion = await Coord2RegionCode(geo);
-  //     setRegion(getRegion);
-  //     setInput("");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyled>
         <Header
-          input={input}
+          input={state.input}
           onChange={onChange}
-          // onSubmit={onSubmit}
-          onClickInput={onClick}
-          overlay={overlay}
-          address={address}
+          onClick={onClick}
+          address={state.address}
         />
         <ContentStyled>
           <div className="address">
-            <p>{region}</p>
-            {/* <Address
-              input={input}
-              onChange={onChange}
-              // onSubmit={onSubmit}
-              onClick={onClick}
-              overlay={overlay}
-              address={address}
-            /> */}
+            <p>{state.region}</p>
           </div>
-          <Forecast geo={geo} theme={theme} />
-          <Daily geo={geo} theme={theme} />
+          <Forecast geo={state.geo} theme={theme} />
+          <Daily geo={state.geo} theme={theme} />
         </ContentStyled>
         <Footer></Footer>
       </GlobalStyled>

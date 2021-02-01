@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -34,8 +34,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
       position: "absolute",
-      right: 0,
-
+      right: theme.spacing(4),
       marginLeft: theme.spacing(1),
       width: "auto",
     },
@@ -59,9 +58,9 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "20ch",
+      width: "30ch",
       "&:focus": {
-        width: "25ch",
+        width: "35ch",
       },
     },
   },
@@ -84,13 +83,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const OverlayStyled = styled.span`
-//   position: absolute;
-// `;
+const OverlayStyled = styled.div`
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  top: 100%;
+`;
 
 const OverlayResultStyled = styled.div`
-  position: absolute;
-  top: 100%;
+  position: relitive;
   padding: 2px;
   padding-left: 5px;
   padding-right: 4px;
@@ -100,26 +101,19 @@ const OverlayResultStyled = styled.div`
   z-index: 100;
 `;
 
-export default function SearchAppBar({
-  input,
-  onChange,
-  onClickInput,
-  overlay = false,
-  address,
-}) {
+export default function SearchAppBar({ input, onChange, onClick, address }) {
   const classes = useStyles();
   const inputRef = useRef();
   const [mobileSearch, setMobileSearch] = useState(false);
+  const [overlayDisplay, setOverlay] = useState({ display: "none" });
 
   const searchHide = mobileSearch ? { display: "none" } : { display: "block" };
   const searchShow = mobileSearch ? { display: "block" } : { display: "none" };
 
-  const onClick = () => {
+  const handleMobileSearch = useCallback(() => {
     setMobileSearch(true);
     // inputRef.current.focus();
-  };
-
-  const overlayStyle = overlay ? {} : { display: "none" };
+  }, []);
 
   return (
     <>
@@ -141,36 +135,42 @@ export default function SearchAppBar({
                   input: classes.inputInput,
                 }}
                 inputProps={{ "aria-label": "search" }}
-                onBlur={() => setMobileSearch(false)}
-                onChange={(e) => onChange(e)}
+                onBlur={() => setOverlay({ display: "none" })}
+                onFocus={() => setOverlay({})}
+                onChange={(e) => {
+                  onChange(e);
+                }}
                 value={input}
+                inputRef={inputRef}
               />
-              <div style={overlayStyle}>
+
+              <OverlayStyled style={overlayDisplay}>
                 {address.map((v, index) => (
                   <OverlayResultStyled
                     key={index}
-                    onClick={() =>
-                      onClickInput({
+                    onMouseDown={() => {
+                      onClick({
                         address_name: v.address_name,
                         coordinate: {
                           lat: v.y,
                           lon: v.x,
                         },
-                      })
-                    }
+                      });
+                    }}
+                    value={v}
                   >
                     {v.address_name}
                   </OverlayResultStyled>
                 ))}
-              </div>
+              </OverlayStyled>
             </div>
           </div>
 
-          <div className={classes.sectionMobile}>
+          {/* <div className={classes.sectionMobile}>
             <IconButton
               color={"inherit"}
               // onClick={() => setMobileSearch(true)}
-              onClick={() => onClick}
+              onClick={() => handleMobileSearch}
               style={searchHide}
             >
               <SearchIcon />
@@ -192,7 +192,7 @@ export default function SearchAppBar({
                 value={input}
               />
             </div>
-          </div>
+          </div> */}
         </Toolbar>
         {/* </AppBar> */}
       </div>
