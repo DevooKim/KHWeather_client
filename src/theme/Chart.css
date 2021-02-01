@@ -2,10 +2,6 @@
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  /* background-color: #f5f5f5;
-  border-style: solid;
-  border-image: linear-gradient(to right, #01c9ca 0%, #3886ff 100%);
-  border-image-slice: 1; */
 }
 
 .chartWrapper > span {
@@ -21,9 +17,7 @@
 .chartAreaWrapper {
   position: relative;
   width: 1300px;
-  /* width: 100rem; */
   height: 350px;
-  /* margin: 0 auto; */
 }
 
 .chartIcons {
@@ -37,5 +31,4 @@
   height: min-content;
   padding-top: 20px;
   padding-left: 16px;
-  /* background-color: #f5f5f5; */
 }

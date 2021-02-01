@@ -1,35 +1,11 @@
-.chart__header {
-  display: flex;
-  flex-direction: column;
-  margin-top: 50px;
+.forecastIcon {
+  width: 7rem;
+  height: 7rem;
+  margin-right: 1rem;
 }
-
-.chart__header > h1 {
-  text-align: center;
-}
-
-.chart__headerMiddle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  /* margin-top: -1.5rem; */
-  /* margin-bottom: -2rem; */
-}
-
-.chart__headerMiddle > p {
-  font-size: 3rem;
-  margin-left: 1.5rem;
-}
-
-.chart__headerBottom {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-}
-
-.chart__headerBottom > p {
-  padding: 10px;
-  font-weight: 800;
+@media screen and (max-width: 768px) {
+  .forecastIcon {
+    width: 5rem;
+    height: 5rem;
+  }
 }

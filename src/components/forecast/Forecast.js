@@ -1,14 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "./Chart";
 import useAsync from "../../hooks/useAsync";
 import getForecasts from "../../utils/getForecasts";
 import ForecastInfo from "./ForecastInfo";
 import "../../theme/Forecast.css";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function Forecast({ geo, theme }) {
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
+  const [progress, setProgress] = useState(0);
   const { loading, data, error } = state;
-  if (loading) return <h1 style={{ textAlign: "center" }}>로딩중...</h1>;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 0 : prevProgress + 10
+      );
+    }, 100);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  if (loading)
+    return <CircularProgress variant="determinate" value={progress} />;
   if (error) {
     console.log(error);
     return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
@@ -20,12 +36,6 @@ function Forecast({ geo, theme }) {
   return (
     <>
       <ForecastInfo forecasts={{ yesterdays, todays, current }} theme={theme} />
-      {/* <Chart
-        yesterdays={yesterdays}
-        todays={todays}
-        tomorrows={tomorrows}
-        lastUpdate={lastUpdate}
-      /> */}
       <Chart
         forecasts={{ yesterdays, todays, tomorrows, lastUpdate }}
         theme={theme}

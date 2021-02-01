@@ -17,46 +17,46 @@ import {
 
 import React from "react";
 
-function WeatherIcons({ weatherIcon }) {
+function WeatherIcons({ weatherIcon, classes }) {
   switch (weatherIcon) {
     case "01d":
-      return <WiDaySunny />;
+      return <WiDaySunny className={classes} />;
     case "01n":
-      return <WiNightClear />;
+      return <WiNightClear className={classes} />;
     case "02d":
-      return <WiDayCloudy />;
+      return <WiDayCloudy className={classes} />;
     case "02n":
-      return <WiNightAltCloudy />;
+      return <WiNightAltCloudy className={classes} />;
     case "03d":
-      return <WiDayCloudy />;
+      return <WiDayCloudy className={classes} />;
     case "03n":
-      return <WiNightCloudy />;
+      return <WiNightCloudy className={classes} />;
     case "04d":
-      return <WiCloudy />;
+      return <WiCloudy className={classes} />;
     case "04n":
-      return <WiCloudy />;
+      return <WiCloudy className={classes} />;
     case "09d":
-      return <WiDayShowers />;
+      return <WiDayShowers className={classes} />;
     case "09n":
-      return <WiNightAltShowers />;
+      return <WiNightAltShowers className={classes} />;
     case "10d":
-      return <WiDayRain />;
+      return <WiDayRain className={classes} />;
     case "10n":
-      return <WiNightShowers />;
+      return <WiNightShowers className={classes} />;
     case "11d":
-      return <WiThunderstorm />;
+      return <WiThunderstorm className={classes} />;
     case "11n":
-      return <WiThunderstorm />;
+      return <WiThunderstorm className={classes} />;
     case "13d":
-      return <WiSnow />;
+      return <WiSnow className={classes} />;
     case "13n":
-      return <WiSnow />;
+      return <WiSnow className={classes} />;
     case "50d":
-      return <WiFog />;
+      return <WiFog className={classes} />;
     case "50n":
-      return <WiFog />;
+      return <WiFog className={classes} />;
     default:
-      return <WiNa />;
+      return <WiNa className={classes} />;
   }
 }
 

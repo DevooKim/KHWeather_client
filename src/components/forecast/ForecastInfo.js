@@ -1,41 +1,75 @@
 import React from "react";
-import StateText from "./StateText";
-import { IconContext } from "react-icons";
+import stateText from "./stateText";
 import WeatherIcons from "../weathers/WeatherIcons";
 import WeatherCondition from "../weathers/WeatherCondition";
 import getDate from "../../utils/getDate";
+import { Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  chartHeader: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      marginTop: theme.spacing(4),
+    },
+  },
+  currentState: {
+    fontSize: "1.8rem",
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "2.5rem",
+    },
+  },
+  chartHeaderMiddle: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "2rem",
+  },
+  chartHeaderBottom: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1rem",
+  },
+}));
 
 function ForecastInfo({ forecasts, theme }) {
+  const classes = useStyles();
   const { yesterdays, todays, current } = forecasts;
   const currentHour = getDate(current.dt, "HOURS");
   const rain = current.rain ? current.rain["1h"] + "mm" : null;
   const snow = current.snow ? current.snow["1h"] + "mm" : null;
   return (
     <div>
-      <div className="chart__header">
-        <StateText
-          hour={currentHour}
-          yesterdayTemps={yesterdays.temp}
-          todayTemps={todays.temp}
-        />
-        <div className="chart__headerMiddle">
-          <IconContext.Provider
-            value={{ size: "7rem", color: theme.colors.icon }}
-          >
-            <WeatherIcons weatherIcon={current.weather[0].icon} />
-          </IconContext.Provider>
-          <p>{current.temp}℃</p>
-        </div>
-        <div className="chart__headerBottom">
+      <Box className={classes.chartHeader}>
+        <Box className={classes.currentState}>
+          {stateText(currentHour, {
+            yesterdayTemps: yesterdays.temp,
+            todayTemps: todays.temp,
+          })}
+        </Box>
+        <Box className={classes.chartHeaderMiddle}>
+          <WeatherIcons
+            weatherIcon={current.weather[0].icon}
+            classes="forecastIcon"
+          />
+          <Box>{current.temp}℃</Box>
+        </Box>
+        <Box className={classes.chartHeaderBottom}>
           <WeatherCondition
             condition={current.weather[0]}
             rain={rain}
             snow={snow}
           />
-          <p>체감온도 {current.feels_like}℃</p>
-        </div>
-      </div>
+          <p style={{ padding: "10px" }}>체감온도 {current.feels_like}℃</p>
+        </Box>
+      </Box>
     </div>
+    // </div>
   );
 }
 

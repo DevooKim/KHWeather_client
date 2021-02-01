@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import Header from "./components/header/HeaderMaterial";
+import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
@@ -9,6 +9,20 @@ import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
 import { light, dark } from "./Theme.js";
 import { useTheme } from "./hooks/useTheme";
+import { Box, Container } from "@material-ui/core";
+import { borders } from "@material-ui/system";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  address: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      justifyContent: "space-between",
+    },
+  },
+}));
 
 const initialState = {
   input: "",
@@ -20,6 +34,7 @@ function App() {
   const [themeMode, toggleTheme] = useTheme();
   const theme = themeMode === "light" ? light : dark;
   const [state, setState] = useState(initialState);
+  const classes = useStyles();
 
   const onChange = useCallback(async (e) => {
     console.log(e.target);
@@ -73,13 +88,13 @@ function App() {
           onClick={onClick}
           address={state.address}
         />
-        <ContentStyled>
-          <div className="address">
-            <p>{state.region}</p>
-          </div>
+        <Container maxWidth={"md"}>
+          <Box className={classes.address} borderBottom={1}>
+            {state.region}
+          </Box>
           <Forecast geo={state.geo} theme={theme} />
           <Daily geo={state.geo} theme={theme} />
-        </ContentStyled>
+        </Container>
         <Footer></Footer>
       </GlobalStyled>
     </ThemeProvider>
@@ -89,16 +104,6 @@ function App() {
 const GlobalStyled = styled.div`
   background-color: ${(props) => props.theme.colors.bgColor};
   color: ${(props) => props.theme.colors.color};
-`;
-
-const ContentStyled = styled.div`
-  width: 50%;
-  margin: 0 auto;
-`;
-
-const Button = styled.button`
-  border-radius: 0;
-  font-size: 1rem;
 `;
 
 export default App;

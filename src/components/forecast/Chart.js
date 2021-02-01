@@ -7,7 +7,8 @@ import getDate from "../../utils/getDate";
 import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
-import { SportsRugbySharp } from "@material-ui/icons";
+import { Box, Container, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 let globalTheme = undefined;
 
@@ -248,9 +249,23 @@ const setOptions = (labeles) => {
   };
 };
 
-// function Chart({ yesterdays, todays, tomorrows, lastUpdate }) {
+const useStyles = makeStyles((theme) => ({
+  chartWrapper: {
+    position: "relative",
+    overflowX: "auto",
+    overflowY: "hidden",
+    backgroundColor: "#f5f5f5",
+  },
+  lastUpdate: {
+    marginLeft: theme.spacing(3),
+    fontSize: "0.8rem",
+    fontWeight: 700,
+  },
+}));
+
 function Chart({ forecasts, theme }) {
   globalTheme = theme;
+  const classes = useStyles();
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
   const hour = getDate(lastUpdate, "HOURS");
   const min = getDate(lastUpdate, "MINUTES");
@@ -267,16 +282,15 @@ function Chart({ forecasts, theme }) {
   const options = setOptions(labelsOption);
   return (
     <>
-      {/* <div className="chartWrapper"> */}
-      <ChartWrapper className="chartWrapper">
-        <span>
+      {/* <ChartWrapper className="chartWrapper"> */}
+      <Paper className={classes.chartWrapper} elevation={2}>
+        <Box className={classes.lastUpdate} component="span">
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,
             "MINUTES"
           )}분`}
-        </span>
+        </Box>
         <div className="chartAreaWrapper">
-          {/* <div className="chartIcons"> */}
           <ChartIcons className="chartIcons">
             <IconContext.Provider
               value={{ size: "2.5rem", color: globalTheme.colors.icon }}
@@ -295,7 +309,7 @@ function Chart({ forecasts, theme }) {
           </ChartIcons>
           <Line data={data} options={options} key={lastUpdate} />
         </div>
-      </ChartWrapper>
+      </Paper>
     </>
   );
 }
