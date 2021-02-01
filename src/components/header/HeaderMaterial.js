@@ -14,24 +14,20 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "lightblue",
   },
   title: {
-    // display: "block",
     flexGrow: 1,
     textAlign: "center",
-    // [theme.breakpoints.up("sm")]: {
-    // display: "block",
-    // },
+    [theme.breakpoints.up("lg")]: {
+      display: "block",
+    },
   },
   search: {
     position: "relative",
-    flex: 1,
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     width: "100%",
-    // margin: "auto",
-    marginRight: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
       position: "absolute",
       right: theme.spacing(4),
@@ -53,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -77,6 +72,8 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     marginRight: theme.spacing(2),
     display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     [theme.breakpoints.up("sm")]: {
       display: "none",
     },
@@ -101,20 +98,23 @@ const OverlayResultStyled = styled.div`
   z-index: 100;
 `;
 
+const initailState = {
+  title: { display: "block" },
+  icon: { display: "block" },
+  searchBar: { display: "none" },
+};
 export default function SearchAppBar({ input, onChange, onClick, address }) {
   const classes = useStyles();
-  const inputRef = useRef();
   const [mobileSearch, setMobileSearch] = useState(false);
-  const [overlayDisplay, setOverlay] = useState({ display: "none" });
+  const [overlay, setOverlay] = useState({ display: "none" });
+  const inputRef = useRef();
 
   const searchHide = mobileSearch ? { display: "none" } : { display: "block" };
   const searchShow = mobileSearch ? { display: "block" } : { display: "none" };
 
   const handleMobileSearch = useCallback(() => {
     setMobileSearch(true);
-    // inputRef.current.focus();
   }, []);
-
   return (
     <>
       <div className={classes.root}>
@@ -144,7 +144,7 @@ export default function SearchAppBar({ input, onChange, onClick, address }) {
                 inputRef={inputRef}
               />
 
-              <OverlayStyled style={overlayDisplay}>
+              <OverlayStyled style={overlay}>
                 {address.map((v, index) => (
                   <OverlayResultStyled
                     key={index}
@@ -166,33 +166,61 @@ export default function SearchAppBar({ input, onChange, onClick, address }) {
             </div>
           </div>
 
-          {/* <div className={classes.sectionMobile}>
+          <div className={classes.sectionMobile}>
             <IconButton
               color={"inherit"}
-              // onClick={() => setMobileSearch(true)}
-              onClick={() => handleMobileSearch}
+              onMouseUp={() => handleMobileSearch()}
+              onClick={() => inputRef.current.focus()}
               style={searchHide}
             >
               <SearchIcon />
             </IconButton>
-            <div className={classes.search} style={searchShow}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="주소 입력"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-                onBlur={() => setMobileSearch(false)}
-                inputRef={() => inputRef}
-                onChange={() => onChange}
-                value={input}
-              />
+          </div>
+
+          <div className={classes.search} style={searchShow}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
             </div>
-          </div> */}
+
+            <InputBase
+              placeholder="주소 입력"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+              onBlur={() => {
+                setOverlay({ display: "none" });
+                setMobileSearch(false);
+              }}
+              onFocus={() => setOverlay({})}
+              onChange={(e) => {
+                onChange(e);
+              }}
+              value={input}
+              inputRef={inputRef}
+            />
+
+            <OverlayStyled style={overlay}>
+              {address.map((v, index) => (
+                <OverlayResultStyled
+                  key={index}
+                  onMouseDown={() => {
+                    onClick({
+                      address_name: v.address_name,
+                      coordinate: {
+                        lat: v.y,
+                        lon: v.x,
+                      },
+                    });
+                  }}
+                  value={v}
+                >
+                  {v.address_name}
+                </OverlayResultStyled>
+              ))}
+            </OverlayStyled>
+          </div>
         </Toolbar>
         {/* </AppBar> */}
       </div>

@@ -22,6 +22,7 @@ function App() {
   const [state, setState] = useState(initialState);
 
   const onChange = useCallback(async (e) => {
+    console.log(e.target);
     try {
       setState((prev) => ({
         ...prev,
@@ -53,7 +54,6 @@ function App() {
 
   const onClick = useCallback((value) => {
     const { address_name, coordinate } = value;
-    console.log(value);
     if (coordinate.lat !== undefined && coordinate.lon !== undefined) {
       setState((prev) => ({
         ...prev,
