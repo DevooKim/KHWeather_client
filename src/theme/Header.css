@@ -1,12 +1,25 @@
 .Header {
   height: 5rem;
-  position: relative;
   background-color: #aebfbe;
 }
-.Header > h1 {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+.Header__content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.Header__content > p {
+  font-size: 3rem;
+  /* margin-right: 200px; */
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.Header__content > button {
+  width: 100px;
+  flex: 1;
 }

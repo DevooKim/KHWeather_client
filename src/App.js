@@ -66,10 +66,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyled>
-        <Header />
-
-        <button onClick={toggleTheme}>다크모드</button>
-        <div style={{ width: "50%", margin: "0 auto" }}>
+        <Header>
+          <Button onClick={toggleTheme}>다크모드</Button>
+        </Header>
+        <ContentStyled>
           <div className="address">
             <p>{region}</p>
             <Address
@@ -83,7 +83,7 @@ function App() {
           </div>
           <Forecast geo={geo} theme={theme} />
           <Daily geo={geo} theme={theme} />
-        </div>
+        </ContentStyled>
         <Footer></Footer>
       </GlobalStyled>
     </ThemeProvider>
@@ -93,6 +93,16 @@ function App() {
 const GlobalStyled = styled.div`
   background-color: ${(props) => props.theme.colors.bgColor};
   color: ${(props) => props.theme.colors.color};
+`;
+
+const ContentStyled = styled.div`
+  width: 50%;
+  margin: 0 auto;
+`;
+
+const Button = styled.button`
+  border-radius: 0;
+  font-size: 1rem;
 `;
 
 export default App;

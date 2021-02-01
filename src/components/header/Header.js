@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import "../../theme/Header.css";
 
-function Header() {
+function Header(props) {
   return (
     // <div className="Header">
     <HeaderStyled className="Header">
-      <h1>KHWeather</h1>
-      {/* </div> */}
+      <div className="Header__content">
+        <p>KHWeather</p>
+        {props.children}
+      </div>
     </HeaderStyled>
   );
 }
