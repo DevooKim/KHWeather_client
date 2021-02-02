@@ -1,27 +1,26 @@
-import React from "react";
 import WeatherID from "./WeatherID";
 
 function WeatherCondition({ condition, rain, snow }) {
   switch (condition.main) {
     case "Thunderstorm":
-      return <p>뇌우</p>;
+      return "뇌우";
     case "Drizzle":
-      return <p>이슬비</p>;
+      return "이슬비";
     case "Rain":
-      return (
-        <p>
-          {WeatherID(condition.id)} {rain}
-        </p>
-      );
+      if (rain) {
+        return `${WeatherID(condition.id)} ${rain}`;
+      } else {
+        return `${WeatherID(condition.id)}`;
+      }
     case "Snow":
-      return <p>눈</p>;
+      return "눈";
     case "Clear":
-      return <p>맑음</p>;
+      return "맑음";
     case "Clouds":
-      return <p>흐림</p>;
+      return "흐림";
 
     default:
-      return <p>{WeatherID(condition.id)}</p>;
+      return `${WeatherID(condition.id)}`;
   }
 }
 

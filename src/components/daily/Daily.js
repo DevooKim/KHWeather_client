@@ -4,8 +4,27 @@ import useAsync from "../../hooks/useAsync";
 import DayInfo from "./DayInfo";
 import getForecasts from "../../utils/getForecasts";
 import "../../theme/Daily.css";
+import { Box, Container, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+import DayTest from "./DayTest";
+
+const useStyles = makeStyles((theme) => ({
+  daily: {
+    marginTop: theme.spacing(10),
+    paddingBottom: theme.spacing(3),
+  },
+  dailyTitle: {
+    textAlign: "center",
+    fontSize: "2rem",
+    fontWeight: 800,
+    padding: 5,
+    marginBottom: theme.spacing(3),
+  },
+}));
 
 function Daily({ geo, theme }) {
+  const classes = useStyles();
   // const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
   const { loading, data, error } = state;
@@ -17,13 +36,16 @@ function Daily({ geo, theme }) {
   const { daily } = data;
 
   return (
-    <div className="daily">
+    <Paper className={classes.daily} elevation={3}>
       {/* <div className="daily__title">주간 날씨</div> */}
-      <DailyTitle className="daily__title">주간 날씨</DailyTitle>
-      {daily.map((day) => (
+      <DailyTitle className={classes.dailyTitle}>주간 날씨</DailyTitle>
+      {/* {daily.map((day) => (
         <DayInfo days={day} key={day.dt} theme={theme} />
+      ))} */}
+      {daily.map((day) => (
+        <DayTest days={day} key={day.dt} />
       ))}
-    </div>
+    </Paper>
   );
 }
 
