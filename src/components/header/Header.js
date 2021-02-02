@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "white",
     top: "100%",
+    zIndex: 100,
   },
   overlayResult: {
     position: "relitive",
@@ -93,7 +94,6 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     // borderBottom: 1px solid black;
     fontWeight: "700",
-    zIndex: 100,
   },
 }));
 

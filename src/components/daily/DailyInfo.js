@@ -123,7 +123,7 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export default function DayTest({ days }) {
+export default function DailyInfo({ days }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 

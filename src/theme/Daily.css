@@ -1,14 +1,10 @@
-.daily__title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 800;
-  /* background-color: #e8e3bc; */
-  padding: 5px;
+.dailyIcon {
+  width: 2.5rem;
+  height: 2.5rem;
 }
-
-.daily {
-  margin-top: 2rem;
-  /* border-style: solid;
-  border-image: linear-gradient(to right, #01c9ca 0%, #3886ff 100%);
-  border-image-slice: 1; */
+@media screen and (max-width: 768px) {
+  .dailyIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 }

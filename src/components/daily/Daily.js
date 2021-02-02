@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import useAsync from "../../hooks/useAsync";
-import DayInfo from "./DayInfo";
+import DailyInfo from "./DailyInfo";
 import getForecasts from "../../utils/getForecasts";
 import "../../theme/Daily.css";
 import { Box, Container, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import DayTest from "./DayTest";
 
 const useStyles = makeStyles((theme) => ({
   daily: {
@@ -39,11 +37,8 @@ function Daily({ geo, theme }) {
     <Paper className={classes.daily} elevation={3}>
       {/* <div className="daily__title">주간 날씨</div> */}
       <DailyTitle className={classes.dailyTitle}>주간 날씨</DailyTitle>
-      {/* {daily.map((day) => (
-        <DayInfo days={day} key={day.dt} theme={theme} />
-      ))} */}
       {daily.map((day) => (
-        <DayTest days={day} key={day.dt} />
+        <DailyInfo days={day} key={day.dt} />
       ))}
     </Paper>
   );
