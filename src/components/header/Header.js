@@ -7,29 +7,40 @@ import {
   Box,
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+import { Search, Brightness7, Brightness4 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 0,
     backgroundColor: theme.colors.header.bg,
     // backgroundColor: theme.header.background,
   },
+  darkMode: {
+    color: theme.palette.common.white,
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: 0.3,
+      display: "flex",
+      flexDirection: "row-reverse",
+      alignItems: "center",
+    },
+  },
   title: {
-    flexGrow: 1,
+    flexGrow: 0.5,
     textAlign: "center",
     [theme.breakpoints.up("sm")]: {
       display: "block",
+      flexGrow: 0.4,
     },
   },
   search: {
     position: "relative",
+    width: "80%",
+    marginLeft: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.5),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.75),
     },
-    width: "100%",
     [theme.breakpoints.up("sm")]: {
       position: "absolute",
       right: theme.spacing(4),
@@ -98,7 +109,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({ input, onChange, onClick, address }) {
+export default function SearchAppBar({
+  input,
+  onChange,
+  onClick,
+  address,
+  darkMode,
+  setDarkMode,
+}) {
   const classes = useStyles();
   const [mobileSearch, setMobileSearch] = useState(false);
   const [overlay, setOverlay] = useState({ display: "none" });
@@ -115,13 +133,18 @@ export default function SearchAppBar({ input, onChange, onClick, address }) {
       <div className={classes.root}>
         {/* <AppBar position="static"> */}
         <Toolbar>
+          <div className={classes.darkMode}>
+            <IconButton onClick={() => setDarkMode()} color="inherit">
+              {darkMode ? <Brightness7 /> : <Brightness4 />}
+            </IconButton>
+          </div>
           <Typography className={classes.title} variant="h4" style={searchHide}>
             KHWeather
           </Typography>
           <div className={classes.sectionDesktop}>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon />
+                <Search />
               </div>
               <InputBase
                 placeholder="주소 입력"
@@ -170,13 +193,13 @@ export default function SearchAppBar({ input, onChange, onClick, address }) {
               onClick={() => inputRef.current.focus()}
               style={searchHide}
             >
-              <SearchIcon />
+              <Search />
             </IconButton>
           </div>
 
           <div className={classes.search} style={searchShow}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <Search />
             </div>
 
             <InputBase

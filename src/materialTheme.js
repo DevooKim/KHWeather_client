@@ -33,7 +33,7 @@ export const themeLight = {
     },
   },
   colors: {
-    header: { bg: teal[100] },
+    header: { bg: teal[300] },
     daily: {
       title: amber[200],
       wind: lightBlue[500],
@@ -41,6 +41,7 @@ export const themeLight = {
       min: blue[500],
       border: "0px",
       icon: "inherit",
+      accordianBg: "rgba(255, 255, 255, 0.8)",
     },
   },
 };
@@ -57,11 +58,12 @@ export const themeDark = {
     header: { bg: blueGrey[700] },
     daily: {
       title: teal[800],
-      wind: lightBlue[500],
+      wind: lightBlue[100],
       max: red[800],
-      min: blue[500],
+      min: blue[900],
       border: `2px solid ${grey[50]}`,
       icon: grey[200],
+      accordianBg: "rgba(255, 255, 255, 0.3)",
     },
   },
 };

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(10),
     paddingBottom: theme.spacing(3),
     border: theme.colors.daily.border,
-    background: "rgba(255,255,255,0.125)",
+    background: "rgba(245,245,245,0.125)",
   },
   dailyTitle: {
     textAlign: "center",

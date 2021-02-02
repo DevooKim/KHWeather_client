@@ -83,6 +83,10 @@ function App() {
     [darkMode]
   );
 
+  const changeDarkMode = () => {
+    setDarkMode((prev) => !prev);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -91,14 +95,10 @@ function App() {
         onChange={onChange}
         onClick={onClick}
         address={state.address}
+        darkMode={darkMode}
+        setDarkMode={changeDarkMode}
       />
-      <button
-        onClick={() => {
-          setDarkMode((prev) => !prev);
-        }}
-      >
-        {darkMode ? "라이트모드" : "다크모드"}
-      </button>
+
       <Container maxWidth={"md"}>
         <Box className={classes.address} borderBottom={1}>
           <p>{state.region}</p>
