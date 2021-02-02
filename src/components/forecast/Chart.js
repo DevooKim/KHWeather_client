@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
-import "../../theme/Chart.css";
 import getDate from "../../utils/getDate";
 import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
@@ -261,6 +260,23 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.8rem",
     fontWeight: 700,
   },
+  chartAreaWrapper: {
+    position: "relative",
+    width: "1300px",
+    height: "350px",
+  },
+  chartIcons: {
+    display: "flex",
+    position: "absolute",
+    justifyContent: "space-between",
+    top: "40px",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "min-content",
+    paddingTop: "20px",
+    paddingLeft: "16px",
+  },
 }));
 
 function Chart({ forecasts, theme }) {
@@ -290,8 +306,8 @@ function Chart({ forecasts, theme }) {
             "MINUTES"
           )}분`}
         </Box>
-        <div className="chartAreaWrapper">
-          <ChartIcons className="chartIcons">
+        <Box className={classes.chartAreaWrapper}>
+          <ChartIcons className={classes.chartIcons}>
             <IconContext.Provider
               value={{ size: "2.5rem", color: globalTheme.colors.icon }}
             >
@@ -308,7 +324,7 @@ function Chart({ forecasts, theme }) {
             {/* </div> */}
           </ChartIcons>
           <Line data={data} options={options} key={lastUpdate} />
-        </div>
+        </Box>
       </Paper>
     </>
   );

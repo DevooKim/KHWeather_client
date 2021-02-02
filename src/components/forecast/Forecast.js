@@ -3,7 +3,6 @@ import Chart from "./Chart";
 import useAsync from "../../hooks/useAsync";
 import getForecasts from "../../utils/getForecasts";
 import ForecastInfo from "./ForecastInfo";
-import "../../theme/Forecast.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 function Forecast({ geo, theme }) {

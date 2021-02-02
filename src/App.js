@@ -4,7 +4,6 @@ import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
-// import Address from "./components/forecast/Address";
 import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
 import { light, dark } from "./Theme.js";

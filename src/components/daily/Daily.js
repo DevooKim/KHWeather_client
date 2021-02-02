@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import useAsync from "../../hooks/useAsync";
 import DailyInfo from "./DailyInfo";
 import getForecasts from "../../utils/getForecasts";
-import "../../theme/Daily.css";
-import { Box, Container, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,9 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Daily({ geo, theme }) {
+function Daily({ geo }) {
   const classes = useStyles();
-  // const [geo, setGeo] = useState({ lat: 36.354687, lon: 127.420997 });
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
   const { loading, data, error } = state;
 
@@ -35,17 +32,12 @@ function Daily({ geo, theme }) {
 
   return (
     <Paper className={classes.daily} elevation={3}>
-      {/* <div className="daily__title">주간 날씨</div> */}
-      <DailyTitle className={classes.dailyTitle}>주간 날씨</DailyTitle>
+      <div className={classes.dailyTitle}>주간 날씨</div>
       {daily.map((day) => (
         <DailyInfo days={day} key={day.dt} />
       ))}
     </Paper>
   );
 }
-
-const DailyTitle = styled.div`
-  background-color: ${(props) => props.theme.dailyColor.title};
-`;
 
 export default Daily;
