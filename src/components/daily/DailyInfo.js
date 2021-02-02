@@ -150,39 +150,41 @@ export default function DailyInfo({ days }) {
               <Box className={classes.day}>{getDate(days.dt, "MOBILE")}</Box>
             </div>
             <Box className={classes.iconBox}>
+              <WeatherIcons
+                weatherIcon={days.weather[0].icon}
+                classes={"dailyIcon"}
+              />
               <div className={classes.sectionDesktop}>
-                <WeatherIcons
-                  weatherIcon={days.weather[0].icon}
-                  classes={"dailyIcon"}
-                />
+                <Box className={classes.state}>
+                  <p>
+                    <WeatherCondition
+                      className={classes.state}
+                      condition={days.weather[0]}
+                    />
+                  </p>
+                </Box>
               </div>
-              {/* <Box className={classes.state}> */}
-              <Box className={classes.state}>
-                <WeatherCondition
-                  className={classes.state}
-                  condition={days.weather[0]}
-                />
-              </Box>
-              {/* </Box> */}
             </Box>
             <Box className={classes.windBox}>
               <div className={classes.sectionDesktop}>
                 <WiStrongWind className={"dailyIcon"} />
               </div>
 
-              <Box>{days.wind_speed}m/s</Box>
+              <div className={classes.sectionDesktop}>
+                <Box>{days.wind_speed}m/s</Box>
+              </div>
+
+              <div className={classes.sectionMobile}>
+                <Box style={{ marginLeft: "1.5rem" }}>{days.wind_speed}m/s</Box>
+              </div>
             </Box>
             <Box className={classes.tempBox}>
               <div className={classes.sectionDesktop}>
                 <WiThermometer className={"dailyIcon"} />
               </div>
               <Box className={classes.temps}>
-                <Typography className={classes.temp}>
-                  {days.temp.max}
-                </Typography>
-                <Typography className={classes.temp}>
-                  {days.temp.min}
-                </Typography>
+                <p className={classes.temp}>{days.temp.max}</p>
+                <p className={classes.temp}>{days.temp.min}</p>
               </Box>
             </Box>
           </Container>

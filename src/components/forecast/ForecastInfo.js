@@ -60,11 +60,13 @@ function ForecastInfo({ forecasts, theme }) {
           <Box>{current.temp}℃</Box>
         </Box>
         <Box className={classes.chartHeaderBottom}>
-          <WeatherCondition
-            condition={current.weather[0]}
-            rain={rain}
-            snow={snow}
-          />
+          <p>
+            <WeatherCondition
+              condition={current.weather[0]}
+              rain={rain}
+              snow={snow}
+            />
+          </p>
           <p style={{ padding: "10px" }}>체감온도 {current.feels_like}℃</p>
         </Box>
       </Box>

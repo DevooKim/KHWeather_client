@@ -5,12 +5,13 @@ import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
 import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
-import { light, dark } from "./Theme.js";
 import { useTheme } from "./hooks/useTheme";
 import { Box, Container } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { borders } from "@material-ui/system";
 import { makeStyles } from "@material-ui/core/styles";
+import { theme } from "./materialTheme";
+import { CssBaseline } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   address: {
@@ -31,7 +32,6 @@ const initialState = {
 };
 function App() {
   const [themeMode, toggleTheme] = useTheme();
-  const theme = themeMode === "light" ? light : dark;
   const [state, setState] = useState(initialState);
   const classes = useStyles();
 
@@ -78,9 +78,40 @@ function App() {
     }
   }, []);
 
+  const [darkMode, setDarkMode] = useState(false);
+
+  const dartTest = () => {
+    setDarkMode((prev) => !prev);
+  };
+
+  // const theme = React.useMemo(
+  //   () =>
+  //     createMuiTheme({
+  //       overrides: {
+  //         MuiCssBaseline: {
+  //           "@global": {
+  //             html: {
+  //               WebkitFontSmoothing: "auto",
+  //             },
+  //             p: {
+  //               fontWeight: 700,
+  //             },
+  //           },
+  //         },
+  //       },
+  //       palette: {
+  //         type: darkMode ? "dark" : "light",
+  //         test: {
+  //           main: "pink",
+  //         },
+  //       },
+  //     }),
+  //   [darkMode]
+  // );
+
   return (
-    // <ThemeProvider theme={theme}>
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Header
         input={state.input}
         onChange={onChange}
@@ -89,11 +120,12 @@ function App() {
       />
       <Container maxWidth={"md"}>
         <Box className={classes.address} borderBottom={1}>
-          {state.region}
+          <p>{state.region}</p>
         </Box>
         <Forecast geo={state.geo} />
         <Daily geo={state.geo} />
       </Container>
+      <button onClick={dartTest}>다크모드</button>
       <Footer></Footer>
     </ThemeProvider>
   );
