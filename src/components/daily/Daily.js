@@ -9,6 +9,8 @@ const useStyles = makeStyles((theme) => ({
   daily: {
     marginTop: theme.spacing(10),
     paddingBottom: theme.spacing(3),
+    border: theme.colors.daily.border,
+    background: "rgba(255,255,255,0.125)",
   },
   dailyTitle: {
     textAlign: "center",
@@ -16,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 800,
     padding: 5,
     marginBottom: theme.spacing(3),
+    background: theme.colors.daily.title,
   },
 }));
 
@@ -31,7 +34,7 @@ function Daily({ geo }) {
   const { daily } = data;
 
   return (
-    <Paper className={classes.daily} elevation={3}>
+    <Paper className={classes.daily} elevation={5}>
       <div className={classes.dailyTitle}>주간 날씨</div>
       {daily.map((day) => (
         <DailyInfo days={day} key={day.dt} />

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
@@ -8,9 +8,8 @@ import "./theme/App.css";
 import { useTheme } from "./hooks/useTheme";
 import { Box, Container } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { borders } from "@material-ui/system";
 import { makeStyles } from "@material-ui/core/styles";
-import { theme } from "./materialTheme";
+import { themeLight, themeDark } from "./materialTheme";
 import { CssBaseline } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +29,9 @@ const initialState = {
   geo: { lat: 36.354687, lon: 127.420997 },
   address: [{ address_name: "" }],
 };
+
 function App() {
-  const [themeMode, toggleTheme] = useTheme();
+  const [darkMode, setDarkMode] = useState(false);
   const [state, setState] = useState(initialState);
   const classes = useStyles();
 
@@ -78,36 +78,10 @@ function App() {
     }
   }, []);
 
-  const [darkMode, setDarkMode] = useState(false);
-
-  const dartTest = () => {
-    setDarkMode((prev) => !prev);
-  };
-
-  // const theme = React.useMemo(
-  //   () =>
-  //     createMuiTheme({
-  //       overrides: {
-  //         MuiCssBaseline: {
-  //           "@global": {
-  //             html: {
-  //               WebkitFontSmoothing: "auto",
-  //             },
-  //             p: {
-  //               fontWeight: 700,
-  //             },
-  //           },
-  //         },
-  //       },
-  //       palette: {
-  //         type: darkMode ? "dark" : "light",
-  //         test: {
-  //           main: "pink",
-  //         },
-  //       },
-  //     }),
-  //   [darkMode]
-  // );
+  const theme = useMemo(
+    () => createMuiTheme(darkMode ? themeDark : themeLight),
+    [darkMode]
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -118,6 +92,13 @@ function App() {
         onClick={onClick}
         address={state.address}
       />
+      <button
+        onClick={() => {
+          setDarkMode((prev) => !prev);
+        }}
+      >
+        {darkMode ? "라이트모드" : "다크모드"}
+      </button>
       <Container maxWidth={"md"}>
         <Box className={classes.address} borderBottom={1}>
           <p>{state.region}</p>
@@ -125,7 +106,7 @@ function App() {
         <Forecast geo={state.geo} />
         <Daily geo={state.geo} />
       </Container>
-      <button onClick={dartTest}>다크모드</button>
+
       <Footer></Footer>
     </ThemeProvider>
   );

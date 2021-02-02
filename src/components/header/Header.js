@@ -12,8 +12,8 @@ import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // backgroundColor: "lightblue",
-    backgroundColor: theme.palette.test.header,
+    backgroundColor: theme.colors.header.bg,
+    // backgroundColor: theme.header.background,
   },
   title: {
     flexGrow: 1,

@@ -284,7 +284,7 @@ function Chart({ forecasts }) {
   return (
     <>
       {/* <ChartWrapper className="chartWrapper"> */}
-      <Paper className={classes.chartWrapper} elevation={2}>
+      <Paper className={classes.chartWrapper} elevation={5}>
         <Box className={classes.lastUpdate} component="span">
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,

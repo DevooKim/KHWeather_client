@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  wind: {
+    color: theme.colors.daily.wind,
+  },
   tempBox: {
     display: "flex",
     flexDirection: "row",
@@ -59,6 +62,15 @@ const useStyles = makeStyles((theme) => ({
   temp: {
     width: "1.5rem",
     marginLeft: "1rem",
+  },
+  max: {
+    color: theme.colors.daily.max,
+  },
+  min: {
+    color: theme.colors.daily.min,
+  },
+  icon: {
+    color: theme.colors.daily.icon,
   },
   sectionDesktop: {
     display: "none",
@@ -150,10 +162,12 @@ export default function DailyInfo({ days }) {
               <Box className={classes.day}>{getDate(days.dt, "MOBILE")}</Box>
             </div>
             <Box className={classes.iconBox}>
-              <WeatherIcons
-                weatherIcon={days.weather[0].icon}
-                classes={"dailyIcon"}
-              />
+              <div className={classes.icon}>
+                <WeatherIcons
+                  weatherIcon={days.weather[0].icon}
+                  classes={"dailyIcon"}
+                />
+              </div>
               <div className={classes.sectionDesktop}>
                 <Box className={classes.state}>
                   <p>
@@ -167,11 +181,13 @@ export default function DailyInfo({ days }) {
             </Box>
             <Box className={classes.windBox}>
               <div className={classes.sectionDesktop}>
-                <WiStrongWind className={"dailyIcon"} />
+                <div className={classes.icon}>
+                  <WiStrongWind className={"dailyIcon"} />
+                </div>
               </div>
 
               <div className={classes.sectionDesktop}>
-                <Box>{days.wind_speed}m/s</Box>
+                <Box className={classes.wind}>{days.wind_speed}m/s</Box>
               </div>
 
               <div className={classes.sectionMobile}>
@@ -180,11 +196,17 @@ export default function DailyInfo({ days }) {
             </Box>
             <Box className={classes.tempBox}>
               <div className={classes.sectionDesktop}>
-                <WiThermometer className={"dailyIcon"} />
+                <div className={classes.icon}>
+                  <WiThermometer className={"dailyIcon"} />
+                </div>
               </div>
               <Box className={classes.temps}>
-                <p className={classes.temp}>{days.temp.max}</p>
-                <p className={classes.temp}>{days.temp.min}</p>
+                <p className={`${classes.temp} ${classes.max}`}>
+                  {days.temp.max}
+                </p>
+                <p className={`${classes.temp} ${classes.min}`}>
+                  {days.temp.min}
+                </p>
               </Box>
             </Box>
           </Container>
