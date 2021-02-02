@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
 import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
@@ -9,6 +8,7 @@ import "./theme/App.css";
 import { light, dark } from "./Theme.js";
 import { useTheme } from "./hooks/useTheme";
 import { Box, Container } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { borders } from "@material-ui/system";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -79,30 +79,24 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyled>
-        <Header
-          input={state.input}
-          onChange={onChange}
-          onClick={onClick}
-          address={state.address}
-        />
-        <Container maxWidth={"md"}>
-          <Box className={classes.address} borderBottom={1}>
-            {state.region}
-          </Box>
-          <Forecast geo={state.geo} theme={theme} />
-          <Daily geo={state.geo} theme={theme} />
-        </Container>
-        <Footer></Footer>
-      </GlobalStyled>
+    // <ThemeProvider theme={theme}>
+    <ThemeProvider>
+      <Header
+        input={state.input}
+        onChange={onChange}
+        onClick={onClick}
+        address={state.address}
+      />
+      <Container maxWidth={"md"}>
+        <Box className={classes.address} borderBottom={1}>
+          {state.region}
+        </Box>
+        <Forecast geo={state.geo} />
+        <Daily geo={state.geo} />
+      </Container>
+      <Footer></Footer>
     </ThemeProvider>
   );
 }
-
-const GlobalStyled = styled.div`
-  background-color: ${(props) => props.theme.colors.bgColor};
-  color: ${(props) => props.theme.colors.color};
-`;
 
 export default App;

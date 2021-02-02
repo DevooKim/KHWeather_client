@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import getDate from "../../utils/getDate";
@@ -8,23 +7,9 @@ import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
 import { Box, Container, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { light } from "../../Theme";
 
-let globalTheme = undefined;
-
-const ChartWrapper = styled.div`
-  background-color: ${(props) => props.theme.chartColor.bgColor};
-  border-image: linear-gradient(
-    to right,
-    ${(props) => props.theme.chartColor.borderFirst} 0%,
-    ${(props) => props.theme.chartColor.borderSecond} 100%
-  );
-  border-style: solid;
-  border-image-slice: 1;
-`;
-
-const ChartIcons = styled.div`
-  background-color: ${(props) => props.theme.chartColor.bgColor};
-`;
+let globalTheme = light;
 
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
@@ -274,13 +259,13 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     height: "min-content",
-    paddingTop: "20px",
-    paddingLeft: "16px",
+    paddingTop: theme.spacing(3),
+    paddingLeft: theme.spacing(1),
+    backgroundColor: "#f5f5f5",
   },
 }));
 
-function Chart({ forecasts, theme }) {
-  globalTheme = theme;
+function Chart({ forecasts }) {
   const classes = useStyles();
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
   const hour = getDate(lastUpdate, "HOURS");
@@ -307,7 +292,7 @@ function Chart({ forecasts, theme }) {
           )}분`}
         </Box>
         <Box className={classes.chartAreaWrapper}>
-          <ChartIcons className={classes.chartIcons}>
+          <div className={classes.chartIcons}>
             <IconContext.Provider
               value={{ size: "2.5rem", color: globalTheme.colors.icon }}
             >
@@ -322,7 +307,7 @@ function Chart({ forecasts, theme }) {
               ))}
             </IconContext.Provider>
             {/* </div> */}
-          </ChartIcons>
+          </div>
           <Line data={data} options={options} key={lastUpdate} />
         </Box>
       </Paper>
