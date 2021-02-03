@@ -1,112 +1,248 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Zoom from "@material-ui/core/Zoom";
-import Slide from "@material-ui/core/Slide";
-import MenuIcon from "@material-ui/icons/Menu";
+import React, { useCallback, useRef, useState } from "react";
+import {
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Box,
+  Paper,
+} from "@material-ui/core";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import { Search } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "fixed",
-    bottom: theme.spacing(2),
-    // right: theme.spacing(2),
+    flexGrow: 0,
+    backgroundColor: theme.colors.header.bg,
   },
-  menuButton: {
-    marginLeft: theme.spacing(1),
-    float: "right",
-  },
-  toolbar: {
-    minHeight: 128,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
+  darkMode: {
+    color: theme.palette.common.white,
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: 0.3,
+      display: "flex",
+      flexDirection: "row-reverse",
+      alignItems: "center",
+    },
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 0.5,
     textAlign: "center",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+      flexGrow: 0.4,
+    },
+  },
+  search: {
+    position: "relative",
+    width: "80%",
+    marginLeft: theme.spacing(2),
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.5),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.75),
+    },
+    [theme.breakpoints.up("sm")]: {
+      position: "absolute",
+      right: theme.spacing(4),
+      marginLeft: theme.spacing(1),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    color: theme.palette.common.black,
+    fontWeight: 600,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "30ch",
+      "&:focus": {
+        width: "35ch",
+      },
+    },
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  },
+  sectionMobile: {
+    position: "absolute",
+    right: 0,
+    marginRight: theme.spacing(2),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
+  overlay: {
+    position: "absolute",
+    width: "100%",
+    backgroundColor: "white",
+    top: "100%",
+    zIndex: 100,
+  },
+  overlayResult: {
+    position: "relitive",
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    color: "black",
+    // borderBottom: 1px solid black;
+    fontWeight: "700",
   },
 }));
 
-function ScrollTop(props) {
-  const { children, window } = props;
+export default function Header({
+  input,
+  onChange,
+  onClick,
+  address,
+  children,
+}) {
   const classes = useStyles();
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-    disableHysteresis: true,
-    threshold: 100,
-  });
+  const [mobileSearch, setMobileSearch] = useState(false);
+  const [overlay, setOverlay] = useState({ display: "none" });
+  const inputRef = useRef();
 
-  const handleClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
-    );
+  const searchHide = mobileSearch ? { display: "none" } : { display: "block" };
+  const searchShow = mobileSearch ? { display: "block" } : { display: "none" };
 
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
-
+  const handleMobileSearch = useCallback(() => {
+    setMobileSearch(true);
+  }, []);
   return (
-    <Zoom in={trigger}>
-      <div onClick={handleClick} role="presentation" className={classes.root}>
-        {children}
-      </div>
-    </Zoom>
-  );
-}
-
-function HideOnScroll(props) {
-  const { children, window } = props;
-  const trigger = useScrollTrigger({ target: window ? window() : undefined });
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  window: PropTypes.func,
-};
-
-ScrollTop.propTypes = {
-  children: PropTypes.element.isRequired,
-  window: PropTypes.func,
-};
-
-export default function HideAppBar(props) {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <HideOnScroll {...props}>
-        <AppBar>
-          <div style={{ margin: "0 auto" }}>
-            <Toolbar className={classes.Toolbar}>
-              <Typography className={classes.title} variant="h4">
-                KHWeather
-              </Typography>
-              {/* <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-                onClick={() => {
-                  console.log("click");
+    <>
+      <Paper className={classes.root} elevation={3}>
+        {/* <AppBar position="static"> */}
+        <Toolbar>
+          <div className={classes.darkMode}>{children}</div>
+          <Typography className={classes.title} variant="h4" style={searchHide}>
+            KHWeather
+          </Typography>
+          <div className={classes.sectionDesktop}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <Search />
+              </div>
+              <InputBase
+                placeholder="주소 입력"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
                 }}
-              >
-                <MenuIcon />
-              </IconButton> */}
-            </Toolbar>
+                inputProps={{ "aria-label": "search" }}
+                onBlur={() => setOverlay({ display: "none" })}
+                onFocus={() => setOverlay({})}
+                onChange={(e) => {
+                  onChange(e);
+                }}
+                value={input}
+                inputRef={inputRef}
+              />
+
+              <div className={classes.overlay} style={overlay}>
+                {address.map((v, index) => (
+                  <Box
+                    className={classes.overlayResult}
+                    borderBottom={1}
+                    key={index}
+                    onMouseDown={() => {
+                      onClick({
+                        address_name: v.address_name,
+                        coordinate: {
+                          lat: v.y,
+                          lon: v.x,
+                        },
+                      });
+                    }}
+                    value={v}
+                  >
+                    {v.address_name}
+                  </Box>
+                ))}
+              </div>
+            </div>
           </div>
-        </AppBar>
-      </HideOnScroll>
-    </React.Fragment>
+
+          <div className={classes.sectionMobile}>
+            <IconButton
+              color={"inherit"}
+              onMouseUp={() => handleMobileSearch()}
+              onClick={() => inputRef.current.focus()}
+              style={searchHide}
+            >
+              <Search />
+            </IconButton>
+          </div>
+
+          <div className={classes.search} style={searchShow}>
+            <div className={classes.searchIcon}>
+              <Search />
+            </div>
+
+            <InputBase
+              placeholder="주소 입력"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+              onBlur={() => {
+                setOverlay({ display: "none" });
+                setMobileSearch(false);
+              }}
+              onFocus={() => setOverlay({})}
+              onChange={(e) => {
+                onChange(e);
+              }}
+              value={input}
+              inputRef={inputRef}
+            />
+
+            <div className={classes.overlay} style={overlay}>
+              {address.map((v, index) => (
+                <Box
+                  className={classes.overlayResult}
+                  borderBottom={1}
+                  key={index}
+                  onMouseDown={() => {
+                    onClick({
+                      address_name: v.address_name,
+                      coordinate: {
+                        lat: v.y,
+                        lon: v.x,
+                      },
+                    });
+                  }}
+                  value={v}
+                >
+                  {v.address_name}
+                </Box>
+              ))}
+            </div>
+          </div>
+        </Toolbar>
+        {/* </AppBar> */}
+      </Paper>
+    </>
   );
 }

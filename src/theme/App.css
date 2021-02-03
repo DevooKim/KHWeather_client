@@ -1,0 +1,36 @@
+/* ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+} */
+.dailyIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.forecastIcon {
+  width: 7rem;
+  height: 7rem;
+  margin-right: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .dailyIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .forecastIcon {
+    width: 5rem;
+    height: 5rem;
+  }
+}

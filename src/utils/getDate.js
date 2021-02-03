@@ -19,6 +19,16 @@ export default function getDate(day, action) {
       if (day === 5) return "금요일";
       if (day === 6) return "토요일";
       return "error";
+    case "MOBILE":
+      const mDay = date.getDay();
+      if (mDay === 0) return "일";
+      if (mDay === 1) return "월";
+      if (mDay === 2) return "화";
+      if (mDay === 3) return "수";
+      if (mDay === 4) return "목";
+      if (mDay === 5) return "금";
+      if (mDay === 6) return "토";
+      return "error";
 
     default:
       throw new Error`Unhandled ${action}`();
