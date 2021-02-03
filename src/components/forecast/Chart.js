@@ -175,7 +175,8 @@ const setOptions = (labeles) => {
         {
           ticks: {
             autoSkip: false,
-            fontColor: globalTheme.secondaryColor,
+            // fontColor: globalTheme.secondaryColor,
+            fontColor: "black",
             fontSize: 14,
             fontStyle: "bold",
             minRotation: 0,
@@ -231,11 +232,7 @@ const setOptions = (labeles) => {
       mode: "index",
       intersect: false,
     },
-    elements: {
-      line: {
-        fill: false,
-      },
-    },
+
     // responsive: false,
     maintainAspectRatio: false,
     tooltips: { enabled: false },
@@ -248,7 +245,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
     overflowY: "hidden",
     backgroundColor: theme.colors.chart.bg,
-    border: theme.colors.global.border,
+    borderRadius: 8,
   },
   lastUpdate: {
     marginLeft: theme.spacing(3),
@@ -294,8 +291,8 @@ function Chart({ forecasts }) {
   const options = setOptions(labelsOption);
   return (
     <>
-      {/* <Paper className={classes.chartWrapper} elevation={5}> */}
-      <div className={classes.chartWrapper}>
+      <Paper className={classes.chartWrapper} elevation={5}>
+        {/* <div className={classes.chartWrapper}> */}
         <Box className={classes.lastUpdate} component="span">
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,
@@ -317,12 +314,11 @@ function Chart({ forecasts }) {
                 <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
               ))}
             </IconContext.Provider>
-            {/* </div> */}
           </div>
           <Line data={data} options={options} key={lastUpdate} />
         </Box>
-      </div>
-      {/* </Paper> */}
+        {/* </div> */}
+      </Paper>
     </>
   );
 }

@@ -9,35 +9,30 @@ import {
   lightGreen,
 } from "@material-ui/core/colors";
 
-const commons = {
+export const themeLight = {
   overrides: {
     MuiCssBaseline: {
       "@global": {
-        html: {
-          WebkitFontSmoothing: "auto",
-        },
-        p: {
-          fontWeight: 700,
+        "*::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(0,0,0,.2)",
+          borderRadius: 8,
         },
       },
     },
   },
-};
-
-export const themeLight = {
-  ...commons,
   palette: {
     type: "light",
     background: {
-      default: blue[50],
+      // default: lightBlue[50],
+      default: "#FAFAFA",
     },
   },
   colors: {
     global: {
-      border: "0px",
       loading: blueGrey[900],
     },
     header: { bg: blue[400] },
+    info: { bg: "#CCE3D7" },
     daily: {
       title: amber[200],
       wind: lightBlue[500],
@@ -47,12 +42,21 @@ export const themeLight = {
       icon: "inherit",
       accordianBg: "rgba(255, 255, 255, 0.8)",
     },
-    chart: { bg: grey[50] },
+    chart: { bg: "#F5F7FA" },
   },
 };
 
 export const themeDark = {
-  ...commons,
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        "*::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(255,255,255,.5)",
+          borderRadius: 8,
+        },
+      },
+    },
+  },
   palette: {
     type: "dark",
     background: {
@@ -61,19 +65,21 @@ export const themeDark = {
   },
   colors: {
     global: {
-      border: `2px solid ${grey[50]}`,
       loading: lightGreen["A400"],
     },
-    header: { bg: teal[900] },
+    header: { bg: "#2e73ab" },
+    info: { bg: "#8e9e96" },
+
     daily: {
-      title: teal[800],
+      // title: teal[800],
+      title: "#b29c5b",
       wind: lightBlue[100],
       max: red[800],
       min: blue[900],
       icon: grey[200],
       accordianBg: "rgba(255, 255, 255, 0.3)",
     },
-    chart: { bg: blueGrey[700] },
+    chart: { bg: "#abacaf" },
   },
 };
 

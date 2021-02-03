@@ -7,9 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   daily: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(5),
     paddingBottom: theme.spacing(3),
-    border: theme.colors.global.border,
+    borderRadius: 8,
     background: "rgba(245,245,245,0.125)",
   },
   dailyTitle: {
@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     marginBottom: theme.spacing(3),
     background: theme.colors.daily.title,
+    borderRadius: 8,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
 }));
 

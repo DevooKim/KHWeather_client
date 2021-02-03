@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
     backgroundColor: theme.colors.header.bg,
-    // backgroundColor: theme.header.background,
   },
   darkMode: {
     color: theme.palette.common.white,

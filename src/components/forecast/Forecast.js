@@ -5,14 +5,16 @@ import getForecasts from "../../utils/getForecasts";
 import ForecastInfo from "./ForecastInfo";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
     height: "100vh",
     textAlign: "center",
     marginTop: "30vh",
-    color: theme.colors.global.loading,
+    background: theme.palette.background.default,
+  },
+  info: {
+    borderRadius: 8,
   },
 }));
 function Forecast({ geo, theme }) {
@@ -36,14 +38,11 @@ function Forecast({ geo, theme }) {
 
   return (
     <>
-      <Paper elevation={5}>
-        <ForecastInfo forecasts={{ yesterdays, todays, current }} />
-        <Box borderBottom={1}></Box>
-        <Chart
-          forecasts={{ yesterdays, todays, tomorrows, lastUpdate }}
-          theme={theme}
-        />
-      </Paper>
+      <ForecastInfo forecasts={{ yesterdays, todays, current }} />
+      <Chart
+        forecasts={{ yesterdays, todays, tomorrows, lastUpdate }}
+        theme={theme}
+      />
     </>
   );
 }
