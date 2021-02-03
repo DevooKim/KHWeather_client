@@ -7,7 +7,7 @@ import {
   Box,
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import { Search, Brightness7, Brightness4 } from "@material-ui/icons";
+import { Search } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
+    color: theme.palette.common.black,
+    fontWeight: 600,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       width: "30ch",
@@ -114,8 +116,7 @@ export default function SearchAppBar({
   onChange,
   onClick,
   address,
-  darkMode,
-  setDarkMode,
+  children,
 }) {
   const classes = useStyles();
   const [mobileSearch, setMobileSearch] = useState(false);
@@ -133,11 +134,7 @@ export default function SearchAppBar({
       <div className={classes.root}>
         {/* <AppBar position="static"> */}
         <Toolbar>
-          <div className={classes.darkMode}>
-            <IconButton onClick={() => setDarkMode()} color="inherit">
-              {darkMode ? <Brightness7 /> : <Brightness4 />}
-            </IconButton>
-          </div>
+          <div className={classes.darkMode}>{children}</div>
           <Typography className={classes.title} variant="h4" style={searchHide}>
             KHWeather
           </Typography>

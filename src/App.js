@@ -5,17 +5,18 @@ import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
 import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
 import "./theme/App.css";
-import { useTheme } from "./hooks/useTheme";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, IconButton } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import { themeLight, themeDark } from "./materialTheme";
+import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
 import { CssBaseline } from "@material-ui/core";
+import { Brightness7, Brightness4 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   address: {
     display: "flex",
     alignItems: "center",
+    marginTop: theme.spacing(1),
     justifyContent: "center",
     [theme.breakpoints.up("sm")]: {
       justifyContent: "space-between",
@@ -37,6 +38,7 @@ function App() {
 
   const onChange = useCallback(async (e) => {
     console.log(e.target);
+    //setState => useAsync useReducer로 변경
     try {
       setState((prev) => ({
         ...prev,
@@ -83,9 +85,13 @@ function App() {
     [darkMode]
   );
 
-  const changeDarkMode = () => {
+  const chartTheme = useMemo(() => {
+    return darkMode ? chartDark : chartLight;
+  }, [darkMode]);
+
+  const changeDarkMode = useCallback(() => {
     setDarkMode((prev) => !prev);
-  };
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,15 +101,19 @@ function App() {
         onChange={onChange}
         onClick={onClick}
         address={state.address}
-        darkMode={darkMode}
-        setDarkMode={changeDarkMode}
-      />
+      >
+        <IconButton onClick={() => changeDarkMode()} color="inherit">
+          {darkMode ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+      </Header>
 
       <Container maxWidth={"md"}>
         <Box className={classes.address} borderBottom={1}>
           <p>{state.region}</p>
         </Box>
-        <Forecast geo={state.geo} />
+        <ChartTheme.Provider value={chartTheme}>
+          <Forecast geo={state.geo} />
+        </ChartTheme.Provider>
         <Daily geo={state.geo} />
       </Container>
 
@@ -111,5 +121,5 @@ function App() {
     </ThemeProvider>
   );
 }
-
+export const ChartTheme = React.createContext(chartLight);
 export default App;

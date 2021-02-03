@@ -34,7 +34,7 @@ function Forecast({ geo, theme }) {
 
   return (
     <>
-      <ForecastInfo forecasts={{ yesterdays, todays, current }} theme={theme} />
+      <ForecastInfo forecasts={{ yesterdays, todays, current }} />
       <Chart
         forecasts={{ yesterdays, todays, tomorrows, lastUpdate }}
         theme={theme}

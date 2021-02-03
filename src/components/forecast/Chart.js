@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
 import getDate from "../../utils/getDate";
@@ -6,10 +6,10 @@ import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
 import { Box, Container, Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { light } from "../../Theme";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import { ChartTheme } from "../../App";
 
-let globalTheme = light;
+let globalTheme = undefined;
 
 function setTemp(yesterday, today, tomorrows) {
   const current = [...yesterday, ...today, ...tomorrows];
@@ -25,8 +25,8 @@ const setData = (now, labels, temps, precipitation) => {
         label: "오늘 날씨",
         data: temps.current,
         fill: false,
-        backgroundColor: globalTheme.chartColor.today,
-        borderColor: globalTheme.chartColor.today,
+        backgroundColor: globalTheme.line.today,
+        borderColor: globalTheme.line.today,
         pointStyle: "circle",
         yAxisID: "y-axis-1",
       },
@@ -34,35 +34,36 @@ const setData = (now, labels, temps, precipitation) => {
         label: "어제 날씨",
         data: temps.prev,
         fill: false,
-        backgroundColor: globalTheme.chartColor.yesterday.line,
-        borderColor: globalTheme.chartColor.yesterday.line,
+        backgroundColor: fade(globalTheme.line.yesterday, 0.4),
+        borderColor: fade(globalTheme.line.yesterday, 0.8),
         pointStyle: "circle",
         yAxisID: "y-axis-1",
         datalabels: {
           backgroundColor: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.active) return globalTheme.chartColor.pointColor;
+            if (context.active) return globalTheme.primaryColor;
 
-            if (context.dataIndex === now) return globalTheme.chartColor.now;
+            if (context.dataIndex === now) return globalTheme.now;
             else if (context.dataIndex % 8 === 0)
               // return "rgba(54, 162, 235,0.8)";
-              return globalTheme.chartColor.yesterday.bg;
+              return fade(globalTheme.line.yesterday, 0.8);
 
-            return globalTheme.chartColor.pointColor;
+            // return globalTheme.primaryColor;
+            return "white";
           },
           borderColor: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
 
             // return "rgba(54, 162, 235, 0.3)";
-            return globalTheme.chartColor.yesterday.line;
+            return fade(globalTheme.line.yesterday, 0.8);
           },
           color: (context) => {
             if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.active) return globalTheme.chartColor.color; //"rgba(0,0,0,0.7)";
-            if (context.dataIndex === now)
-              return globalTheme.chartColor.pointColor;
+            if (context.active) return globalTheme.secondaryColor; //"rgba(0,0,0,0.7)";
+            if (context.dataIndex === now) return globalTheme.primaryColor;
 
-            return globalTheme.chartColor.halfBlack; //"rgba(0,0,0,0.7)";
+            // return fade(globalTheme.secondaryColor, 0.7); //"rgba(0,0,0,0.7)";
+            return fade("#000000", 0.7); //"rgba(0,0,0,0.7)";
           },
         },
       },
@@ -70,16 +71,16 @@ const setData = (now, labels, temps, precipitation) => {
         type: "bar",
         label: "강수량",
         data: precipitation,
-        backgroundColor: globalTheme.chartColor.precipitation,
-        borderColor: globalTheme.chartColor.precipitation,
+        backgroundColor: globalTheme.line.precipitation,
+        borderColor: globalTheme.line.precipitation,
         datalabels: {
           align: "end",
           anchor: "end",
           // offset: 30,
           borderWidth: 1,
           borderRadius: 0,
-          backgroundColor: globalTheme.chartColor.precipitation,
-          color: globalTheme.chartColor.halfBlack, //"rgba(0,0,0,0.8)",
+          backgroundColor: globalTheme.line.precipitation,
+          color: fade(globalTheme.secondaryColor, 0.8), //"rgba(0,0,0,0.8)",
           formatter: (value) => {
             return value;
           },
@@ -110,13 +111,14 @@ const setLabelesOption = (now) => {
       return "center";
     },
     backgroundColor: (context) => {
-      if (context.active) return globalTheme.chartColor.pointColor;
-      if (context.dataIndex === now) return globalTheme.chartColor.now;
+      if (context.active) return globalTheme.primaryColor;
+      if (context.dataIndex === now) return globalTheme.now;
       else if (context.dataIndex % 8 === 0)
         return "context.dataset.backgroundColor";
 
       // return "context.dataset.backgroundColor";
-      return globalTheme.chartColor.pointColor;
+      // return globalTheme.primaryColor;
+      return "white";
     },
     borderColor: (context) => {
       return context.dataset.backgroundColor;
@@ -126,11 +128,13 @@ const setLabelesOption = (now) => {
     },
     borderWidth: 3,
     color: (context) => {
-      if (context.active) return globalTheme.chartColor.color;
-      if (context.dataIndex % 8 === 0) return globalTheme.chartColor.pointColor; //"white";
-      if (context.dataIndex === now) return globalTheme.chartColor.pointColor; //"white";
+      if (context.active) return globalTheme.secondaryColor;
+      if (context.dataIndex % 8 === 0 || context.dataIndex === now)
+        return "white";
+      // if (context.dataIndex === now) return globalTheme.primaryColor; //"white";
 
-      return globalTheme.chartColor.color;
+      // return globalTheme.secondaryColor;
+      return "black";
     },
     font: {
       weight: "bold",
@@ -163,7 +167,7 @@ const setOptions = (labeles) => {
       labels: {
         fontSize: 12,
         fontStyle: "bold",
-        fontColor: globalTheme.chartColor.halfBlack,
+        fontColor: globalTheme.secondaryColor,
       },
     },
     scales: {
@@ -171,7 +175,7 @@ const setOptions = (labeles) => {
         {
           ticks: {
             autoSkip: false,
-            fontColor: globalTheme.chartColor.color,
+            fontColor: globalTheme.secondaryColor,
             fontSize: 14,
             fontStyle: "bold",
             minRotation: 0,
@@ -187,8 +191,8 @@ const setOptions = (labeles) => {
             display: true,
             zeroLineWidth: 2,
             lineWidth: 2,
-            color: globalTheme.chartColor.halfBlack, //"rgba(1,1,1,0.5)",
-            zeroLineColor: globalTheme.chartColor.halfBlack, //"rgba(1,1,1,0.5)",
+            color: fade(globalTheme.secondaryColor, 0.8), //"rgba(1,1,1,0.5)",
+            zeroLineColor: fade(globalTheme.secondaryColor, 0.8), //"rgba(1,1,1,0.5)",
           },
         },
       ],
@@ -201,7 +205,7 @@ const setOptions = (labeles) => {
             suggestedMax: 40,
             stepSize: 1,
           },
-          zeroLineColor: globalTheme.chartColor.color, //"rgba(0, 0, 0, 0.25)",
+          zeroLineColor: fade(globalTheme.secondaryColor, 0.25), //"rgba(0, 0, 0, 0.25)",
           zeroLineWidth: 1,
         },
         {
@@ -226,10 +230,18 @@ const setOptions = (labeles) => {
     hover: {
       mode: "index",
       intersect: false,
+      filter: {
+        type: "none",
+      },
+    },
+    elements: {
+      line: {
+        fill: false,
+      },
     },
     // responsive: false,
     maintainAspectRatio: false,
-    tooltip: { enable: false },
+    tooltips: { enable: false },
   };
 };
 
@@ -238,7 +250,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     overflowX: "auto",
     overflowY: "hidden",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: theme.colors.chart.bg,
+    border: theme.colors.global.border,
   },
   lastUpdate: {
     marginLeft: theme.spacing(3),
@@ -261,12 +274,13 @@ const useStyles = makeStyles((theme) => ({
     height: "min-content",
     paddingTop: theme.spacing(3),
     paddingLeft: theme.spacing(1),
-    backgroundColor: "#f5f5f5",
+    backgroundColor: theme.colors.chart.bg,
   },
 }));
 
 function Chart({ forecasts }) {
   const classes = useStyles();
+  globalTheme = useContext(ChartTheme);
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
   const hour = getDate(lastUpdate, "HOURS");
   const min = getDate(lastUpdate, "MINUTES");
@@ -294,7 +308,7 @@ function Chart({ forecasts }) {
         <Box className={classes.chartAreaWrapper}>
           <div className={classes.chartIcons}>
             <IconContext.Provider
-              value={{ size: "2.5rem", color: globalTheme.colors.icon }}
+              value={{ size: "2.5rem", color: globalTheme.icon }}
             >
               {yesterdays.weather.map((weather) => (
                 <WeatherIcons weatherIcon={weather.icon} key={weather.key} />

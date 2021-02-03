@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   daily: {
     marginTop: theme.spacing(10),
     paddingBottom: theme.spacing(3),
-    border: theme.colors.daily.border,
+    border: theme.colors.global.border,
     background: "rgba(245,245,245,0.125)",
   },
   dailyTitle: {

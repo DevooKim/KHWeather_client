@@ -33,6 +33,9 @@ export const themeLight = {
     },
   },
   colors: {
+    global: {
+      border: "0px",
+    },
     header: { bg: teal[300] },
     daily: {
       title: amber[200],
@@ -43,6 +46,7 @@ export const themeLight = {
       icon: "inherit",
       accordianBg: "rgba(255, 255, 255, 0.8)",
     },
+    chart: { bg: grey[50] },
   },
 };
 
@@ -55,15 +59,40 @@ export const themeDark = {
     },
   },
   colors: {
-    header: { bg: blueGrey[700] },
+    global: {
+      border: `2px solid ${grey[50]}`,
+    },
+    header: { bg: teal[800] },
     daily: {
       title: teal[800],
       wind: lightBlue[100],
       max: red[800],
       min: blue[900],
-      border: `2px solid ${grey[50]}`,
       icon: grey[200],
       accordianBg: "rgba(255, 255, 255, 0.3)",
     },
+    chart: { bg: blueGrey[700] },
   },
+};
+
+export const chartLight = {
+  primaryColor: "#ffffff",
+  secondaryColor: "#000000",
+  line: {
+    yesterday: "#36A2EB",
+    today: "#00897B",
+    precipitation: "#FFAB91",
+  },
+  now: "#9E1200",
+};
+
+export const chartDark = {
+  primaryColor: "#000000",
+  secondaryColor: "#ffffff",
+  line: {
+    yesterday: "#36A2EB",
+    today: "#0FA891",
+    precipitation: "#FFAB91",
+  },
+  now: "#9E1200",
 };
