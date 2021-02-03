@@ -11,25 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
 import { CssBaseline } from "@material-ui/core";
 import { Brightness7, Brightness4 } from "@material-ui/icons";
-import styled from "styled-components";
 
-const Content = styled.div`
-  -webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  -webkit-scrollbar-thumb {
-    background-color: #2f3542;
-    border-radius: 10px;
-    background-clip: padding-box;
-    border: 2px solid transparent;
-  }
-  -webkit-scrollbar-track {
-    background-color: grey;
-    border-radius: 10px;
-    box-shadow: inset 0px 0px 5px white;
-  }
-`;
 const useStyles = makeStyles((theme) => ({
   address: {
     display: "flex",
@@ -126,17 +108,15 @@ function App() {
       </Header>
 
       {/* <div className="container"> */}
-      <Content>
-        <Container maxWidth={"md"}>
-          <Box className={classes.address} borderBottom={1}>
-            <p>{state.region}</p>
-          </Box>
-          <ChartTheme.Provider value={chartTheme}>
-            <Forecast geo={state.geo} />
-          </ChartTheme.Provider>
-          <Daily geo={state.geo} />
-        </Container>
-      </Content>
+      <Container maxWidth={"md"}>
+        <Box className={classes.address} borderBottom={1}>
+          <p>{state.region}</p>
+        </Box>
+        <ChartTheme.Provider value={chartTheme}>
+          <Forecast geo={state.geo} />
+        </ChartTheme.Provider>
+        <Daily geo={state.geo} />
+      </Container>
 
       <Footer></Footer>
     </ThemeProvider>
