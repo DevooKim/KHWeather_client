@@ -4,26 +4,27 @@ import useAsync from "../../hooks/useAsync";
 import getForecasts from "../../utils/getForecasts";
 import ForecastInfo from "./ForecastInfo";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  loading: {
+    height: "100vh",
+    textAlign: "center",
+    marginTop: "30vh",
+    color: theme.colors.global.loading,
+  },
+}));
 function Forecast({ geo, theme }) {
+  const classes = useStyles();
   const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
-  const [progress, setProgress] = useState(0);
   const { loading, data, error } = state;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 0 : prevProgress + 10
-      );
-    }, 100);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   if (loading)
-    return <CircularProgress variant="determinate" value={progress} />;
+    return (
+      <div className={classes.loading}>
+        <CircularProgress color="inherit" />
+      </div>
+    );
   if (error) {
     console.log(error);
     return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;

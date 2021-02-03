@@ -230,9 +230,6 @@ const setOptions = (labeles) => {
     hover: {
       mode: "index",
       intersect: false,
-      filter: {
-        type: "none",
-      },
     },
     elements: {
       line: {
@@ -241,7 +238,7 @@ const setOptions = (labeles) => {
     },
     // responsive: false,
     maintainAspectRatio: false,
-    tooltips: { enable: false },
+    tooltips: { enabled: false },
   };
 };
 
@@ -329,4 +326,5 @@ function Chart({ forecasts }) {
   );
 }
 
+// export default React.memo(Chart);
 export default Chart;

@@ -6,7 +6,7 @@ import {
   red,
   blueGrey,
   grey,
-  deepOrange,
+  lightGreen,
 } from "@material-ui/core/colors";
 
 const commons = {
@@ -35,8 +35,9 @@ export const themeLight = {
   colors: {
     global: {
       border: "0px",
+      loading: blueGrey[900],
     },
-    header: { bg: teal[300] },
+    header: { bg: blue[400] },
     daily: {
       title: amber[200],
       wind: lightBlue[500],
@@ -61,8 +62,9 @@ export const themeDark = {
   colors: {
     global: {
       border: `2px solid ${grey[50]}`,
+      loading: lightGreen["A400"],
     },
-    header: { bg: teal[800] },
+    header: { bg: teal[900] },
     daily: {
       title: teal[800],
       wind: lightBlue[100],
