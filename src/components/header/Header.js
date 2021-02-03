@@ -5,6 +5,7 @@ import {
   Typography,
   InputBase,
   Box,
+  Paper,
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { Search } from "@material-ui/icons";
@@ -131,7 +132,7 @@ export default function Header({
   }, []);
   return (
     <>
-      <div className={classes.root}>
+      <Paper className={classes.root} elevation={3}>
         {/* <AppBar position="static"> */}
         <Toolbar>
           <div className={classes.darkMode}>{children}</div>
@@ -242,7 +243,7 @@ export default function Header({
           </div>
         </Toolbar>
         {/* </AppBar> */}
-      </div>
+      </Paper>
     </>
   );
 }

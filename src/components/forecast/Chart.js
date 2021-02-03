@@ -5,7 +5,7 @@ import getDate from "../../utils/getDate";
 import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
-import { Box, Container, Paper } from "@material-ui/core";
+import { Box, Paper } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { ChartTheme } from "../../App";
 
@@ -294,8 +294,8 @@ function Chart({ forecasts }) {
   const options = setOptions(labelsOption);
   return (
     <>
-      {/* <ChartWrapper className="chartWrapper"> */}
-      <Paper className={classes.chartWrapper} elevation={5}>
+      {/* <Paper className={classes.chartWrapper} elevation={5}> */}
+      <div className={classes.chartWrapper}>
         <Box className={classes.lastUpdate} component="span">
           {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
             lastUpdate,
@@ -321,7 +321,8 @@ function Chart({ forecasts }) {
           </div>
           <Line data={data} options={options} key={lastUpdate} />
         </Box>
-      </Paper>
+      </div>
+      {/* </Paper> */}
     </>
   );
 }

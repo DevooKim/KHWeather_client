@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexDirection: "column",
     marginTop: theme.spacing(2),
+    background: "inherit",
     [theme.breakpoints.up("sm")]: {
       marginTop: theme.spacing(4),
     },
