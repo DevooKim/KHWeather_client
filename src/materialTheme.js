@@ -43,6 +43,7 @@ export const themeLight = {
       accordianBg: "rgba(255, 255, 255, 0.8)",
     },
     chart: { bg: "#F5F7FA" },
+    footer: { bg: teal[50] },
   },
 };
 
@@ -69,7 +70,6 @@ export const themeDark = {
     },
     header: { bg: "#2e73ab" },
     info: { bg: "#8e9e96" },
-
     daily: {
       // title: teal[800],
       title: "#b29c5b",
@@ -80,6 +80,7 @@ export const themeDark = {
       accordianBg: "rgba(255, 255, 255, 0.3)",
     },
     chart: { bg: "#abacaf" },
+    footer: { bg: "#9ca9a8" },
   },
 };
 

@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
 import { CssBaseline } from "@material-ui/core";
 import { Brightness7, Brightness4 } from "@material-ui/icons";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   address: {
@@ -36,9 +37,14 @@ function App() {
   const [state, setState] = useState(initialState);
   const classes = useStyles();
 
+  const delayedQueryCall = useCallback(
+    _.debounce((q) => AddressSearch(q, setState), 500),
+    []
+  );
+
   const onChange = useCallback(async (e) => {
-    console.log(e.target);
     //setState => useAsync useReducer로 변경
+    console.log(e.target.value);
     try {
       setState((prev) => ({
         ...prev,

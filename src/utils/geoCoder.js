@@ -8,9 +8,12 @@ const headers = {
 };
 
 export const AddressSearch = async (address) => {
+  if (address.lenght === 0) return { address_name: "검색 결과가 없습니다." };
+
   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${address}`;
 
   try {
+    console.log(address);
     const response = await axios.get(url, { headers });
     const data = response.data.documents;
     return data;
