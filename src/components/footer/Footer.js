@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 function Footer() {
   const classes = useStyles();
 
-  const gitClick = () => {
-    window.open("https://github.com/DevooKim-project/KHWproject_front");
+  const onClick = (url) => {
+    window.open(url);
   };
 
   return (
@@ -51,13 +51,17 @@ function Footer() {
       <div className={classes.footer}>
         <div className={classes.info}>
           <p>개발자: DevooKim</p>
-          <IconButton onClick={() => gitClick()}>
+          <IconButton
+            onClick={() =>
+              onClick("https://github.com/DevooKim-project/KHWproject_front")
+            }
+          >
             <GitHubIcon />
           </IconButton>
         </div>
         <div className={classes.info}>
           <p className={classes.desktopMode}>날씨제공</p>
-          <IconButton onClick={() => console.log("hi")}>
+          <IconButton onClick={() => onClick("https://openweathermap.org/")}>
             <img
               className={classes.img}
               src="https://user-images.githubusercontent.com/42219589/106826161-b1a87900-66c9-11eb-861b-c15ea17afc33.png"
