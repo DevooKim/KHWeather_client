@@ -276,16 +276,16 @@ function Chart({ forecasts }) {
   const classes = useStyles();
   globalTheme = useContext(ChartTheme);
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
-  const hour = getDate(lastUpdate, "HOURS");
-  const min = getDate(lastUpdate, "MINUTES");
+  const hour = getDate(lastUpdate, "HOURS"); //서버에서 처리
+  const min = getDate(lastUpdate, "MINUTES"); //서버에서 처리
   const currentIndex = getHourIndex(hour, min, true) + 8;
 
-  const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
-  const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
+  const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt]; //부모에서 처리
+  const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp); //부모에서 처리
   const data = setData(currentIndex, labels, temps, [
     ...yesterdays.rain,
     ...todays.rain,
-    ...tomorrows.rain,
+    ...tomorrows.rain, //rain 부모에서 처리
   ]);
   const labelsOption = setLabelesOption(currentIndex);
   const options = setOptions(labelsOption);

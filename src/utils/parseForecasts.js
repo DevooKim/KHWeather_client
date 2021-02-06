@@ -38,7 +38,7 @@ const parseForecasts = (days) => {
       data.snow.push(null);
     }
     data.pop.push(day.pop);
-    data.weather.push({ ...day.weather[0], key: counter++ });
+    data.weather.push({ ...day.weather[0], key: counter++ }); //리팩토링 하면서 파싱하도록 변환
   });
 
   return data;
