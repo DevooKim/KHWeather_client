@@ -1,4 +1,4 @@
-function WeatherID(ID) {
+function weatherID(ID) {
   switch (ID) {
     case 500:
     case 501:
@@ -28,4 +28,4 @@ function WeatherID(ID) {
   }
 }
 
-export default WeatherID;
+export default weatherID;

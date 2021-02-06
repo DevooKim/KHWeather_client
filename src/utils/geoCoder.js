@@ -13,9 +13,9 @@ export const AddressSearch = async (address) => {
   const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${address}`;
 
   try {
-    console.log(address);
     const response = await axios.get(url, { headers });
     const data = response.data.documents;
+    console.log(data);
     return data;
   } catch (e) {
     console.log(e);

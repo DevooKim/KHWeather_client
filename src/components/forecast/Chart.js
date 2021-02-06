@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
-import getDate from "../../utils/getDate";
 import getHourIndex from "../../utils/getHourIndex";
 import WeatherIcons from "../weathers/WeatherIcons";
 import { IconContext } from "react-icons";
@@ -12,7 +11,6 @@ import { ChartTheme } from "../../App";
 let globalTheme = undefined;
 
 function setTemp(yesterday, today, tomorrows) {
-  // const current = [...yesterday, ...today, ...tomorrows];
   const current = [
     null,
     null,
@@ -85,7 +83,7 @@ const setData = (now, labels, temps, precipitation) => {
           borderWidth: 1,
           borderRadius: 0,
           backgroundColor: globalTheme.line.precipitation,
-          color: fade(globalTheme.secondaryColor, 0.8), //"rgba(0,0,0,0.8)",
+          color: fade(globalTheme.secondaryColor, 0.8),
           formatter: (value) => {
             return value;
           },
@@ -152,7 +150,6 @@ const setLabelesOption = (now) => {
     listeners: {
       click: (context) => {
         console.log("click: " + context.dataIndex);
-        // return <div>test</div>;
         return;
       },
     },
@@ -176,7 +173,6 @@ const setOptions = (labeles) => {
         {
           ticks: {
             autoSkip: false,
-            // fontColor: globalTheme.secondaryColor,
             fontColor: "black",
             fontSize: 14,
             fontStyle: "bold",
@@ -193,8 +189,8 @@ const setOptions = (labeles) => {
             display: true,
             zeroLineWidth: 2,
             lineWidth: 2,
-            color: fade(globalTheme.secondaryColor, 0.8), //"rgba(1,1,1,0.5)",
-            zeroLineColor: fade(globalTheme.secondaryColor, 0.8), //"rgba(1,1,1,0.5)",
+            color: fade(globalTheme.secondaryColor, 0.8),
+            zeroLineColor: fade(globalTheme.secondaryColor, 0.8),
           },
         },
       ],
@@ -207,7 +203,7 @@ const setOptions = (labeles) => {
             suggestedMax: 40,
             stepSize: 1,
           },
-          zeroLineColor: fade(globalTheme.secondaryColor, 0.25), //"rgba(0, 0, 0, 0.25)",
+          zeroLineColor: fade(globalTheme.secondaryColor, 0.25),
           zeroLineWidth: 1,
         },
         {
@@ -293,7 +289,6 @@ function Chart({ forecasts }) {
   return (
     <>
       <Paper className={classes.chartWrapper} elevation={5}>
-        {/* <div className={classes.chartWrapper}> */}
         <Box className={classes.lastUpdate} component="span">
           {`업데이트: ${hour}시${minute}분`}
         </Box>
@@ -315,7 +310,6 @@ function Chart({ forecasts }) {
           </div>
           <Line data={data} options={options} key={lastUpdate} />
         </Box>
-        {/* </div> */}
       </Paper>
     </>
   );

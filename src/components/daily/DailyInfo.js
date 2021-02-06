@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { Box, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import WeatherIcons from "../weathers/WeatherIcons";
-import WeatherCondition from "../weathers/WeatherCondition";
+import weatherCondition from "../weathers/getWeatherCondition";
 import getDate from "../../utils/getDate";
 import { WiStrongWind, WiThermometer } from "react-icons/wi";
 import { IconContext } from "react-icons";
@@ -176,7 +176,7 @@ export default function DailyInfo({ days }) {
               <div className={classes.sectionDesktop}>
                 <Box className={classes.state}>
                   <p>
-                    <WeatherCondition
+                    <weatherCondition
                       className={classes.state}
                       condition={days.weather[0]}
                     />

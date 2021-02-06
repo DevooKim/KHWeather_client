@@ -1,9 +1,8 @@
-import React from "react";
-import useAsync from "../../hooks/useAsync";
+import React, { useContext } from "react";
 import DailyInfo from "./DailyInfo";
-import getForecasts from "../../utils/getForecasts";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Data } from "../weathers/WeatherData";
 
 const useStyles = makeStyles((theme) => ({
   daily: {
@@ -26,14 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Daily({ geo }) {
+function Daily() {
   const classes = useStyles();
-  const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
-  const { loading, data, error } = state;
-
-  if (loading) return null;
-  if (error) return null;
-  if (!data) return null;
+  const data = useContext(Data);
 
   const { daily } = data;
 

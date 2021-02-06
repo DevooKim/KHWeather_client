@@ -1,8 +1,7 @@
 import React from "react";
-import stateText from "./stateText";
+import stateText from "../../utils/stateText";
 import WeatherIcons from "../weathers/WeatherIcons";
-import WeatherCondition from "../weathers/WeatherCondition";
-import getDate from "../../utils/getDate";
+import weatherCondition from "../weathers/getWeatherCondition";
 import { Box, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,11 +11,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexDirection: "column",
     marginTop: theme.spacing(2),
-    // background: theme.palette.background.default,
-    // background: "rgba(245,245,245,0.125)",
     background: theme.colors.info.bg,
     borderRadius: 8,
-    // borderBottom: "1px solid grey",
     marginBottom: theme.spacing(1),
     [theme.breakpoints.up("sm")]: {
       marginTop: theme.spacing(4),
@@ -65,7 +61,7 @@ function ForecastInfo({ forecasts }) {
       </Box>
       <Box className={classes.chartHeaderBottom}>
         <p>
-          <WeatherCondition
+          <weatherCondition
             condition={current.weather[0]}
             rain={rain}
             snow={snow}

@@ -1,4 +1,4 @@
-import getHourIndex from "../../utils/getHourIndex";
+import getHourIndex from "./getHourIndex";
 export default function stateText(hour, temp) {
   const { yesterdayTemps, todayTemps } = temp;
   const hourIndex = getHourIndex(hour);

@@ -1,17 +1,21 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { createContext, useCallback, useMemo, useState } from "react";
 import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
-import { AddressSearch, Coord2RegionCode } from "./utils/geoCoder";
-import "./theme/App.css";
-import { Box, Container, IconButton } from "@material-ui/core";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
-import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
-import { CssBaseline } from "@material-ui/core";
-import { Brightness7, Brightness4 } from "@material-ui/icons";
+import WeatherData from "./components/weathers/WeatherData";
+import { AddressSearch } from "./utils/geoCoder";
 import _ from "lodash";
+
+import { Box, Container, IconButton, CssBaseline } from "@material-ui/core";
+import { Brightness7, Brightness4 } from "@material-ui/icons";
+import {
+  createMuiTheme,
+  ThemeProvider,
+  makeStyles,
+} from "@material-ui/core/styles";
+import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
+import "./theme/App.css";
 
 const useStyles = makeStyles((theme) => ({
   address: {
@@ -44,7 +48,6 @@ function App() {
 
   const onChange = useCallback(async (e) => {
     //setState => useAsync useReducer로 변경
-    console.log(e.target.value);
     try {
       setState((prev) => ({
         ...prev,
@@ -113,20 +116,21 @@ function App() {
         </IconButton>
       </Header>
 
-      {/* <div className="container"> */}
       <Container maxWidth={"md"}>
-        <Box className={classes.address} borderBottom={1}>
-          <p>{state.region}</p>
-        </Box>
-        <ChartTheme.Provider value={chartTheme}>
-          <Forecast geo={state.geo} />
-        </ChartTheme.Provider>
-        <Daily geo={state.geo} />
+        <WeatherData geo={state.geo}>
+          <Box className={classes.address} borderBottom={1}>
+            <p>{state.region}</p>
+          </Box>
+          <ChartTheme.Provider value={chartTheme}>
+            <Forecast />
+          </ChartTheme.Provider>
+          <Daily />
+        </WeatherData>
       </Container>
 
-      <Footer></Footer>
+      <Footer />
     </ThemeProvider>
   );
 }
-export const ChartTheme = React.createContext(chartLight);
+export const ChartTheme = createContext(chartLight);
 export default App;
