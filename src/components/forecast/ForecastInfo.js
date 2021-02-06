@@ -43,16 +43,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ForecastInfo({ forecasts, theme }) {
+function ForecastInfo({ forecasts }) {
   const classes = useStyles();
   const { yesterdays, todays, current } = forecasts;
-  const currentHour = getDate(current.dt, "HOURS");
   const rain = current.rain ? current.rain["1h"] + "mm" : null;
   const snow = current.snow ? current.snow["1h"] + "mm" : null;
   return (
     <Paper className={classes.chartHeader} elevation={3}>
       <Box className={classes.currentState}>
-        {stateText(currentHour, {
+        {stateText(current.dt.hours, {
           yesterdayTemps: yesterdays.temp,
           todayTemps: todays.temp,
         })}

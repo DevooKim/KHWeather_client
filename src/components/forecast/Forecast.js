@@ -35,7 +35,6 @@ function Forecast({ geo, theme }) {
   if (!data) return null;
 
   const { yesterdays, todays, tomorrows, current, lastUpdate } = data;
-
   return (
     <>
       <ForecastInfo forecasts={{ yesterdays, todays, current }} />

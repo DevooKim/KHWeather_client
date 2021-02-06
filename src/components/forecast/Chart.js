@@ -12,8 +12,21 @@ import { ChartTheme } from "../../App";
 let globalTheme = undefined;
 
 function setTemp(yesterday, today, tomorrows) {
-  const current = [...yesterday, ...today, ...tomorrows];
+  // const current = [...yesterday, ...today, ...tomorrows];
+  const current = [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    ...today,
+    ...tomorrows,
+  ];
   const prev = [...yesterday, ...yesterday, ...today];
+
   return { current, prev };
 }
 
@@ -40,30 +53,23 @@ const setData = (now, labels, temps, precipitation) => {
         yAxisID: "y-axis-1",
         datalabels: {
           backgroundColor: (context) => {
-            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
             if (context.active) return globalTheme.primaryColor;
 
-            if (context.dataIndex === now) return globalTheme.now;
-            else if (context.dataIndex % 8 === 0)
-              // return "rgba(54, 162, 235,0.8)";
+            if (context.dataIndex === now) {
+              return globalTheme.now;
+            } else if (context.dataIndex % 8 === 0)
               return fade(globalTheme.line.yesterday, 0.8);
 
-            // return globalTheme.primaryColor;
             return "white";
           },
           borderColor: (context) => {
-            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-
-            // return "rgba(54, 162, 235, 0.3)";
             return fade(globalTheme.line.yesterday, 0.8);
           },
           color: (context) => {
-            if (context.active && context.dataIndex < 8) return "rgba(0,0,0,0)";
-            if (context.active) return globalTheme.secondaryColor; //"rgba(0,0,0,0.7)";
+            if (context.active) return globalTheme.secondaryColor;
             if (context.dataIndex === now) return globalTheme.primaryColor;
 
-            // return fade(globalTheme.secondaryColor, 0.7); //"rgba(0,0,0,0.7)";
-            return fade("#000000", 0.7); //"rgba(0,0,0,0.7)";
+            return fade("#000000", 0.7);
           },
         },
       },
@@ -76,7 +82,6 @@ const setData = (now, labels, temps, precipitation) => {
         datalabels: {
           align: "end",
           anchor: "end",
-          // offset: 30,
           borderWidth: 1,
           borderRadius: 0,
           backgroundColor: globalTheme.line.precipitation,
@@ -116,8 +121,6 @@ const setLabelesOption = (now) => {
       else if (context.dataIndex % 8 === 0)
         return "context.dataset.backgroundColor";
 
-      // return "context.dataset.backgroundColor";
-      // return globalTheme.primaryColor;
       return "white";
     },
     borderColor: (context) => {
@@ -131,9 +134,7 @@ const setLabelesOption = (now) => {
       if (context.active) return globalTheme.secondaryColor;
       if (context.dataIndex % 8 === 0 || context.dataIndex === now)
         return "white";
-      // if (context.dataIndex === now) return globalTheme.primaryColor; //"white";
 
-      // return globalTheme.secondaryColor;
       return "black";
     },
     font: {
@@ -276,16 +277,16 @@ function Chart({ forecasts }) {
   const classes = useStyles();
   globalTheme = useContext(ChartTheme);
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
-  const hour = getDate(lastUpdate, "HOURS"); //서버에서 처리
-  const min = getDate(lastUpdate, "MINUTES"); //서버에서 처리
-  const currentIndex = getHourIndex(hour, min, true) + 8;
-
-  const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt]; //부모에서 처리
-  const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp); //부모에서 처리
+  const date = new Date(lastUpdate);
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const currentIndex = getHourIndex(hour, minute, true) + 8;
+  const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
+  const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
   const data = setData(currentIndex, labels, temps, [
     ...yesterdays.rain,
     ...todays.rain,
-    ...tomorrows.rain, //rain 부모에서 처리
+    ...tomorrows.rain,
   ]);
   const labelsOption = setLabelesOption(currentIndex);
   const options = setOptions(labelsOption);
@@ -294,24 +295,21 @@ function Chart({ forecasts }) {
       <Paper className={classes.chartWrapper} elevation={5}>
         {/* <div className={classes.chartWrapper}> */}
         <Box className={classes.lastUpdate} component="span">
-          {`업데이트: ${getDate(lastUpdate, "HOURS")}시${getDate(
-            lastUpdate,
-            "MINUTES"
-          )}분`}
+          {`업데이트: ${hour}시${minute}분`}
         </Box>
         <Box className={classes.chartAreaWrapper}>
           <div className={classes.chartIcons}>
             <IconContext.Provider
               value={{ size: "2.5rem", color: globalTheme.icon }}
             >
-              {yesterdays.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              {yesterdays.weather.map((weather, index) => (
+                <WeatherIcons weatherIcon={weather[0].icon} key={index} />
               ))}
-              {todays.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              {todays.weather.map((weather, index) => (
+                <WeatherIcons weatherIcon={weather[0].icon} key={index} />
               ))}
-              {tomorrows.weather.map((weather) => (
-                <WeatherIcons weatherIcon={weather.icon} key={weather.key} />
+              {tomorrows.weather.map((weather, index) => (
+                <WeatherIcons weatherIcon={weather[0].icon} key={index} />
               ))}
             </IconContext.Provider>
           </div>

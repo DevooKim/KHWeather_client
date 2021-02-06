@@ -154,13 +154,17 @@ export default function DailyInfo({ days }) {
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Container className={classes.dayInfo}>
             <div className={classes.sectionDesktop}>
-              <Box className={classes.day}>{getDate(days.dt, "DAY")}</Box>
+              <Box className={classes.day}>
+                {getDate(days.dt.weekday, "DESKTOP")}
+              </Box>
             </div>
             <div
               className={classes.sectionMobile}
               style={{ marginLeft: "1.5rem" }}
             >
-              <Box className={classes.day}>{getDate(days.dt, "MOBILE")}</Box>
+              <Box className={classes.day}>
+                {getDate(days.dt.weekday, "MOBILE")}
+              </Box>
             </div>
             <Box className={classes.iconBox}>
               <div className={classes.icon}>
