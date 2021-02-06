@@ -1,7 +1,7 @@
 import React from "react";
 import stateText from "../../utils/stateText";
 import WeatherIcons from "../weathers/WeatherIcons";
-import weatherCondition from "../weathers/getWeatherCondition";
+import WeatherCondition from "../weathers/getWeatherCondition";
 import { Box, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -61,7 +61,7 @@ function ForecastInfo({ forecasts }) {
       </Box>
       <Box className={classes.chartHeaderBottom}>
         <p>
-          <weatherCondition
+          <WeatherCondition
             condition={current.weather[0]}
             rain={rain}
             snow={snow}

@@ -1,6 +1,6 @@
-import weatherID from "./getWeatherID";
+import WeatherID from "./getWeatherID";
 
-function weatherCondition({ condition, rain, snow }) {
+function WeatherCondition({ condition, rain, snow }) {
   switch (condition.main) {
     case "Thunderstorm":
       return "뇌우";
@@ -8,9 +8,9 @@ function weatherCondition({ condition, rain, snow }) {
       return "이슬비";
     case "Rain":
       if (rain) {
-        return `${weatherID(condition.id)} ${rain}`;
+        return `${WeatherID(condition.id)} ${rain}`;
       } else {
-        return `${weatherID(condition.id)}`;
+        return `${WeatherID(condition.id)}`;
       }
     case "Snow":
       return "눈";
@@ -20,8 +20,8 @@ function weatherCondition({ condition, rain, snow }) {
       return "흐림";
 
     default:
-      return `${weatherID(condition.id)}`;
+      return `${WeatherID(condition.id)}`;
   }
 }
 
-export default weatherCondition;
+export default WeatherCondition;
