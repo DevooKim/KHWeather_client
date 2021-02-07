@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { Search } from "@material-ui/icons";
+import { AddressSearch } from "../../utils/geoCoder";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,33 +107,47 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     color: "black",
-    // borderBottom: 1px solid black;
     fontWeight: "700",
   },
 }));
 
-export default function Header({
-  input,
-  onChange,
-  onClick,
-  address,
-  children,
-}) {
+export default function Header({ setState, children }) {
   const classes = useStyles();
   const [mobileSearch, setMobileSearch] = useState(false);
   const [overlay, setOverlay] = useState({ display: "none" });
+  const [input, setInput] = useState("");
+  const [address, setAddress] = useState([]);
   const inputRef = useRef();
 
   const searchHide = mobileSearch ? { display: "none" } : { display: "block" };
   const searchShow = mobileSearch ? { display: "block" } : { display: "none" };
 
+  const onChange = useCallback(async (e) => {
+    setInput(e.target.value);
+
+    if (e.target.value.trim() === "") {
+      setAddress([]);
+    } else {
+      await AddressSearch(e.target.value, setAddress);
+    }
+  }, []);
+
+  const onClick = useCallback((value) => {
+    setInput("");
+    setAddress([]);
+    setState({
+      geo: { ...value.coordinate },
+      region: value.region,
+    });
+  });
+
   const handleMobileSearch = useCallback(() => {
     setMobileSearch(true);
   }, []);
+
   return (
     <>
       <Paper className={classes.root} elevation={3}>
-        {/* <AppBar position="static"> */}
         <Toolbar>
           <div className={classes.darkMode}>{children}</div>
           <Typography className={classes.title} variant="h4" style={searchHide}>
@@ -167,7 +182,7 @@ export default function Header({
                     key={index}
                     onMouseDown={() => {
                       onClick({
-                        address_name: v.address_name,
+                        region: v.address_name,
                         coordinate: {
                           lat: v.y,
                           lon: v.x,
@@ -226,7 +241,7 @@ export default function Header({
                   key={index}
                   onMouseDown={() => {
                     onClick({
-                      address_name: v.address_name,
+                      region: v.address_name,
                       coordinate: {
                         lat: v.y,
                         lon: v.x,
@@ -241,7 +256,6 @@ export default function Header({
             </div>
           </div>
         </Toolbar>
-        {/* </AppBar> */}
       </Paper>
     </>
   );
