@@ -58,7 +58,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header setState={handleState}>
-        <IconButton onClick={() => changeDarkMode} color="inherit">
+        <IconButton onClick={() => changeDarkMode()} color="inherit">
           {darkMode ? <Brightness7 /> : <Brightness4 />}
         </IconButton>
       </Header>
