@@ -145,7 +145,7 @@ export default function Header({ setState, children }) {
       geo: { ...value.coordinate },
       region: value.region,
     });
-  });
+  }, []);
 
   const handleMobileSearch = useCallback(() => {
     setMobileSearch(true);

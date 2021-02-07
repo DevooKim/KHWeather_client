@@ -12,7 +12,7 @@ import {
   ThemeProvider,
   makeStyles,
 } from "@material-ui/core/styles";
-import { themeLight, themeDark, chartLight, chartDark } from "./materialTheme";
+import { themeLight, themeDark, chartLight, chartDark } from "./theme/theme.js";
 import "./theme/App.css";
 
 const useStyles = makeStyles((theme) => ({

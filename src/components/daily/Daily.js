@@ -34,8 +34,8 @@ function Daily() {
   return (
     <Paper className={classes.daily} elevation={5}>
       <div className={classes.dailyTitle}>주간 날씨</div>
-      {daily.map((day) => (
-        <DailyInfo days={day} key={day.dt} />
+      {daily.map((day, index) => (
+        <DailyInfo days={day} key={index} />
       ))}
     </Paper>
   );
