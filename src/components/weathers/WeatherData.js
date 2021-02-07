@@ -28,7 +28,6 @@ function WeatherData({ geo, children }) {
       </div>
     );
   if (error || !data) {
-    console.log(error);
     return <h1 style={{ textAlign: "center" }}>에러 발생</h1>;
   }
 

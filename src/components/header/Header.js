@@ -10,6 +10,7 @@ import {
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { Search } from "@material-ui/icons";
 import { AddressSearch } from "../../utils/geoCoder";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,13 +123,18 @@ export default function Header({ setState, children }) {
   const searchHide = mobileSearch ? { display: "none" } : { display: "block" };
   const searchShow = mobileSearch ? { display: "block" } : { display: "none" };
 
+  const delayedAddressSearch = useCallback(
+    _.debounce((v, cb) => AddressSearch(v, cb), 200),
+    []
+  );
+
   const onChange = useCallback(async (e) => {
     setInput(e.target.value);
 
     if (e.target.value.trim() === "") {
       setAddress([]);
     } else {
-      await AddressSearch(e.target.value, setAddress);
+      delayedAddressSearch(e.target.value, setAddress);
     }
   }, []);
 
@@ -171,7 +177,6 @@ export default function Header({ setState, children }) {
                   onChange(e);
                 }}
                 value={input}
-                inputRef={inputRef}
               />
 
               <div className={classes.overlay} style={overlay}>
