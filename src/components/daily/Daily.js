@@ -1,15 +1,14 @@
-import React from "react";
-import useAsync from "../../hooks/useAsync";
+import React, { useContext } from "react";
 import DailyInfo from "./DailyInfo";
-import getForecasts from "../../utils/getForecasts";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Data } from "../weathers/WeatherData";
 
 const useStyles = makeStyles((theme) => ({
   daily: {
     marginTop: theme.spacing(5),
-    paddingBottom: theme.spacing(3),
     marginBottom: theme.spacing(10),
+    paddingBottom: theme.spacing(3),
     borderRadius: 8,
     background: "rgba(245,245,245,0.125)",
   },
@@ -26,22 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Daily({ geo }) {
+function Daily() {
   const classes = useStyles();
-  const [state, refetch] = useAsync(() => getForecasts(geo), [geo]);
-  const { loading, data, error } = state;
-
-  if (loading) return null;
-  if (error) return null;
-  if (!data) return null;
+  const data = useContext(Data);
 
   const { daily } = data;
 
   return (
     <Paper className={classes.daily} elevation={5}>
       <div className={classes.dailyTitle}>주간 날씨</div>
-      {daily.map((day) => (
-        <DailyInfo days={day} key={day.dt} />
+      {daily.map((day, index) => (
+        <DailyInfo days={day} key={index} />
       ))}
     </Paper>
   );

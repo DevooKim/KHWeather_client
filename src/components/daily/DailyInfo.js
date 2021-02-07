@@ -7,10 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import { Box, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import WeatherIcons from "../weathers/WeatherIcons";
-import WeatherCondition from "../weathers/WeatherCondition";
+import WeatherCondition from "../weathers/getWeatherCondition";
 import getDate from "../../utils/getDate";
 import { WiStrongWind, WiThermometer } from "react-icons/wi";
-import { IconContext } from "react-icons";
 
 const useStyles = makeStyles((theme) => ({
   dayInfo: {
@@ -111,7 +110,6 @@ const Accordion = withStyles((theme) => ({
 
 const AccordionSummary = withStyles((theme) => ({
   root: {
-    // backgroundColor: "rgba(255, 255, 255, 0.3)",
     backgroundColor: theme.colors.daily.accordianBg,
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
     marginBottom: -1,
@@ -154,13 +152,17 @@ export default function DailyInfo({ days }) {
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Container className={classes.dayInfo}>
             <div className={classes.sectionDesktop}>
-              <Box className={classes.day}>{getDate(days.dt, "DAY")}</Box>
+              <Box className={classes.day}>
+                {getDate(days.dt.weekday, "DESKTOP")}
+              </Box>
             </div>
             <div
               className={classes.sectionMobile}
               style={{ marginLeft: "1.5rem" }}
             >
-              <Box className={classes.day}>{getDate(days.dt, "MOBILE")}</Box>
+              <Box className={classes.day}>
+                {getDate(days.dt.weekday, "MOBILE")}
+              </Box>
             </div>
             <Box className={classes.iconBox}>
               <div className={classes.icon}>

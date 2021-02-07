@@ -1,4 +1,4 @@
-import WeatherID from "./WeatherID";
+import WeatherID from "./getWeatherID";
 
 function WeatherCondition({ condition, rain, snow }) {
   switch (condition.main) {
