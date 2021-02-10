@@ -10,6 +10,7 @@ import WeatherIcons from "../weathers/WeatherIcons";
 import WeatherCondition from "../weathers/getWeatherCondition";
 import getDate from "../../utils/getDate";
 import { WiStrongWind, WiThermometer } from "react-icons/wi";
+import getUvi from "../../utils/getUvi";
 
 const useStyles = makeStyles((theme) => ({
   dayInfo: {
@@ -83,6 +84,26 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  wrapper__info: {
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center",
+    width: "50%",
+  },
+  sun__info: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  temp__info: {
+    display: "flex",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    justifyContent: "space-between",
+  },
+  info__info: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 const Accordion = withStyles((theme) => ({
@@ -131,6 +152,9 @@ const AccordionDetails = withStyles((theme) => ({
     padding: theme.spacing(2),
     marginLeft: theme.spacing(4),
     marginRight: theme.spacing(4),
+    display: "flex",
+    alignSelf: "center",
+    justifyContent: "center",
   },
 }))(MuiAccordionDetails);
 
@@ -141,6 +165,9 @@ export default function DailyInfo({ days }) {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  const sunRise = new Date(days.sunrise * 1000);
+  const sunSet = new Date(days.sunset * 1000);
 
   return (
     <div>
@@ -215,7 +242,29 @@ export default function DailyInfo({ days }) {
           </Container>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>상세정보 제공 예정</Typography>
+          {/* <Typography>상세정보 제공 예정</Typography> */}
+          <Box className={classes.wrapper__info}>
+            <Box className={classes.sun__info}>
+              <p>
+                일출: {sunRise.getHours()}시 {sunRise.getMinutes()}분
+              </p>
+              <p>
+                일몰: {sunSet.getHours()}시 {sunSet.getMinutes()}분
+              </p>
+            </Box>
+            <Box className={classes.temp__info}>
+              <p>평균기온: {days.temp.day}℃</p>
+              <p>오전: {days.temp.morn}℃</p>
+              <p>오후: {days.temp.eve}℃</p>
+              <p>밤: {days.temp.night}℃</p>
+            </Box>
+            <Box className={classes.info__info}>
+              <p>기압: {days.pressure}Pa</p>
+              <p>습도: {days.humidity}%</p>
+              <p>자외선: {getUvi(days.uvi)}</p>
+              {/* {days.rain ? <span>강수량: {days.rain}</span> : {}} */}
+            </Box>
+          </Box>
         </AccordionDetails>
       </Accordion>
     </div>
