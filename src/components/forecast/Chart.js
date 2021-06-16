@@ -11,21 +11,12 @@ import { ChartTheme } from "../../App";
 let globalTheme = undefined;
 
 function setTemp(yesterday, today, tomorrows) {
-  const current = [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    ...today,
-    ...tomorrows,
-  ];
+  const current = [null, null, null, null, null, null, null, null, ...today, ...tomorrows];
   const prev = [...yesterday, ...yesterday, ...today];
+  const minTemp = Math.min(...yesterday, ...yesterday, ...today);
+  const maxTemp = Math.max(...yesterday, ...yesterday, ...today);
 
-  return { current, prev };
+  return { current, prev, minTemp, maxTemp };
 }
 
 const setData = (now, labels, temps, precipitation) => {
@@ -55,8 +46,7 @@ const setData = (now, labels, temps, precipitation) => {
 
             if (context.dataIndex === now) {
               return globalTheme.now;
-            } else if (context.dataIndex % 8 === 0)
-              return fade(globalTheme.line.yesterday, 0.8);
+            } else if (context.dataIndex % 8 === 0) return fade(globalTheme.line.yesterday, 0.8);
 
             return "white";
           },
@@ -74,7 +64,10 @@ const setData = (now, labels, temps, precipitation) => {
       {
         type: "bar",
         label: "강수량",
-        data: precipitation,
+        data: precipitation.map((pre) => {
+          return pre && pre["1h"];
+        }),
+        // data: precipitation["1h"],
         backgroundColor: globalTheme.line.precipitation,
         borderColor: globalTheme.line.precipitation,
         datalabels: {
@@ -103,21 +96,14 @@ const setLabelesOption = (now) => {
         const v0 = datasets[0].data[index];
         const v1 = datasets[1].data[index];
         const invert = v0 - v1 > 0;
-        return context.datasetIndex === 0
-          ? invert
-            ? "end"
-            : "start"
-          : invert
-          ? "start"
-          : "end";
+        return context.datasetIndex === 0 ? (invert ? "end" : "start") : invert ? "start" : "end";
       }
       return "center";
     },
     backgroundColor: (context) => {
       if (context.active) return globalTheme.primaryColor;
       if (context.dataIndex === now) return globalTheme.now;
-      else if (context.dataIndex % 8 === 0)
-        return "context.dataset.backgroundColor";
+      else if (context.dataIndex % 8 === 0) return "context.dataset.backgroundColor";
 
       return "white";
     },
@@ -130,8 +116,7 @@ const setLabelesOption = (now) => {
     borderWidth: 3,
     color: (context) => {
       if (context.active) return globalTheme.secondaryColor;
-      if (context.dataIndex % 8 === 0 || context.dataIndex === now)
-        return "white";
+      if (context.dataIndex % 8 === 0 || context.dataIndex === now) return "white";
 
       return "black";
     },
@@ -143,9 +128,7 @@ const setLabelesOption = (now) => {
     textAlign: "center",
     formatter: (value, context) => {
       value = Math.round(value);
-      return context.active
-        ? context.dataset.label + "\n" + value + "℃"
-        : Math.round(value);
+      return context.active ? context.dataset.label + "\n" + value + "℃" : Math.round(value);
     },
     listeners: {
       click: (context) => {
@@ -156,12 +139,13 @@ const setLabelesOption = (now) => {
   };
 };
 
-const setOptions = (labeles) => {
+const setOptions = (labeles, temps) => {
   return {
     plugins: {
       datalabels: labeles,
     },
     legend: {
+      position: "bottom",
       labels: {
         fontSize: 12,
         fontStyle: "bold",
@@ -199,8 +183,8 @@ const setOptions = (labeles) => {
           id: "y-axis-1",
           display: false,
           ticks: {
-            suggestedMin: -20,
-            suggestedMax: 40,
+            suggestedMin: temps.minTemp - 5, //if min > 0: +n else -n
+            suggestedMax: temps.maxTemp + 5,
             stepSize: 1,
           },
           zeroLineColor: fade(globalTheme.secondaryColor, 0.25),
@@ -219,10 +203,10 @@ const setOptions = (labeles) => {
     },
     layout: {
       padding: {
-        top: 16,
-        bottom: 16,
-        left: 16,
-        right: 16,
+        // top: 16,
+        // bottom: 16,
+        // left: 16,
+        // right: 16,
       },
     },
     hover: {
@@ -238,7 +222,7 @@ const setOptions = (labeles) => {
 
 const useStyles = makeStyles((theme) => ({
   chartWrapper: {
-    position: "relative",
+    // position: "relative",
     overflowX: "auto",
     overflowY: "hidden",
     backgroundColor: theme.colors.chart.bg,
@@ -251,6 +235,10 @@ const useStyles = makeStyles((theme) => ({
   },
   chartAreaWrapper: {
     position: "relative",
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(1),
+    // display: "flex",
+    // flexDirection: "column",
     width: "1300px",
     height: "350px",
   },
@@ -258,12 +246,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     position: "absolute",
     justifyContent: "space-between",
-    top: "40px",
+    top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     height: "min-content",
-    paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     backgroundColor: theme.colors.chart.bg,
   },
@@ -279,13 +267,10 @@ function Chart({ forecasts }) {
   const currentIndex = getHourIndex(hour, minute, true) + 8;
   const labels = [...yesterdays.dt, ...todays.dt, ...tomorrows.dt];
   const temps = setTemp(yesterdays.temp, todays.temp, tomorrows.temp);
-  const data = setData(currentIndex, labels, temps, [
-    ...yesterdays.rain,
-    ...todays.rain,
-    ...tomorrows.rain,
-  ]);
+  const data = setData(currentIndex, labels, temps, [...yesterdays.rain, ...todays.rain, ...tomorrows.rain]);
   const labelsOption = setLabelesOption(currentIndex);
-  const options = setOptions(labelsOption);
+  const options = setOptions(labelsOption, temps);
+
   return (
     <>
       <Paper className={classes.chartWrapper} elevation={5}>
@@ -294,9 +279,7 @@ function Chart({ forecasts }) {
         </Box>
         <Box className={classes.chartAreaWrapper}>
           <div className={classes.chartIcons}>
-            <IconContext.Provider
-              value={{ size: "2.5rem", color: globalTheme.icon }}
-            >
+            <IconContext.Provider value={{ size: "2.5rem", color: globalTheme.icon }}>
               {yesterdays.weather.map((weather, index) => (
                 <WeatherIcons weatherIcon={weather[0].icon} key={index} />
               ))}
