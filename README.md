@@ -2,7 +2,7 @@
 
 # KHWeather
 ### ☀️ 어제, 오늘, 내일의 날씨를 제공하는 서비스 
-[service](http://khweather.devookim.ga)  [server](https://github.com/DevooKim-project/KHWproject_server)
+[service](http://khweather.devookim.com)  [server](https://github.com/DevooKim-project/KHWproject_server)
 
 ### Khweather란?
 과거의 날씨를 통해 지금 기온은 어떤지 체감적으로 느낄 수 있게 제공합니다.
