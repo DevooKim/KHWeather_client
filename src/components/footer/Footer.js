@@ -1,6 +1,7 @@
 import React from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
+import { alpha } from "@mui/material/styles";
 import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles((theme) => ({
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     width: "100%",
     height: "2.2rem",
-    background: fade(theme.colors.footer.bg, 0.8),
+    background: alpha(theme.colors.footer.bg, 0.8),
     paddingRight: theme.spacing(3),
     fontWeight: 700,
     [theme.breakpoints.up("sm")]: {
@@ -40,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Footer() {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
 
   const onClick = (url) => {
     window.open(url);
@@ -51,11 +53,7 @@ function Footer() {
       <div className={classes.footer}>
         <div className={classes.info}>
           <p>개발자: DevooKim</p>
-          <IconButton
-            onClick={() =>
-              onClick("https://github.com/DevooKim-project/KHWproject_front")
-            }
-          >
+          <IconButton onClick={() => onClick("https://github.com/DevooKim-project/KHWproject_front")}>
             <GitHubIcon />
           </IconButton>
         </div>

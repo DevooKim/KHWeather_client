@@ -7,25 +7,23 @@ import WeatherData from "./components/weathers/WeatherData";
 
 import { Box, Container, IconButton, CssBaseline } from "@material-ui/core";
 import { Brightness7, Brightness4 } from "@material-ui/icons";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  makeStyles,
-} from "@material-ui/core/styles";
+// import { createMuiTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import { themeLight, themeDark, chartLight, chartDark } from "./theme/theme.js";
 import "./theme/App.css";
 
-const useStyles = makeStyles((theme) => ({
-  address: {
-    display: "flex",
-    alignItems: "center",
-    marginTop: theme.spacing(1),
-    justifyContent: "center",
-    [theme.breakpoints.up("sm")]: {
-      justifyContent: "space-between",
-    },
-  },
-}));
+import { createTheme, ThemeProvider, adaptV4Theme } from "@mui/material/styles";
+
+// const useStyles = makeStyles((theme) => ({
+//   address: {
+//     display: "flex",
+//     alignItems: "center",
+//     marginTop: theme.spacing(1),
+//     justifyContent: "center",
+//     [theme.breakpoints.up("sm")]: {
+//       justifyContent: "space-between",
+//     },
+//   },
+// }));
 
 const initialState = {
   region: "대전광역시 서구 둔산동",
@@ -35,12 +33,9 @@ const initialState = {
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [state, setState] = useState(initialState);
-  const classes = useStyles();
+  // const classes = useStyles();
 
-  const theme = useMemo(
-    () => createMuiTheme(darkMode ? themeDark : themeLight),
-    [darkMode]
-  );
+  const theme = useMemo(() => createTheme(adaptV4Theme(darkMode ? { themeDark } : { themeLight })), [darkMode]);
 
   const chartTheme = useMemo(() => {
     return darkMode ? chartDark : chartLight;
@@ -65,7 +60,8 @@ function App() {
 
       <Container maxWidth={"md"}>
         <WeatherData geo={state.geo}>
-          <Box className={classes.address} borderBottom={1}>
+          {/* <Box className={classes.address} borderBottom={1}> */}
+          <Box borderBottom={1}>
             <p>{state.region}</p>
           </Box>
           <ChartTheme.Provider value={chartTheme}>

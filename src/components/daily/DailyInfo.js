@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
+// import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
@@ -131,7 +132,8 @@ const Accordion = withStyles((theme) => ({
 
 const AccordionSummary = withStyles((theme) => ({
   root: {
-    backgroundColor: theme.colors.daily.accordianBg,
+    // backgroundColor: theme.colors.daily.accordianBg,
+    backgroundColor: theme.colors?.daily.accordianBg,
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
     marginBottom: -1,
     minHeight: 56,
@@ -159,7 +161,8 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 export default function DailyInfo({ days }) {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -171,40 +174,23 @@ export default function DailyInfo({ days }) {
 
   return (
     <div>
-      <Accordion
-        square
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
+      <Accordion square expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Container className={classes.dayInfo}>
             <div className={classes.sectionDesktop}>
-              <Box className={classes.day}>
-                {getDate(days.dt.weekday, "DESKTOP")}
-              </Box>
+              <Box className={classes.day}>{getDate(days.dt.weekday, "DESKTOP")}</Box>
             </div>
-            <div
-              className={classes.sectionMobile}
-              style={{ marginLeft: "1.5rem" }}
-            >
-              <Box className={classes.day}>
-                {getDate(days.dt.weekday, "MOBILE")}
-              </Box>
+            <div className={classes.sectionMobile} style={{ marginLeft: "1.5rem" }}>
+              <Box className={classes.day}>{getDate(days.dt.weekday, "MOBILE")}</Box>
             </div>
             <Box className={classes.iconBox}>
               <div className={classes.icon}>
-                <WeatherIcons
-                  weatherIcon={days.weather[0].icon}
-                  classes={"dailyIcon"}
-                />
+                <WeatherIcons weatherIcon={days.weather[0].icon} classes={"dailyIcon"} />
               </div>
               <div className={classes.sectionDesktop}>
                 <Box className={classes.state}>
                   <p>
-                    <WeatherCondition
-                      className={classes.state}
-                      condition={days.weather[0]}
-                    />
+                    <WeatherCondition className={classes.state} condition={days.weather[0]} />
                   </p>
                 </Box>
               </div>
@@ -231,12 +217,8 @@ export default function DailyInfo({ days }) {
                 </div>
               </div>
               <Box className={classes.temps}>
-                <p className={`${classes.temp} ${classes.max}`}>
-                  {days.temp.max}
-                </p>
-                <p className={`${classes.temp} ${classes.min}`}>
-                  {days.temp.min}
-                </p>
+                <p className={`${classes.temp} ${classes.max}`}>{days.temp.max}</p>
+                <p className={`${classes.temp} ${classes.min}`}>{days.temp.min}</p>
               </Box>
             </Box>
           </Container>

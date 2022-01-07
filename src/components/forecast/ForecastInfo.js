@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ForecastInfo({ forecasts }) {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
   const { yesterdays, todays, current } = forecasts;
   const rain = current.rain ? current.rain["1h"] + "mm" : null;
   const snow = current.snow ? current.snow["1h"] + "mm" : null;
@@ -53,19 +54,12 @@ function ForecastInfo({ forecasts }) {
         })}
       </Box>
       <Box className={classes.chartHeaderMiddle}>
-        <WeatherIcons
-          weatherIcon={current.weather[0].icon}
-          classes="forecastIcon"
-        />
+        <WeatherIcons weatherIcon={current.weather[0].icon} classes="forecastIcon" />
         <Box>{current.temp}℃</Box>
       </Box>
       <Box className={classes.chartHeaderBottom}>
         <p>
-          <WeatherCondition
-            condition={current.weather[0]}
-            rain={rain}
-            snow={snow}
-          />
+          <WeatherCondition condition={current.weather[0]} rain={rain} snow={snow} />
         </p>
         <p style={{ padding: "10px" }}>체감온도 {current.feels_like}℃</p>
       </Box>

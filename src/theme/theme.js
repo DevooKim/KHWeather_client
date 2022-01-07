@@ -1,13 +1,4 @@
-import {
-  teal,
-  blue,
-  amber,
-  lightBlue,
-  red,
-  blueGrey,
-  grey,
-  lightGreen,
-} from "@material-ui/core/colors";
+import { teal, blue, amber, lightBlue, red, blueGrey, grey, lightGreen } from "@mui/material/colors";
 
 export const themeLight = {
   overrides: {
@@ -21,7 +12,7 @@ export const themeLight = {
     },
   },
   palette: {
-    type: "light",
+    mode: "light",
     background: {
       // default: lightBlue[50],
       default: "#FAFAFA",
@@ -59,7 +50,7 @@ export const themeDark = {
     },
   },
   palette: {
-    type: "dark",
+    mode: "dark",
     background: {
       default: grey[800],
     },

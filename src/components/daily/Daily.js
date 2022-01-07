@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Daily() {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
   const data = useContext(Data);
 
   const { daily } = data;

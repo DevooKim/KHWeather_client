@@ -1,13 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
-import {
-  Toolbar,
-  IconButton,
-  Typography,
-  InputBase,
-  Box,
-  Paper,
-} from "@material-ui/core";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { Toolbar, IconButton, Typography, InputBase, Box, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { alpha } from "@mui/material/styles";
 import { Search } from "@material-ui/icons";
 import { AddressSearch } from "../../utils/geoCoder";
 import _ from "lodash";
@@ -39,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     marginLeft: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.5),
+    backgroundColor: alpha(theme.palette.common.white, 0.5),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.75),
+      backgroundColor: alpha(theme.palette.common.white, 0.75),
     },
     [theme.breakpoints.up("sm")]: {
       position: "absolute",
@@ -113,7 +107,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header({ setState, children }) {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
   const [mobileSearch, setMobileSearch] = useState(false);
   const [overlay, setOverlay] = useState({ display: "none" });
   const [input, setInput] = useState("");

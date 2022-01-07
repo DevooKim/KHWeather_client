@@ -258,7 +258,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Chart({ forecasts }) {
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = {};
   globalTheme = useContext(ChartTheme);
   const { yesterdays, todays, tomorrows, lastUpdate } = forecasts;
   const date = new Date(lastUpdate);
