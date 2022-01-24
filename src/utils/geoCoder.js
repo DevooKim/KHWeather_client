@@ -1,10 +1,7 @@
 import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const headers = {
-  Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_API_KEY}`,
+  Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_API_KEY}`,
 };
 
 export const AddressSearch = async (address, setAddress) => {

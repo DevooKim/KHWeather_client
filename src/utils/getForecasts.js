@@ -1,9 +1,7 @@
 import parseForecasts from "./parseForecasts";
 import axios from "axios";
-import dotenv from "dotenv";
 
-dotenv.config();
-const hostUrl = process.env.REACT_APP_HOST_URL;
+const hostUrl = import.meta.env.VITE_HOST_URL;
 
 function getForecasts(geo) {
   return async (geo) => {
