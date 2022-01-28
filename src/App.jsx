@@ -1,17 +1,15 @@
 import React, { createContext, useMemo, useState } from "react";
-import Header from "./components/header/Header";
 import Daily from "./components/daily/Daily";
 import Forecast from "./components/forecast/Forecast";
 import Footer from "./components/footer/Footer";
 import WeatherData from "./components/weathers/WeatherData";
 
-import Brightness7 from "@mui/icons-material/Brightness7";
-import Brightness4 from "@mui/icons-material/Brightness4";
-import { Box, Container, IconButton, CssBaseline } from "@mui/material";
+import { Box, Container, CssBaseline } from "@mui/material";
 import { themeLight, themeDark, chartLight, chartDark } from "./theme/theme.js";
 import "./theme/App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Header from "./containers/Header";
 
 export const ColorModeContext = createContext();
 export const ChartTheme = createContext(chartLight);
@@ -49,11 +47,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Header setState={handleState}>
-          <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
-            {mode === "light" ? <Brightness7 /> : <Brightness4 />}
-          </IconButton>
-        </Header>
+        <Header />
 
         <Container maxWidth={"md"}>
           <WeatherData geo={state.geo}>
