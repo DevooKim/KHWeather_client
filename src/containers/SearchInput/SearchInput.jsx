@@ -36,6 +36,7 @@ const SearchInput = memo(() => {
         <AutocompleteSearchInput
             label="지역 검색"
             options={address}
+            noOptionsText="검색 결과가 없습니다."
             size="small"
             onChange={onChange}
             onInputChange={onInputChange}
