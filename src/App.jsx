@@ -9,7 +9,7 @@ import { themeLight, themeDark, chartLight, chartDark } from "./theme/theme.js";
 import "./theme/App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Header from "./containers/Header";
+import Header from "./components/Header";
 
 export const ColorModeContext = createContext();
 export const ChartTheme = createContext(chartLight);

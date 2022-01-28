@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import _fetchAddress from '../../apis/fetchAddress';
 
-const SearchInput = memo(() => {
+const AddressInput = memo(() => {
     const [value, setValue] = useState('');
     const [address, setAddress] = useState([]);
 
@@ -47,4 +47,4 @@ const SearchInput = memo(() => {
     );
 });
 
-export default SearchInput;
+export default AddressInput;
