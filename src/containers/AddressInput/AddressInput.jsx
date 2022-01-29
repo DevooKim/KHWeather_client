@@ -6,12 +6,13 @@ import _fetchAddress from '../../apis/fetchAddress';
 
 const AddressInput = memo(() => {
     const [value, setValue] = useState('');
-    const [address, setAddress] = useState([]);
+    const [addresses, setAddresses] = useState([]);
 
     const fetchAddress = useCallback(
         debounce(async (_value) => {
             const result = await _fetchAddress(_value);
-            setAddress(result);
+            console.log(Object.keys(result));
+            setAddresses(result);
         }, 400),
         []
     );
@@ -35,7 +36,7 @@ const AddressInput = memo(() => {
     return (
         <AutocompleteSearchInput
             label="지역 검색"
-            options={address}
+            options={Object.keys(addresses)}
             noOptionsText="검색 결과가 없습니다."
             size="small"
             onChange={onChange}

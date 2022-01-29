@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { IconButton } from '@material-ui/core';
+
+const filterOptions = createFilterOptions({
+    trim: true,
+    stringify: (option) => option.replace(/\s/g, '')
+});
 
 const AutocompleteSearchInput = ({
     label,
@@ -16,9 +21,11 @@ const AutocompleteSearchInput = ({
     ...props
 }) => (
     <Autocomplete
+        freeSolo
         disableClearable
         autoComplete
         autoHighlight
+        filterOptions={filterOptions}
         options={options}
         {...props}
         size={size}
