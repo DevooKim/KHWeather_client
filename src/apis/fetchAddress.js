@@ -10,11 +10,11 @@ const fetchAddress = async (address) => {
     try {
         const { data } = await axios.get(url, { headers });
         const { documents } = data;
-        // return documents.map((document) => ({[document.address_name]: {x: document.x, y: document.y}}));
+
         return documents.reduce(
             (prev, document) => ({
                 ...prev,
-                [document.address_name]: { x: document.x, y: document.y }
+                [document.address_name]: {coords: { latitude: document.x, longitude: document.y }}
             }),
             {}
         );

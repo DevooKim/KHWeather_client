@@ -1,6 +1,7 @@
 import React, { useState, useCallback, memo } from 'react';
 import debounce from 'lodash/debounce';
 
+import GeoNavigation from '../GeoNavigation'
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import _fetchAddress from '../../apis/fetchAddress';
 
@@ -11,7 +12,7 @@ const AddressInput = memo(() => {
     const fetchAddress = useCallback(
         debounce(async (_value) => {
             const result = await _fetchAddress(_value);
-            console.log(Object.keys(result));
+            console.log('result: ', Object.keys(result));
             setAddresses(result);
         }, 400),
         []
@@ -28,23 +29,20 @@ const AddressInput = memo(() => {
         }
     };
 
-    const onSubmit = () => {
-        // changfe query
-        console.log('button submit: ', value);
-    };
-
     return (
-        <AutocompleteSearchInput
-            label="지역 검색"
-            options={Object.keys(addresses)}
-            noOptionsText="검색 결과가 없습니다."
-            size="small"
-            onChange={onChange}
-            onInputChange={onInputChange}
-            onInputKeyDown={onInputKeyDown}
-            onIconClick={onSubmit}
-            sx={{ width: '15rem' }}
-        />
+        <>
+            <AutocompleteSearchInput
+                label="지역 검색"
+                options={Object.keys(addresses)}
+                noOptionsText="검색 결과가 없습니다."
+                size="small"
+                onChange={onChange}
+                onInputChange={onInputChange}
+                onInputKeyDown={onInputKeyDown}
+                sx={{ width: '15rem' }}
+            />
+            <GeoNavigation pos={addresses[value]}/>
+        </>
     );
 });
 
