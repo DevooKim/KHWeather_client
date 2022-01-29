@@ -1,13 +1,18 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
-import GeoNavigation from '../GeoNavigation'
+import { useGeoActionContext } from '../../contexts/geoContext';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import _fetchAddress from '../../apis/fetchAddress';
 
 const AddressInput = memo(() => {
     const [value, setValue] = useState('');
     const [addresses, setAddresses] = useState([]);
+    const setGeo = useGeoActionContext();
+
+    useEffect(() => {
+        setGeo(addresses[value]);
+    }, [value, addresses]);
 
     const fetchAddress = useCallback(
         debounce(async (_value) => {
@@ -22,27 +27,24 @@ const AddressInput = memo(() => {
 
     const onInputChange = (event, newInputVale) => fetchAddress(newInputVale);
 
-    const onInputKeyDown = (e) => {
-        if (e.keyCode === 13 && e.target?.value === value) {
-            console.log('submit: ', e.target.value, value);
-            // change query
-        }
-    };
+    // const onInputKeyDown = (e) => {
+    //     if (e.keyCode === 13 && e.target?.value === value) {
+    //         console.log('submit: ', e.target.value, value);
+    //         // change query
+    //     }
+    // };
 
     return (
-        <>
-            <AutocompleteSearchInput
-                label="지역 검색"
-                options={Object.keys(addresses)}
-                noOptionsText="검색 결과가 없습니다."
-                size="small"
-                onChange={onChange}
-                onInputChange={onInputChange}
-                onInputKeyDown={onInputKeyDown}
-                sx={{ width: '15rem' }}
-            />
-            <GeoNavigation pos={addresses[value]}/>
-        </>
+        <AutocompleteSearchInput
+            label="지역 검색"
+            options={Object.keys(addresses)}
+            noOptionsText="검색 결과가 없습니다."
+            size="small"
+            onChange={onChange}
+            onInputChange={onInputChange}
+            // onInputKeyDown={onInputKeyDown}
+            sx={{ width: '15rem' }}
+        />
     );
 });
 

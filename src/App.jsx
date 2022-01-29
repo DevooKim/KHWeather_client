@@ -27,6 +27,7 @@ import {
     useSearchParams
 } from 'react-router-dom';
 import Header from './components/Header';
+import { GeoContext } from './contexts/geoContext';
 const getDesignTokens = (mode) => (mode === 'light' ? themeLight : themeDark);
 const getChartTheme = (mode) => (mode === 'light' ? chartLight : chartDark);
 
@@ -52,45 +53,48 @@ function App() {
     };
 
     return (
-        <Router>
-            <Routes>
-                <Route
-                    path=""
-                    element={
-                        <ColorModeContext.Provider value={colorMode}>
-                            <ThemeProvider theme={theme}>
-                                <CssBaseline />
-                                <Header />
+        <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <GeoContext>
+                    <Header />
+                    <Router>
+                        <Routes>
+                            <Route
+                                path=""
+                                element={
+                                    <>
+                                        <Container maxWidth={'md'}>
+                                            <WeatherData geo={state.geo}>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: {
+                                                            xs: 'center',
+                                                            sm: 'space-between'
+                                                        },
+                                                        mt: 1
+                                                    }}
+                                                >
+                                                    {state.region}
+                                                </Box>
+                                                <ChartTheme.Provider value={chartTheme}>
+                                                    <Forecast />
+                                                </ChartTheme.Provider>
+                                                <Daily />
+                                            </WeatherData>
+                                        </Container>
 
-                                <Container maxWidth={'md'}>
-                                    <WeatherData geo={state.geo}>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: {
-                                                    xs: 'center',
-                                                    sm: 'space-between'
-                                                },
-                                                mt: 1
-                                            }}
-                                        >
-                                            {state.region}
-                                        </Box>
-                                        <ChartTheme.Provider value={chartTheme}>
-                                            <Forecast />
-                                        </ChartTheme.Provider>
-                                        <Daily />
-                                    </WeatherData>
-                                </Container>
-
-                                <Footer />
-                            </ThemeProvider>
-                        </ColorModeContext.Provider>
-                    }
-                />
-            </Routes>
-        </Router>
+                                        <Footer />
+                                    </>
+                                }
+                            />
+                        </Routes>
+                    </Router>
+                </GeoContext>
+            </ThemeProvider>
+        </ColorModeContext.Provider>
     );
 }
 export default App;
