@@ -29,6 +29,7 @@ import {
 import Header from './components/Header';
 import { GeoContext, useGeoValueContext } from './contexts/geoContext';
 import useGeoSearchParams from './hooks/useGeoSearchParams';
+import TodayCard from './components/TodayCard/TodayCard';
 const getDesignTokens = (mode) => (mode === 'light' ? themeLight : themeDark);
 const getChartTheme = (mode) => (mode === 'light' ? chartLight : chartDark);
 
@@ -97,6 +98,11 @@ function App() {
                                     </>
                                 }
                             />
+                            <Route path="new" element={
+                                <Container maxWidth='md' sx={{pt: "2rem"}}>
+                                    <TodayCard />
+                                </Container>
+                            }/>
                         </Routes>
                     </Router>
                 </GeoContext>

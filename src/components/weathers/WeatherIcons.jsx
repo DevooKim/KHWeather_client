@@ -17,46 +17,46 @@ import {
 
 import React from "react";
 
-function WeatherIcons({ weatherIcon, classes }) {
+function WeatherIcons({ weatherIcon, fontSize, sx }) {
   switch (weatherIcon) {
     case "01d":
-      return <WiDaySunny className={classes} />;
+      return <WiDaySunny  fontSize={fontSize} sx={{...sx}} />;
     case "01n":
-      return <WiNightClear className={classes} />;
+      return <WiNightClear fontSize={fontSize} sx={{...sx}} />;
     case "02d":
-      return <WiDayCloudy className={classes} />;
+      return <WiDayCloudy fontSize={fontSize} sx={{...sx}} />;
     case "02n":
-      return <WiNightAltCloudy className={classes} />;
+      return <WiNightAltCloudy fontSize={fontSize} sx={{...sx}} />;
     case "03d":
-      return <WiDayCloudy className={classes} />;
+      return <WiDayCloudy fontSize={fontSize} sx={{...sx}} />;
     case "03n":
-      return <WiNightCloudy className={classes} />;
+      return <WiNightCloudy fontSize={fontSize} sx={{...sx}} />;
     case "04d":
-      return <WiCloudy className={classes} />;
+      return <WiCloudy fontSize={fontSize} sx={{...sx}} />;
     case "04n":
-      return <WiCloudy className={classes} />;
+      return <WiCloudy fontSize={fontSize} sx={{...sx}} />;
     case "09d":
-      return <WiDayShowers className={classes} />;
+      return <WiDayShowers fontSize={fontSize} sx={{...sx}} />;
     case "09n":
-      return <WiNightAltShowers className={classes} />;
+      return <WiNightAltShowers fontSize={fontSize} sx={{...sx}} />;
     case "10d":
-      return <WiDayRain className={classes} />;
+      return <WiDayRain fontSize={fontSize} sx={{...sx}} />;
     case "10n":
-      return <WiNightShowers className={classes} />;
+      return <WiNightShowers fontSize={fontSize} sx={{...sx}} />;
     case "11d":
-      return <WiThunderstorm className={classes} />;
+      return <WiThunderstorm fontSize={fontSize} sx={{...sx}} />;
     case "11n":
-      return <WiThunderstorm className={classes} />;
+      return <WiThunderstorm fontSize={fontSize} sx={{...sx}} />;
     case "13d":
-      return <WiSnow className={classes} />;
+      return <WiSnow fontSize={fontSize} sx={{...sx}} />;
     case "13n":
-      return <WiSnow className={classes} />;
+      return <WiSnow fontSize={fontSize} sx={{...sx}} />;
     case "50d":
-      return <WiFog className={classes} />;
+      return <WiFog fontSize={fontSize} sx={{...sx}} />;
     case "50n":
-      return <WiFog className={classes} />;
+      return <WiFog fontSize={fontSize} sx={{...sx}} />;
     default:
-      return <WiNa className={classes} />;
+      return <WiNa fontSize={fontSize} sx={{...sx}} />;
   }
 }
 
