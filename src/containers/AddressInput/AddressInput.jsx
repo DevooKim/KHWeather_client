@@ -4,20 +4,23 @@ import debounce from 'lodash/debounce';
 import { useGeoActionContext } from '../../contexts/geoContext';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import _fetchAddress from '../../apis/fetchAddress';
+import usePrevious from '../../hooks/usePrevious';
 
 const AddressInput = memo(() => {
     const [value, setValue] = useState('');
     const [addresses, setAddresses] = useState([]);
     const setGeo = useGeoActionContext();
+    const prevValue = usePrevious(value);
 
     useEffect(() => {
-        setGeo(addresses[value]);
+        if (prevValue !== value) {
+            setGeo({ ...addresses[value], name: value });
+        }
     }, [value, addresses]);
 
     const fetchAddress = useCallback(
         debounce(async (_value) => {
             const result = await _fetchAddress(_value);
-            console.log('result: ', Object.keys(result));
             setAddresses(result);
         }, 400),
         []

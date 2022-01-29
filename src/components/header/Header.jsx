@@ -9,7 +9,7 @@ import AddressInput from '../../containers/AddressInput';
 const NewHeader = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const onClick = useCallback(() => setIsDarkMode((prev) => !prev), []);
-
+    console.log('render')
     return (
         <Paper
             elevation={3}
