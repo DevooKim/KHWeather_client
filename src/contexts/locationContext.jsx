@@ -30,7 +30,7 @@ const storeStorage = (value) => {
 
 export const LocationContext = ({ children }) => {
     const [location, setLocation] = useState({
-        coords: { latitude: '126.978652258309', longitude: '37.5668' },
+        coords: { longitude: '126.978652258309', latitude: '37.5668' },
         name: '서울'
     });
 

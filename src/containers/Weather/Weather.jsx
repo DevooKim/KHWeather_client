@@ -7,9 +7,10 @@ import useNavigator from '../../hooks/useNavigator';
 const Weather = () => {
     const location = useLocationValueContext();
     const { data, isError, isFetching, isLoading } = useFetchWeather(location);
-    const {loading} = useNavigator()
-    // const loading = false
-    return <>{isLoading || loading ? 'loading...' : <TodayCard />}</>;
+    const { loading } = useNavigator();
+
+    const {weather} = data || {}
+    return <>{isFetching || loading ? 'loading...' : <TodayCard current={weather.current} yesterdays={weather.yesterdays}/>}</>;
 };
 
 export default Weather;

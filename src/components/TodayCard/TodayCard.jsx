@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { Paper, Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { Paper, Box } from '@mui/material';
+
 import WeatherIcons from '../weathers/WeatherIcons';
-import WeatherCondition from '../weathers/getWeatherCondition';
 import WeatherID from '../weathers/getWeatherID';
-import { WiDayCloudy } from 'react-icons/wi';
+import getHourIndex from '../../utils/getHourIndex';
 
 const setDiffTempComment = (past, current) => {
     const diff = past - current;
@@ -17,18 +18,18 @@ const setDiffTempComment = (past, current) => {
     return `현재 기온은 어제와 동일합니다.`;
 };
 
-const setWeatherCondition = ({ condition, mountOfRain }) => {
+const setWeatherCondition = ({ condition, amountOfRain }) => {
     switch (condition.main) {
         case 'Thunderstorm':
             return '뇌우';
         case 'Drizzle':
             return '이슬비';
-        case 'Rain':
-            if (mountOfRain) {
-                return `${WeatherID(condition.id)} ${mountOfRain}`;
-            } else {
-                return `${WeatherID(condition.id)}`;
+        case 'Rain': {
+            if (amountOfRain) {
+                return `${WeatherID(condition.id)} ${amountOfRain}`;
             }
+            return `${WeatherID(condition.id)}`;
+        }
         case 'Snow':
             return '눈';
         case 'Clear':
@@ -41,14 +42,21 @@ const setWeatherCondition = ({ condition, mountOfRain }) => {
     }
 };
 
-const PAST = 10;
-const CURRENT = 20;
-const FEELINGTEMP = 15;
-const TodayCard = () => {
-    const diffTempComment = useMemo(() => setDiffTempComment(PAST, CURRENT), []);
-    const weatherConditionm = useMemo(() =>
-        setWeatherCondition({ condition: { main: 'Rain', id: 500 }, mountOfRain: '2mm' })
+const TodayCard = ({ current, yesterdays }) => {
+    const hourIndex = useMemo(() => getHourIndex(new Date(current.dt.date).getHours()), []);
+    const diffTempComment = useMemo(
+        () => setDiffTempComment(yesterdays[hourIndex].temp, current.temp),
+        []
     );
+    const weatherCondition = useMemo(
+        () =>
+            setWeatherCondition({
+                condition: current.weather[0],
+                amountOfRain: current.rain && `${current.rain['1h']}mm`
+            }),
+        []
+    );
+
     return (
         <Paper
             elevation={3}
@@ -65,18 +73,36 @@ const TodayCard = () => {
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                 }}
             >
-                <WeatherIcons weatherIcon="01n" fontSize="7rem" />
-                <Box sx={{ fontSize: '2rem' }}>{CURRENT}℃</Box>
+                <WeatherIcons weatherIcon={current.weather[0].icon} fontSize="7rem" />
+                <Box sx={{ fontSize: '2rem' }}>{current.temp}℃</Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-                <p>{weatherConditionm}</p>
-                <p>체감온도: {FEELINGTEMP}℃</p>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1rem'
+                }}
+            >
+                <p>{weatherCondition}</p>
+                <p>체감온도: {current.feels_like}℃</p>
             </Box>
         </Paper>
     );
+};
+
+TodayCard.propTypes = {
+    current: PropTypes.shape({
+        dt: PropTypes.shape({ date: PropTypes.string.isRequired }),
+        temp: PropTypes.number.isRequired,
+        weather: PropTypes.arrayOf(PropTypes.shape({main: PropTypes.string.isRequired, id: PropTypes.number.isRequired})),
+        rain: PropTypes.oneOfType([PropTypes.oneOf([undefined]), PropTypes.array]),
+        feels_like: PropTypes.number.isRequired
+    }).isRequired,
+    yesterdays: PropTypes.arrayOf(PropTypes.shape({temp: PropTypes.number.isRequired})).isRequired
 };
 
 export default TodayCard;

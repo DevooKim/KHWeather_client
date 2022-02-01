@@ -5,8 +5,8 @@ import { useQuery } from 'react-query';
 const hostUrl = 'http://localhost:8001'
 
 const fetchWeather = async (coords) => {
-    console.log('fetch')
     const { data } = await axios.get(`${hostUrl}/weather?lat=${coords.latitude}&lon=${coords.longitude}`);
+    console.log('fetch')
     return data;
 };
 

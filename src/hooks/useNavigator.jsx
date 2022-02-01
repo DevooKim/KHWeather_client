@@ -3,7 +3,9 @@ import fetchAddress from '../apis/fetchAddress';
 
 import { useLocationActionContext } from '../contexts/locationContext';
 
-const useNavigator = () => {
+const defaultOption = {isManual: false}
+
+const useNavigator = (options = defaultOption) => {
     const setLocation = useLocationActionContext();
     const [loading, setLoading] = useState(false);
 
@@ -17,7 +19,7 @@ const useNavigator = () => {
                         latitude: position.coords.latitude
                     };
                     const address = await fetchAddress(coords);
-                    console.log('nav: ', address);
+                    console.log('nav: ', address, coords);
                     setLocation({ coords, name: address }, false);
                     setLoading(false);
                 },
@@ -31,17 +33,19 @@ const useNavigator = () => {
                     console.log('nav error: ', error.message);
                     setLoading(false);
                 },
-                {
-                    // enableHighAccuracy: true,
-                    maximumAge: 3 * 60 * 1000,
-                    timeout: 10 * 1000
-                }
+                // {
+                //     // enableHighAccuracy: true,
+                //     maximumAge: 3 * 60 * 1000,
+                //     timeout: 10 * 1000
+                // }
             );
         }
     }, []);
 
     useEffect(() => {
-        executeNavigator();
+        if(!options.isManual){
+            executeNavigator();
+        }
     }, []);
 
     return { loading, executeNavigator };

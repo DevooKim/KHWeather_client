@@ -15,7 +15,7 @@ const grouped = (key, list) => list.map((l) => ({ key, value: l }));
 
 const AddressInput = memo(() => {
     const currentPosition = useLocationValueContext();
-    const { loading, executeNavigator } = useNavigator();
+    const { loading, executeNavigator } = useNavigator({isManual: true});
     const lastestSearch = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
     const [value, setValue] = useState({ value: '' });
     const [options, setOptions] = useState([]);

@@ -14,7 +14,7 @@ const fetchCoords = async (address) => {
         return documents.reduce(
             (prev, document) => ({
                 ...prev,
-                [document.address_name]: {coords: { latitude: document.x, longitude: document.y }}
+                [document.address_name]: {coords: { latitude: document.y, longitude: document.x }}
             }),
             {}
         );
