@@ -5,7 +5,7 @@ const headers = {
 };
 
 const fetchCoords = async (address) => {
-    if (!address.trim().length) return [];
+    if (!address.trim().length) return {};
     const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${address}`;
     try {
         const { data } = await axios.get(url, { headers });

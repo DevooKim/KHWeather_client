@@ -8,7 +8,7 @@ const Weather = () => {
     const location = useLocationValueContext();
     const { data, isError, isFetching, isLoading } = useFetchWeather(location);
     const {loading} = useNavigator()
-
+    // const loading = false
     return <>{isLoading || loading ? 'loading...' : <TodayCard />}</>;
 };
 

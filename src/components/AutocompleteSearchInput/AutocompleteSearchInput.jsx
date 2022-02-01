@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import { InputAdornment, TextField, Autocomplete } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputAdornment } from '@mui/material';
 
-const AutocompleteSearchInput = ({ label, options, size, sx, onInputKeyDown, ...props }) => (
+const AutocompleteSearchInput = ({ label, options, size, sx, ...props }) => (
     <Autocomplete
+        blurOnSelect
         disableClearable
         autoComplete
         autoHighlight
@@ -18,7 +17,6 @@ const AutocompleteSearchInput = ({ label, options, size, sx, onInputKeyDown, ...
         renderInput={(params) => (
             <TextField
                 {...params}
-                onKeyDown={onInputKeyDown}
                 label={label}
                 InputProps={{
                     ...params.InputProps,
@@ -35,16 +33,14 @@ const AutocompleteSearchInput = ({ label, options, size, sx, onInputKeyDown, ...
 
 AutocompleteSearchInput.propTypes = {
     label: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired,
+    options: PropTypes.arrayOf(PropTypes.shape({key: PropTypes.string, value: PropTypes.string})).isRequired,
     size: PropTypes.string,
-    onInputKeyDown: PropTypes.func,
     sx: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
 };
 
 AutocompleteSearchInput.defaultProps = {
     label: '',
     size: 'small',
-    onInputKeyDown: () => {},
     sx: {}
 };
 

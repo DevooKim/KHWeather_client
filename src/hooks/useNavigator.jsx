@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import fetchAddress from '../apis/fetchAddress';
+
 import { useLocationActionContext } from '../contexts/locationContext';
 
 const useNavigator = () => {
@@ -16,9 +17,9 @@ const useNavigator = () => {
                         latitude: position.coords.latitude
                     };
                     const address = await fetchAddress(coords);
-                    console.log(address);
-                    setLocation({coords, name: address}, false)
-                    setLoading(false)
+                    console.log("nav: ", address);
+                    setLocation({ coords, name: address }, false);
+                    setLoading(false);
                 },
                 (error) => {
                     // console.log('error: ', error);
@@ -27,15 +28,21 @@ const useNavigator = () => {
                         2: POSITION_UNAVAILABLE
                         3: TIMEOUT
                     */
-                   setLoading(false)
-                }
+                   console.log('nav error: ', error.message)
+                    setLoading(false);
+                },
+                // {
+                //     // enableHighAccuracy: true,
+                //     maximumAge: 3 * 3600,
+                //     timeout: 3000
+                // }
             );
         }
     }, []);
 
     useEffect(() => {
-        executeNavigator()
-    }, [])
+        executeNavigator();
+    }, []);
 
     return { loading, executeNavigator };
 };
