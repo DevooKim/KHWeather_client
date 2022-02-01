@@ -26,19 +26,26 @@ import {
     NavLink,
     useSearchParams
 } from 'react-router-dom';
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider
+} from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import Header from './components/Header';
-import { GeoContext, useGeoValueContext } from './contexts/geoContext';
-import useGeoSearchParams from './hooks/useGeoSearchParams';
+import { LocationContext, useLocationValueContext } from './contexts/locationContext';
 import TodayCard from './components/TodayCard/TodayCard';
+import Weather from './containers/Weather/Weather';
 const getDesignTokens = (mode) => (mode === 'light' ? themeLight : themeDark);
 const getChartTheme = (mode) => (mode === 'light' ? chartLight : chartDark);
 
-const Temp = () => {
-    const geo = useGeoValueContext()
-    useGeoSearchParams(geo || {})
-    return null
-}
-
+const queryClient = new QueryClient({ defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },});
 function App() {
     const [mode, setMode] = useState('light');
     const [state, setState] = useState(initialState);
@@ -64,8 +71,7 @@ function App() {
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <GeoContext>
-                    <Header />
+                <LocationContext>
                     <Router>
                         <Routes>
                             <Route
@@ -93,19 +99,28 @@ function App() {
                                                 <Daily />
                                             </WeatherData>
                                         </Container>
-                                        <Temp />
                                         <Footer />
                                     </>
                                 }
                             />
-                            <Route path="new" element={
-                                <Container maxWidth='md' sx={{pt: "2rem"}}>
-                                    <TodayCard />
-                                </Container>
-                            }/>
+                            <Route
+                                path="new"
+                                element={
+                                    <>
+                                        <Header />
+
+                                        <Container maxWidth="md" sx={{ pt: '2rem' }}>
+                                            <QueryClientProvider client={queryClient}>
+                                                <Weather />
+                                                <ReactQueryDevtools initialIsOpen={false} />
+                                            </QueryClientProvider>
+                                        </Container>
+                                    </>
+                                }
+                            />
                         </Routes>
                     </Router>
-                </GeoContext>
+                </LocationContext>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );

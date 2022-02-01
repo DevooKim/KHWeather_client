@@ -1,28 +1,28 @@
 import React, { useState, useCallback, memo, useEffect } from 'react';
-import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
-import { useGeoActionContext } from '../../contexts/geoContext';
+import { useLocationActionContext } from '../../contexts/locationContext';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
-import _fetchAddress from '../../apis/fetchAddress';
+import fetchCoords from '../../apis/fetchCoords';
 import usePrevious from '../../hooks/usePrevious';
 
 const AddressInput = memo(() => {
     const [value, setValue] = useState('');
     const [addresses, setAddresses] = useState([]);
-    const setGeo = useGeoActionContext();
+    const setLocation = useLocationActionContext();
     const prevValue = usePrevious(value);
 
     useEffect(() => {
-        if (prevValue !== value) {
-            setGeo({ ...addresses[value], name: value });
+        if (prevValue !== value && addresses[value]) {
+            setLocation({ ...addresses[value], name: value });
         }
     }, [value, addresses]);
 
     const fetchAddress = useCallback(
-        debounce(async (_value) => {
-            const result = await _fetchAddress(_value);
+        throttle(async (_value) => {
+            const result = await fetchCoords(_value);
             setAddresses(result);
-        }, 400),
+        }, 500),
         []
     );
 
@@ -31,8 +31,11 @@ const AddressInput = memo(() => {
     const onInputChange = (event, newInputVale) => fetchAddress(newInputVale);
 
     // const onInputKeyDown = (e) => {
-    //     if (e.keyCode === 13 && e.target?.value === value) {
-    //         console.log('submit: ', e.target.value, value);
+    //     // if (e.keyCode === 13 && prevValue !== value && addresses[value]) {
+    //     if (e.keyCode === 13) {
+    //         console.log(prevValue, value, addresses[value])
+    //         // console.log('submit: ', e.target.value, value);
+    //         // setLocation({ ...addresses[value], name: value });
     //         // change query
     //     }
     // };

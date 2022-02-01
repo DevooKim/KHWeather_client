@@ -6,9 +6,11 @@ import Brightness4 from '@mui/icons-material/Brightness4';
 
 import AddressInput from '../../containers/AddressInput';
 
+let render = 0;
 const NewHeader = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const onClick = useCallback(() => setIsDarkMode((prev) => !prev), []);
+    render += 1;
     console.log('render')
     return (
         <Paper
@@ -26,6 +28,7 @@ const NewHeader = () => {
                 <IconButton onClick={onClick}>
                     {isDarkMode ? <Brightness4 /> : <Brightness7 />}
                 </IconButton>
+                render: {render}
             </Box>
             <AddressInput />
         </Paper>

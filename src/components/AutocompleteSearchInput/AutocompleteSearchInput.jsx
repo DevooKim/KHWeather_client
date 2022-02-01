@@ -7,7 +7,6 @@ import { InputAdornment } from '@mui/material';
 
 const AutocompleteSearchInput = ({ label, options, size, sx, onInputKeyDown, ...props }) => (
     <Autocomplete
-        freeSolo
         disableClearable
         autoComplete
         autoHighlight
