@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import fetchAddress from '../apis/fetchAddress';
 import { useLocationActionContext } from '../contexts/locationContext';
 
@@ -6,7 +6,7 @@ const useNavigator = () => {
     const setLocation = useLocationActionContext();
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const executeNavigator = useCallback(() => {
         if ('geolocation' in navigator) {
             setLoading(true);
             navigator.geolocation.getCurrentPosition(
@@ -17,7 +17,7 @@ const useNavigator = () => {
                     };
                     const address = await fetchAddress(coords);
                     console.log(address);
-                    setLocation({coords, name: address})
+                    setLocation({coords, name: address}, false)
                     setLoading(false)
                 },
                 (error) => {
@@ -32,7 +32,12 @@ const useNavigator = () => {
             );
         }
     }, []);
-    return { loading };
+
+    useEffect(() => {
+        executeNavigator()
+    }, [])
+
+    return { loading, executeNavigator };
 };
 
 export default useNavigator;

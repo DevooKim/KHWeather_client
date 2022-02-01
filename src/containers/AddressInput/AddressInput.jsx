@@ -9,6 +9,7 @@ import usePrevious from '../../hooks/usePrevious';
 const AddressInput = memo(() => {
     const [value, setValue] = useState('');
     const [addresses, setAddresses] = useState([]);
+    const [options, setOptions] = useState([])
     const setLocation = useLocationActionContext();
     const prevValue = usePrevious(value);
 

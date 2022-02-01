@@ -9,7 +9,7 @@ const Weather = () => {
     const { data, isError, isFetching, isLoading } = useFetchWeather(location);
     const {loading} = useNavigator()
 
-    return <>{isFetching || loading ? 'loading...' : <TodayCard />}</>;
+    return <>{isLoading || loading ? 'loading...' : <TodayCard />}</>;
 };
 
 export default Weather;
