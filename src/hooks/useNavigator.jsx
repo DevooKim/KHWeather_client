@@ -17,7 +17,7 @@ const useNavigator = () => {
                         latitude: position.coords.latitude
                     };
                     const address = await fetchAddress(coords);
-                    console.log("nav: ", address);
+                    console.log('nav: ', address);
                     setLocation({ coords, name: address }, false);
                     setLoading(false);
                 },
@@ -28,14 +28,14 @@ const useNavigator = () => {
                         2: POSITION_UNAVAILABLE
                         3: TIMEOUT
                     */
-                   console.log('nav error: ', error.message)
+                    console.log('nav error: ', error.message);
                     setLoading(false);
                 },
-                // {
-                //     // enableHighAccuracy: true,
-                //     maximumAge: 3 * 3600,
-                //     timeout: 3000
-                // }
+                {
+                    // enableHighAccuracy: true,
+                    maximumAge: 3 * 60 * 1000,
+                    timeout: 10 * 1000
+                }
             );
         }
     }, []);

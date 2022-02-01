@@ -1,24 +1,29 @@
 import React, { useState, useCallback, memo, useEffect, useMemo, useRef } from 'react';
 import throttle from 'lodash/throttle';
-import { Button } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useLocationActionContext } from '../../contexts/locationContext';
+import { useLocationActionContext, useLocationValueContext } from '../../contexts/locationContext';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import fetchCoords from '../../apis/fetchCoords';
 import constants from '../../constants';
 import useNavigator from '../../hooks/useNavigator';
+import usePrevious from '../../hooks/usePrevious';
 
 const { LOCAL_STORAGE_KEY } = constants;
 
 const grouped = (key, list) => list.map((l) => ({ key, value: l }));
 
 const AddressInput = memo(() => {
-    const { executeNavigator } = useNavigator();
+    const currentPosition = useLocationValueContext();
+    const { loading, executeNavigator } = useNavigator();
     const lastestSearch = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState({ value: '' });
     const [options, setOptions] = useState([]);
+
     const inputRef = useRef('');
     const addressesRef = useRef({});
+    const prevValue = usePrevious(currentPosition.name);
+
     const lastestSearchResult = useMemo(
         () => grouped('최근 검색 결과', lastestSearch),
         [lastestSearch]
@@ -28,10 +33,15 @@ const AddressInput = memo(() => {
     console.log('render');
 
     useEffect(() => {
-        if (addressesRef.current[value?.value]) {
+        if (prevValue !== value.value && addressesRef.current[value?.value]) {
             setLocation({ ...addressesRef.current[value.value], name: value.value });
         }
     }, [value, addressesRef.current]);
+
+    useEffect(() => {
+        // console.log(currentPosition)
+        setValue({ value: currentPosition.name });
+    }, [currentPosition]);
 
     const fetchAddress = useCallback(
         throttle(async (_value) => {
@@ -53,7 +63,9 @@ const AddressInput = memo(() => {
 
     return (
         <>
-            <Button  variant="contained" onClick={executeNavigator}>nav</Button>
+            <LoadingButton loading={loading} variant="contained" onClick={executeNavigator}>
+                nav
+            </LoadingButton>
             <AutocompleteSearchInput
                 label="지역 검색"
                 options={inputRef.current.length > 0 ? options : lastestSearchResult}
@@ -63,6 +75,7 @@ const AddressInput = memo(() => {
                 size="small"
                 onChange={onChange}
                 onInputChange={onInputChange}
+                value={value}
                 sx={{ width: '15rem' }}
             />
         </>
