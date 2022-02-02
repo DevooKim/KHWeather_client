@@ -1,17 +1,20 @@
 import React, { useState, useCallback } from 'react';
-import { Paper, Box, Typography } from '@mui/material';
+import { Paper, Box, Typography, CircularProgress } from '@mui/material';
 import { IconButton } from '@material-ui/core';
 import Brightness7 from '@mui/icons-material/Brightness7';
 import Brightness4 from '@mui/icons-material/Brightness4';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 import AddressInput from '../../containers/AddressInput';
+import useNavigator from '../../hooks/useNavigator';
 
 let render = 0;
 const NewHeader = () => {
+    const { loading, executeNavigator } = useNavigator({ isManual: true });
     const [isDarkMode, setIsDarkMode] = useState(false);
     const onClick = useCallback(() => setIsDarkMode((prev) => !prev), []);
     render += 1;
-    console.log('render')
+    console.log('render');
     return (
         <Paper
             elevation={3}
@@ -30,7 +33,16 @@ const NewHeader = () => {
                 </IconButton>
                 render: {render}
             </Box>
-            <AddressInput />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <IconButton onClick={executeNavigator}>
+                        <GpsFixedIcon />
+                    </IconButton>
+                )}
+                <AddressInput />
+            </Box>
         </Paper>
     );
 };

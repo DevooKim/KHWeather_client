@@ -1,12 +1,10 @@
 import React, { useState, useCallback, memo, useEffect, useMemo, useRef } from 'react';
 import throttle from 'lodash/throttle';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useLocationActionContext, useLocationValueContext } from '../../contexts/locationContext';
 import AutocompleteSearchInput from '../../components/AutocompleteSearchInput';
 import fetchCoords from '../../apis/fetchCoords';
 import constants from '../../constants';
-import useNavigator from '../../hooks/useNavigator';
 import usePrevious from '../../hooks/usePrevious';
 
 const { LOCAL_STORAGE_KEY } = constants;
@@ -15,7 +13,6 @@ const grouped = (key, list) => list.map((l) => ({ key, value: l }));
 
 const AddressInput = memo(() => {
     const currentPosition = useLocationValueContext();
-    const { loading, executeNavigator } = useNavigator({isManual: true});
     const lastestSearch = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
     const [value, setValue] = useState({ value: '' });
     const [options, setOptions] = useState([]);
@@ -62,23 +59,18 @@ const AddressInput = memo(() => {
     };
 
     return (
-        <>
-            <LoadingButton loading={loading} variant="contained" onClick={executeNavigator}>
-                nav
-            </LoadingButton>
-            <AutocompleteSearchInput
-                label="지역 검색"
-                options={inputRef.current.length > 0 ? options : lastestSearchResult}
-                groupBy={(option) => option.key}
-                getOptionLabel={(option) => option.value}
-                noOptionsText="검색 결과가 없습니다."
-                size="small"
-                onChange={onChange}
-                onInputChange={onInputChange}
-                value={value}
-                sx={{ width: '15rem' }}
-            />
-        </>
+        <AutocompleteSearchInput
+            label="지역 검색"
+            options={inputRef.current.length > 0 ? options : lastestSearchResult}
+            groupBy={(option) => option.key}
+            getOptionLabel={(option) => option.value}
+            noOptionsText="검색 결과가 없습니다."
+            size="small"
+            onChange={onChange}
+            onInputChange={onInputChange}
+            value={value}
+            sx={{ width: '15rem' }}
+        />
     );
 });
 
