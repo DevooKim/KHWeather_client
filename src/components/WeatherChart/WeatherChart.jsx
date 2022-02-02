@@ -60,9 +60,13 @@ const formingData = ({ yesterdays, todays, tomorrows }) => {
     ];
 };
 
-const WeatherChart = ({ yesterdays, todays, tomorrows }) => {
+const WeatherChart = ({ lastUpdate, yesterdays, todays, tomorrows }) => {
     const data = useMemo(() => formingData({ yesterdays, todays, tomorrows }), []);
     const minMax = useMemo(() => getMinMax({ yesterdays, todays, tomorrows }), []);
+    const updateTime = useMemo(() => {
+        const date = new Date(lastUpdate)
+        return `${date.getDate()}시 ${date.getMinutes()}분`
+    })
     return (
         <WeatherCard sx={{ overflowX: 'scroll' }}>
             <Box sx={{ height: '25rem', width: '100rem', position: 'relative' }}> 
@@ -74,6 +78,7 @@ const WeatherChart = ({ yesterdays, todays, tomorrows }) => {
                         marginLeft: '40px'
                     }}
                 >
+                    업데이트: {updateTime}
                     <Box
                         sx={{
                             display: 'flex',
@@ -130,7 +135,7 @@ const WeatherChart = ({ yesterdays, todays, tomorrows }) => {
                         }
                     }}
                     data={data}
-                    margin={{ top: 60, right: 30, bottom: 70, left: 60 }}
+                    margin={{ top: 85, right: 30, bottom: 70, left: 60 }}
                     yScale={{
                         type: 'linear',
                         min: minMax.min - 3, // sm: 5
@@ -189,7 +194,6 @@ const WeatherChart = ({ yesterdays, todays, tomorrows }) => {
                             ]
                         }
                     ]}
-                    motionConfig="molasses"
                 />
             </Box>
         </WeatherCard>

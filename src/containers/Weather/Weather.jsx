@@ -11,7 +11,7 @@ const Weather = () => {
     const { data, isError, isFetching, isLoading } = useFetchWeather(location);
     const { loading } = useNavigator();
 
-    const { weather } = data || {};
+    const { weather, lastUpdate } = data || {};
     return (
         <>
             {isFetching || loading ? (
@@ -19,7 +19,7 @@ const Weather = () => {
             ) : (
                 <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
                     <TodayCard current={weather.current} yesterdays={weather.yesterdays} />
-                    <WeatherChart yesterdays={weather.yesterdays} todays={weather.todays} tomorrows={weather.tomorrows}/>
+                    <WeatherChart lastUpdate={lastUpdate} yesterdays={weather.yesterdays} todays={weather.todays} tomorrows={weather.tomorrows}/>
                 </Box>
             )}
         </>
