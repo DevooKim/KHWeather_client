@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 import WeatherIcons from '../weathers/WeatherIcons';
 import WeatherID from '../weathers/getWeatherID';
 import getHourIndex from '../../utils/getHourIndex';
+import WeatherCard from '../WeatherCard/WeatherCard';
 
 const setDiffTempComment = (past, current) => {
     const diff = past - current;
@@ -58,16 +59,7 @@ const TodayCard = ({ current, yesterdays }) => {
     );
 
     return (
-        <Paper
-            elevation={3}
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                py: '0.5rem'
-            }}
-        >
+        <WeatherCard>
             <Box sx={{ fontSize: '2.5rem' }}>{diffTempComment}</Box>
             <Box
                 sx={{
@@ -90,7 +82,7 @@ const TodayCard = ({ current, yesterdays }) => {
                 <p>{weatherCondition}</p>
                 <p>체감온도: {current.feels_like}℃</p>
             </Box>
-        </Paper>
+        </WeatherCard>
     );
 };
 
@@ -98,11 +90,17 @@ TodayCard.propTypes = {
     current: PropTypes.shape({
         dt: PropTypes.shape({ date: PropTypes.string.isRequired }),
         temp: PropTypes.number.isRequired,
-        weather: PropTypes.arrayOf(PropTypes.shape({main: PropTypes.string.isRequired, id: PropTypes.number.isRequired})),
+        weather: PropTypes.arrayOf(
+            PropTypes.shape({
+                main: PropTypes.string.isRequired,
+                id: PropTypes.number.isRequired,
+                icon: PropTypes.string
+            })
+        ),
         rain: PropTypes.oneOfType([PropTypes.oneOf([undefined]), PropTypes.array]),
         feels_like: PropTypes.number.isRequired
     }).isRequired,
-    yesterdays: PropTypes.arrayOf(PropTypes.shape({temp: PropTypes.number.isRequired})).isRequired
+    yesterdays: PropTypes.arrayOf(PropTypes.shape({ temp: PropTypes.number.isRequired })).isRequired
 };
 
 export default TodayCard;
