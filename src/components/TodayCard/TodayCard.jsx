@@ -59,7 +59,15 @@ const TodayCard = ({ current, yesterdays }) => {
     );
 
     return (
-        <WeatherCard>
+        <WeatherCard
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                py: '0.5rem'
+            }}
+        >
             <Box sx={{ fontSize: '2.5rem' }}>{diffTempComment}</Box>
             <Box
                 sx={{
