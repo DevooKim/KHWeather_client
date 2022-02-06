@@ -31,9 +31,9 @@ ChartJS.register(
 );
 // ChartJS.register(ChartDataLabels);
 
-const getMinMax = ({ mainTempData, subTempData, rainData }) => {
-    const maxTemp = max([...mainTempData, ...subTempData]);
-    const minTemp = min([...mainTempData, ...subTempData]);
+const getMinMax = ({ todayChartData, yesterdayChartData, rainData }) => {
+    const maxTemp = max([...todayChartData, ...yesterdayChartData]);
+    const minTemp = min([...todayChartData, ...yesterdayChartData]);
     const maxRain = max(rainData);
 
     return {
@@ -53,23 +53,14 @@ const convertDate = (value) => {
 
 const convertData = ({ yesterdays, todays, tomorrows }) => {
     const labels = [...yesterdays, ...todays, ...tomorrows].map((v) => convertDate(v.dt.date));
-    const mainTempData = [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        ...todays,
-        ...tomorrows
-    ].map((v) => v?.temp);
-    const subTempData = [...yesterdays, ...yesterdays, ...todays].map((v) => v.temp);
+    const todayChartData = [...Array(8).fill(null), ...todays, ...todays].map((v) => v?.temp);
+    const yesterdayChartData = [...yesterdays, ...yesterdays].map((v) => v?.temp);
+    const tomorrowChartData = [...Array(16).fill(null), ...tomorrows].map((v) => v?.temp);
     const rainData = [...yesterdays, ...todays, ...tomorrows].map(
         (v) => (v.rain && v.rain['1h']) || (v.snow && v.snow['1h'])
     );
-    return { labels, mainTempData, subTempData, rainData };
+
+    return { labels, todayChartData, yesterdayChartData, tomorrowChartData, rainData };
 };
 
 function getGradient(ctx, chartArea) {
@@ -89,12 +80,18 @@ function getGradient(ctx, chartArea) {
 
     return gradient;
 }
-const setupData = ({ labels, mainTempData, subTempData, rainData }) => ({
+const setupData = ({
+    labels,
+    todayChartData,
+    yesterdayChartData,
+    tomorrowChartData,
+    rainData
+}) => ({
     labels,
     datasets: [
         {
             label: '오늘 날씨',
-            data: mainTempData,
+            data: todayChartData,
             borderColor: 'rgb(255, 99, 132)',
             // borderColor: function (context) {
             //     const chart = context.chart;
@@ -119,7 +116,7 @@ const setupData = ({ labels, mainTempData, subTempData, rainData }) => ({
         },
         {
             label: '어제 날씨',
-            data: subTempData,
+            data: yesterdayChartData,
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
             // pointBorderColor: 'black',
@@ -134,11 +131,27 @@ const setupData = ({ labels, mainTempData, subTempData, rainData }) => ({
             order: 2
         },
         {
+            label: '내일 날씨',
+            data: tomorrowChartData,
+            borderColor: 'rgb(179,126,250)',
+            backgroundColor: 'rgba(179,126,250, 0.5)',
+            // pointBorderColor: 'black',
+            radius: 0,
+            datalabels: {
+                // clamp: true
+                // borderRadius: 16,
+                // borderWidth: 16,
+            },
+            // xAxisID: 'xAxisLine',
+            yAxisID: 'yAxisLine',
+            order: 3
+        },
+        {
             type: 'bar',
             label: '강수량',
             data: rainData,
             backgroundColor: 'lightblue',
-           
+
             // xAxisID: 'xAxisBar',
             datalabels: {
                 display: (context) => {
@@ -152,7 +165,7 @@ const setupData = ({ labels, mainTempData, subTempData, rainData }) => ({
                 formatter: (value) => value
             },
             yAxisID: 'yAxisBar',
-            order: 3
+            order: 4
         }
     ]
 });
@@ -202,7 +215,7 @@ const setupOptions = ({ maxTemp, minTemp, maxRain }) => ({
                     const label = context[0].label || '';
                     const newLabel = label.replace(/,/g, ' ');
                     return newLabel;
-                },
+                }
             }
         }
     },
@@ -251,12 +264,22 @@ const WeatherChart = ({ lastUpdate, yesterdays, todays, tomorrows }) => {
         const date = new Date(lastUpdate);
         return `${date.getDate()}시 ${date.getMinutes()}분`;
     });
-    const { labels, mainTempData, subTempData, rainData } = useMemo(
+    const { labels, todayChartData, yesterdayChartData, tomorrowChartData, rainData } = useMemo(
         () => convertData({ yesterdays, todays, tomorrows }),
         []
     );
-    const chartData = setupData({ labels, mainTempData, subTempData, rainData });
-    const { maxTemp, minTemp, maxRain } = getMinMax({ mainTempData, subTempData, rainData });
+    const chartData = setupData({
+        labels,
+        todayChartData,
+        yesterdayChartData,
+        tomorrowChartData,
+        rainData
+    });
+    const { maxTemp, minTemp, maxRain } = getMinMax({
+        todayChartData,
+        yesterdayChartData,
+        rainData
+    });
     const options = setupOptions({ maxTemp, minTemp, maxRain });
 
     return (
