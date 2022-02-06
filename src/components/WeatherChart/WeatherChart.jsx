@@ -1,81 +1,274 @@
 import React, { useMemo } from 'react';
-// import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { WiThunderstorm } from 'react-icons/wi';
-
-import { ResponsiveLine } from '@nivo/line';
-import { maxBy, minBy, max, min } from 'lodash';
+import { Line } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+// import 'chart.js/auto';
+import {
+    Chart as ChartJS,
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip
+} from 'chart.js';
+import { max, min } from 'lodash';
 
 import WeatherCard from '../WeatherCard/WeatherCard';
 import WeatherIcons from '../weathers/WeatherIcons';
 
-const getMinMax = ({ yesterdays, todays, tomorrows }) => {
-    const yesterdayMin = minBy(yesterdays, (v) => v.temp);
-    const todayMin = minBy(todays, (v) => v.temp);
-    const tomorrowMin = minBy(tomorrows, (v) => v.temp);
-    const yesterdayMax = maxBy(yesterdays, (v) => v.temp);
-    const todayMax = maxBy(todays, (v) => v.temp);
-    const tomorrowMax = maxBy(tomorrows, (v) => v.temp);
+ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    ChartDataLabels,
+    ChartDataLabels
+);
+// ChartJS.register(ChartDataLabels);
+
+const getMinMax = ({ mainTempData, subTempData, rainData }) => {
+    const maxTemp = max([...mainTempData, ...subTempData]);
+    const minTemp = min([...mainTempData, ...subTempData]);
+    const maxRain = max(rainData);
 
     return {
-        max: max([yesterdayMax.temp, todayMax.temp, tomorrowMax.temp]),
-        min: min([yesterdayMin.temp, todayMin.temp, tomorrowMin.temp])
+        maxTemp,
+        minTemp,
+        maxRain
     };
 };
 
-const formingDate = (value) => {
+const convertDate = (value) => {
     const newDate = new Date(value);
-
     const month = newDate.getMonth() + 1;
     const date = newDate.getDate();
     const hour = newDate.getHours();
-    return { month, date, hour };
+    return hour === 0 ? [`${month}월 ${date}일`, `${hour}시`] : `${hour}시`;
 };
 
-const setData = (data, useOffset = false) => {
-    const chartData = [];
-    for (let i = 0; i < data.length; i += 1) {
-        const newDate = new Date(data[i].dt.date);
-        if (useOffset) {
-            newDate.setDate(newDate.getDate() + 1);
-        }
-        chartData.push({
-            x: newDate.toISOString(),
-            y: data[i].temp,
-            icon: data[i].weather[0].icon
-        });
+const convertData = ({ yesterdays, todays, tomorrows }) => {
+    const labels = [...yesterdays, ...todays, ...tomorrows].map((v) => convertDate(v.dt.date));
+    const mainTempData = [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        ...todays,
+        ...tomorrows
+    ].map((v) => v?.temp);
+    const subTempData = [...yesterdays, ...yesterdays, ...todays].map((v) => v.temp);
+    const rainData = [...yesterdays, ...todays, ...tomorrows].map(
+        (v) => (v.rain && v.rain['1h']) || (v.snow && v.snow['1h'])
+    );
+    return { labels, mainTempData, subTempData, rainData };
+};
+
+function getGradient(ctx, chartArea) {
+    let width, height, gradient;
+    const chartWidth = chartArea.right - chartArea.left;
+    const chartHeight = chartArea.bottom - chartArea.top;
+    if (!gradient || width !== chartWidth || height !== chartHeight) {
+        // Create the gradient because this is either the first render
+        // or the size of the chart has changed
+        width = chartWidth;
+        height = chartHeight;
+        gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+        gradient.addColorStop(0, 'blue');
+        gradient.addColorStop(0.5, 'yellow');
+        gradient.addColorStop(1, 'red');
     }
-    return chartData;
-};
 
-const formingData = ({ yesterdays, todays, tomorrows }) => {
-    const mainTodayData = setData(todays);
-    const mainTomorrowData = setData(tomorrows);
-    const subYesterdayData1 = setData(yesterdays);
-    const subYesterdayData2 = setData(yesterdays, true);
-    const subTodayData = setData(todays, true);
-    return [
-        { id: '어제 날씨', data: [...subYesterdayData1, ...subYesterdayData2, ...subTodayData] },
-        { id: '오늘 날씨', data: [...mainTodayData, ...mainTomorrowData] }
-    ];
-};
+    return gradient;
+}
+const setupData = ({ labels, mainTempData, subTempData, rainData }) => ({
+    labels,
+    datasets: [
+        {
+            label: '오늘 날씨',
+            data: mainTempData,
+            borderColor: 'rgb(255, 99, 132)',
+            // borderColor: function (context) {
+            //     const chart = context.chart;
+            //     const { ctx, chartArea } = chart;
+
+            //     if (!chartArea) {
+            //         // This case happens on initial chart load
+            //         return;
+            //     }
+            //     return getGradient(ctx, chartArea);
+            // },
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            // pointBorderColor: 'black',
+            radius: 0,
+            datalabels: {
+                // borderRadius: 16,
+                // borderWidth: 16,
+            },
+            // xAxisID: 'xAxisLine',
+            yAxisID: 'yAxisLine',
+            order: 1
+        },
+        {
+            label: '어제 날씨',
+            data: subTempData,
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            // pointBorderColor: 'black',
+            radius: 0,
+            datalabels: {
+                // clamp: true
+                // borderRadius: 16,
+                // borderWidth: 16,
+            },
+            // xAxisID: 'xAxisLine',
+            yAxisID: 'yAxisLine',
+            order: 2
+        },
+        {
+            type: 'bar',
+            label: '강수량',
+            data: rainData,
+            backgroundColor: 'lightblue',
+           
+            // xAxisID: 'xAxisBar',
+            datalabels: {
+                display: (context) => {
+                    const index = context.dataIndex;
+                    const data = context.dataset?.data;
+                    return data[index] > 0;
+                },
+                backgroundColor: 'transparent',
+                borderWidth: 0,
+                color: 'black',
+                formatter: (value) => value
+            },
+            yAxisID: 'yAxisBar',
+            order: 3
+        }
+    ]
+});
+
+const setupOptions = ({ maxTemp, minTemp, maxRain }) => ({
+    responsive: true,
+    stacked: false,
+    interaction: {
+        mode: 'index',
+        intersect: false
+    },
+    plugins: {
+        datalabels: {
+            backgroundColor: (context) => {
+                if (context.active) return '';
+                if (context.dataIndex % 8 === 0) return 'black';
+                return 'white';
+            },
+            borderColor: (context) => context.dataset.borderColor,
+            borderRadius: 16,
+            borderWidth: (context) => (context.active ? 0 : 3),
+            color: (context) => (context.dataIndex % 8 === 0 ? 'white' : 'black'),
+            font: {
+                weight: 'bold'
+            },
+            offset: 8,
+            formatter: (value, context) => (context.active ? '' : value)
+        },
+        legend: {
+            position: 'bottom',
+            labels: {
+                font: {
+                    size: 14,
+                    weight: 'bold'
+                    // fontColor: globalTheme.secondaryColor
+                }
+            }
+        },
+        tooltip: {
+            position: 'nearest',
+            // backgroundColor: 'white',
+            titleFont: { style: 'bold', size: 16 },
+            bodyFont: { size: 14 },
+            caretSize: 16,
+            callbacks: {
+                title: (context) => {
+                    const label = context[0].label || '';
+                    const newLabel = label.replace(/,/g, ' ');
+                    return newLabel;
+                },
+            }
+        }
+    },
+    layout: {
+        padding: { top: 85, right: 20, left: 20 }
+    },
+    scales: {
+        x: {
+            ticks: {
+                autoSkip: false,
+                color: 'black',
+                font: {
+                    size: 14,
+                    weight: 'bold'
+                }
+                // callback: (value, index, ticks) => {
+                //     console.log(ticks[0])
+                // }
+            },
+            grid: {
+                lineWidth: 2,
+                color: 'pink',
+                drawBorder: true,
+                offset: false
+                // drawOnChartArea: false
+            }
+        },
+        yAxisLine: {
+            display: false,
+            suggestedMin: minTemp - 5,
+            suggestedMax: maxTemp + 5
+        },
+        yAxisBar: {
+            display: false,
+            // suggestedMin: 0,
+            suggestedMax: maxRain * 5
+            // beginAtZero: true
+        }
+    },
+    maintainAspectRatio: false
+});
 
 const WeatherChart = ({ lastUpdate, yesterdays, todays, tomorrows }) => {
-    const data = useMemo(() => formingData({ yesterdays, todays, tomorrows }), []);
-    const minMax = useMemo(() => getMinMax({ yesterdays, todays, tomorrows }), []);
+    console.log('chartRender');
     const updateTime = useMemo(() => {
-        const date = new Date(lastUpdate)
-        return `${date.getDate()}시 ${date.getMinutes()}분`
-    })
+        const date = new Date(lastUpdate);
+        return `${date.getDate()}시 ${date.getMinutes()}분`;
+    });
+    const { labels, mainTempData, subTempData, rainData } = useMemo(
+        () => convertData({ yesterdays, todays, tomorrows }),
+        []
+    );
+    const chartData = setupData({ labels, mainTempData, subTempData, rainData });
+    const { maxTemp, minTemp, maxRain } = getMinMax({ mainTempData, subTempData, rainData });
+    const options = setupOptions({ maxTemp, minTemp, maxRain });
+
     return (
         <WeatherCard sx={{ overflowX: 'scroll' }}>
-            <Box sx={{ height: '25rem', width: '100rem', position: 'relative' }}> 
+            <Box sx={{ width: '90rem', position: 'relative' }}>
                 <Box
                     sx={{
-                        width: 'calc(100rem - 52px)',
+                        width: '90rem',
                         position: 'absolute',
-                        top: '15px',
-                        marginLeft: '40px'
+                        top: '20px',
+                        left: '30px',
+                        paddingRight: '60px'
                     }}
                 >
                     업데이트: {updateTime}
@@ -109,92 +302,7 @@ const WeatherChart = ({ lastUpdate, yesterdays, todays, tomorrows }) => {
                         ))}
                     </Box>
                 </Box>
-                <ResponsiveLine
-                    theme={{
-                        fontSize: 14,
-                        axis: {
-                            ticks: {
-                                text: {
-                                    fontSize: 16,
-                                    fill: '#333333'
-                                }
-                            }
-                        },
-                        legends: {
-                            text: {
-                                fontSize: 16,
-                                fill: '#333333'
-                            }
-                        },
-                        crosshair: {
-                            line: {
-                                stroke: 'pink',
-                                strokeWidth: 4,
-                                strokeOpacity: 1
-                            }
-                        }
-                    }}
-                    data={data}
-                    margin={{ top: 85, right: 30, bottom: 70, left: 60 }}
-                    yScale={{
-                        type: 'linear',
-                        min: minMax.min - 3, // sm: 5
-                        max: minMax.max + 3 // sm: 5
-                    }}
-                    curve="cardinal"
-                    axisTop={null}
-                    axisRight={null}
-                    axisBottom={{
-                        format: (value) => {
-                            const { month, date, hour } = formingDate(value);
-                            return hour === 0 ? `${month}월 ${date}일 ${hour}시` : `${hour}시`;
-                        },
-                        orient: 'bottom',
-                        tickSize: 15,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legendOffset: 0,
-                        legendPosition: 'middle'
-                    }}
-                    axisLeft={null}
-                    enableGridX={true}
-                    enableGridY={false}
-                    lineWidth={4}
-                    pointSize={28}
-                    pointColor="#75ff1a"
-                    pointBorderWidth={4}
-                    pointBorderColor={{ from: 'serieColor' }}
-                    enablePointLabel={true}
-                    pointLabelYOffset={5}
-                    enableSlices="x"
-                    useMesh={true}
-                    legends={[
-                        {
-                            anchor: 'bottom',
-                            direction: 'row',
-                            justify: false,
-                            translateX: 100,
-                            translateY: 65,
-                            itemsSpacing: 0,
-                            itemDirection: 'left-to-right',
-                            itemWidth: 100,
-                            itemHeight: 10,
-                            itemOpacity: 0.75,
-                            symbolSize: 20,
-                            symbolShape: 'circle',
-                            symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemBackground: 'rgba(0, 0, 0, .03)',
-                                        itemOpacity: 1
-                                    }
-                                }
-                            ]
-                        }
-                    ]}
-                />
+                <Line height={400} options={options} data={chartData} />
             </Box>
         </WeatherCard>
     );
