@@ -1,4 +1,4 @@
-import WeatherID from "../components/weathers/getWeatherID";
+import WeatherID from "./getWeatherID";
 
 const getWeatherCondition = ({ condition, amountOfRain }) => {
     switch (condition.main) {

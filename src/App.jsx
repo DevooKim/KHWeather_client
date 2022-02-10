@@ -1,45 +1,20 @@
 import React, { createContext, useMemo, useState } from 'react';
-import Daily from './components/daily/Daily';
-import Forecast from './components/forecast/Forecast';
-import Footer from './components/Footer';
-import WeatherData from './components/weathers/WeatherData';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { Box, Container, CssBaseline } from '@mui/material';
+import { Container, CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import Footer from './components/Footer';
+import Header from './components/Header';
+import { LocationContext } from './contexts/locationContext';
+import Weather from './containers/Weather/Weather';
 import { themeLight, themeDark, chartLight, chartDark } from './theme/theme.js';
 import './theme/App.css';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const ColorModeContext = createContext();
 export const ChartTheme = createContext(chartLight);
 
-const initialState = {
-    region: '대전광역시 서구 둔산동',
-    geo: { lat: 36.354687, lon: 127.420997 }
-};
-
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Navigate,
-    NavLink,
-    useSearchParams
-} from 'react-router-dom';
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-    QueryClient,
-    QueryClientProvider
-} from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import Header from './components/Header';
-import { LocationContext, useLocationValueContext } from './contexts/locationContext';
-import TodayCard from './components/TodayCard/TodayCard';
-import Weather from './containers/Weather/Weather';
 const getDesignTokens = (mode) => (mode === 'light' ? themeLight : themeDark);
-const getChartTheme = (mode) => (mode === 'light' ? chartLight : chartDark);
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -50,10 +25,8 @@ const queryClient = new QueryClient({
 });
 function App() {
     const [mode, setMode] = useState('light');
-    const [state, setState] = useState(initialState);
 
     const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-    const chartTheme = useMemo(() => getChartTheme(mode), [mode]);
 
     const colorMode = useMemo(
         () => ({
@@ -65,62 +38,18 @@ function App() {
         []
     );
 
-    const handleState = (value) => {
-        return setState(value);
-    };
-
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <LocationContext>
-                    <Router>
-                        <Routes>
-                            <Route
-                                path=""
-                                element={
-                                    <>
-                                        <Container maxWidth={'md'}>
-                                            <WeatherData geo={state.geo}>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: {
-                                                            xs: 'center',
-                                                            sm: 'space-between'
-                                                        },
-                                                        mt: 1
-                                                    }}
-                                                >
-                                                    {state.region}
-                                                </Box>
-                                                <ChartTheme.Provider value={chartTheme}>
-                                                    <Forecast />
-                                                </ChartTheme.Provider>
-                                                <Daily />
-                                            </WeatherData>
-                                        </Container>
-                                        <Footer />
-                                    </>
-                                }
-                            />
-                            <Route
-                                path="new"
-                                element={
-                                    <>
-                                        <Header />
-                                        <Container maxWidth="md" sx={{ pt: '2rem', pb: '3rem' }}>
-                                            <QueryClientProvider client={queryClient}>
-                                                <Weather />
-                                            </QueryClientProvider>
-                                        </Container>
-                                        <Footer />
-                                    </>
-                                }
-                            />
-                        </Routes>
-                    </Router>
+                    <Header />
+                    <Container maxWidth="md" sx={{ pt: '2rem', pb: '3rem' }}>
+                        <QueryClientProvider client={queryClient}>
+                            <Weather />
+                        </QueryClientProvider>
+                    </Container>
+                    <Footer />
                 </LocationContext>
             </ThemeProvider>
         </ColorModeContext.Provider>

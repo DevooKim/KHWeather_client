@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Paper, Box, Typography, CircularProgress } from '@mui/material';
-import { IconButton } from '@material-ui/core';
+import { Paper, Box, Typography, CircularProgress, IconButton } from '@mui/material';
 import Brightness7 from '@mui/icons-material/Brightness7';
 import Brightness4 from '@mui/icons-material/Brightness4';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';

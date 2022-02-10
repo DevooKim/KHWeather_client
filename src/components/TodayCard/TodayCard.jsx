@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 
 import WeatherIcons from '../weathers/WeatherIcons';
-import WeatherID from '../weathers/getWeatherID';
 import getHourIndex from '../../utils/getHourIndex';
 import WeatherCard from '../WeatherCard/WeatherCard';
 import getWeatherCondition from '../../utils/getWeatherCondition';
