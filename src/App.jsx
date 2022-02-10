@@ -1,7 +1,7 @@
 import React, { createContext, useMemo, useState } from 'react';
 import Daily from './components/daily/Daily';
 import Forecast from './components/forecast/Forecast';
-import Footer from './components/footer/Footer';
+import Footer from './components/Footer';
 import WeatherData from './components/weathers/WeatherData';
 
 import { Box, Container, CssBaseline } from '@mui/material';
@@ -41,11 +41,13 @@ import Weather from './containers/Weather/Weather';
 const getDesignTokens = (mode) => (mode === 'light' ? themeLight : themeDark);
 const getChartTheme = (mode) => (mode === 'light' ? chartLight : chartDark);
 
-const queryClient = new QueryClient({ defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },});
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false
+        }
+    }
+});
 function App() {
     const [mode, setMode] = useState('light');
     const [state, setState] = useState(initialState);
@@ -108,13 +110,12 @@ function App() {
                                 element={
                                     <>
                                         <Header />
-
-                                        <Container maxWidth="md" sx={{ pt: '2rem' }}>
+                                        <Container maxWidth="md" sx={{ pt: '2rem', pb: '3rem' }}>
                                             <QueryClientProvider client={queryClient}>
                                                 <Weather />
-                                                <ReactQueryDevtools initialIsOpen={false} />
                                             </QueryClientProvider>
                                         </Container>
+                                        <Footer />
                                     </>
                                 }
                             />
