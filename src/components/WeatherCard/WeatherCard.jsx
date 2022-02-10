@@ -4,8 +4,12 @@ import Paper from '@mui/material/Paper';
 
 const WeatherCard = ({ children, sx }) => (
     <Paper
+    
         elevation={3}
-        sx={sx}
+        sx={{
+            ...sx,
+            borderRadius: 2
+        }}
     >
         {children}
     </Paper>

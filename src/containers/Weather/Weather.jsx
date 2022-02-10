@@ -2,6 +2,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 import TodayCard from '../../components/TodayCard/TodayCard';
 import WeatherChart from '../../components/WeatherChart';
+import WeatherDaily from '../../components/WeatherDaily/WeatherDaily';
 import { useLocationValueContext } from '../../contexts/locationContext';
 import useFetchWeather from '../../hooks/useFetchWeather';
 import useNavigator from '../../hooks/useNavigator';
@@ -20,6 +21,7 @@ const Weather = () => {
                 <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
                     <TodayCard current={weather.current} yesterdays={weather.yesterdays} />
                     <WeatherChart lastUpdate={lastUpdate} yesterdays={weather.yesterdays} todays={weather.todays} tomorrows={weather.tomorrows}/>
+                    <WeatherDaily daily={weather.daily}/>
                 </Box>
             )}
         </>

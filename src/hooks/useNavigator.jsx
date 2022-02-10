@@ -33,11 +33,11 @@ const useNavigator = (options = defaultOption) => {
                     console.log('nav error: ', error.message);
                     setLoading(false);
                 },
-                // {
-                //     // enableHighAccuracy: true,
-                //     maximumAge: 3 * 60 * 1000,
-                //     timeout: 10 * 1000
-                // }
+                {
+                    // enableHighAccuracy: true,
+                    maximumAge: 1.5 * 60 * 1000,
+                    timeout: 10 * 1000
+                }
             );
         }
     }, []);

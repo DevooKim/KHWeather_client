@@ -71,15 +71,15 @@
 //         backgroundColor: globalTheme.line.precipitation,
 //         borderColor: globalTheme.line.precipitation,
         // datalabels: {
-        //   align: "end",
-        //   anchor: "end",
-        //   borderWidth: 1,
-        //   borderRadius: 0,
-        //   backgroundColor: globalTheme.line.precipitation,
-        //   color: fade(globalTheme.secondaryColor, 0.8),
-        //   formatter: (value) => {
-        //     return value;
-        //   },
+          // align: "end",
+          // anchor: "end",
+          // borderWidth: 1,
+          // borderRadius: 0,
+          // backgroundColor: globalTheme.line.precipitation,
+          // color: fade(globalTheme.secondaryColor, 0.8),
+          // formatter: (value) => {
+          //   return value;
+          // },
         // },
 //         yAxisID: "y-axis-2",
 //       },

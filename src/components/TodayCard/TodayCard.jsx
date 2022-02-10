@@ -6,6 +6,7 @@ import WeatherIcons from '../weathers/WeatherIcons';
 import WeatherID from '../weathers/getWeatherID';
 import getHourIndex from '../../utils/getHourIndex';
 import WeatherCard from '../WeatherCard/WeatherCard';
+import getWeatherCondition from '../../utils/getWeatherCondition';
 
 const setDiffTempComment = (past, current) => {
     const diff = past - current;
@@ -19,30 +20,6 @@ const setDiffTempComment = (past, current) => {
     return `현재 기온은 어제와 동일합니다.`;
 };
 
-const setWeatherCondition = ({ condition, amountOfRain }) => {
-    switch (condition.main) {
-        case 'Thunderstorm':
-            return '뇌우';
-        case 'Drizzle':
-            return '이슬비';
-        case 'Rain': {
-            if (amountOfRain) {
-                return `${WeatherID(condition.id)} ${amountOfRain}`;
-            }
-            return `${WeatherID(condition.id)}`;
-        }
-        case 'Snow':
-            return '눈';
-        case 'Clear':
-            return '맑음';
-        case 'Clouds':
-            return '흐림';
-
-        default:
-            return `${WeatherID(condition.id)}`;
-    }
-};
-
 const TodayCard = ({ current, yesterdays }) => {
     const hourIndex = useMemo(() => getHourIndex(new Date(current.dt.date).getHours()), []);
     const diffTempComment = useMemo(
@@ -51,7 +28,7 @@ const TodayCard = ({ current, yesterdays }) => {
     );
     const weatherCondition = useMemo(
         () =>
-            setWeatherCondition({
+            getWeatherCondition({
                 condition: current.weather[0],
                 amountOfRain: current.rain && `${current.rain['1h']}mm`
             }),
