@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import OpenWeatherLogo from './asset/OpenWeather.png'
+import OpenWeatherLogo from '/asset/OpenWeather.png'
 
 const Footer = () => (
     <Box
