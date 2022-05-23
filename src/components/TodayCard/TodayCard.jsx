@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import WeatherIcons from '../weathers/WeatherIcons';
 import getHourIndex from '../../utils/getHourIndex';
@@ -20,6 +21,7 @@ const setDiffTempComment = (past, current) => {
 };
 
 const TodayCard = ({ current, yesterdays }) => {
+    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const hourIndex = useMemo(() => getHourIndex(new Date(current.dt.date).getHours()), []);
     const diffTempComment = useMemo(
         () => setDiffTempComment(yesterdays[hourIndex]?.temp, current?.temp),
@@ -44,7 +46,7 @@ const TodayCard = ({ current, yesterdays }) => {
                 py: '0.5rem'
             }}
         >
-            <Box sx={{ fontSize: '2.5rem' }}>{diffTempComment}</Box>
+            <Box sx={{ fontSize: { xs: '1.5rem', md: '2.5rem' } }}>{diffTempComment}</Box>
             <Box
                 sx={{
                     display: 'flex',
@@ -52,7 +54,10 @@ const TodayCard = ({ current, yesterdays }) => {
                     justifyContent: 'center'
                 }}
             >
-                <WeatherIcons weatherIcon={current.weather[0].icon} fontSize="7rem" />
+                <WeatherIcons
+                    weatherIcon={current.weather[0].icon}
+                    fontSize={matches ? '7rem' : '5rem'}
+                />
                 <Box sx={{ fontSize: '2rem' }}>{current.temp}℃</Box>
             </Box>
             <Box
