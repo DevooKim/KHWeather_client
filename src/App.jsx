@@ -10,6 +10,7 @@ import { LocationContext } from './contexts/locationContext';
 import Weather from './containers/Weather/Weather';
 import { themeLight, themeDark, chartLight, chartDark } from './theme/theme.js';
 import './theme/App.css';
+import { Box } from '@mui/system';
 
 export const ColorModeContext = createContext();
 export const ChartTheme = createContext(chartLight);
@@ -43,13 +44,15 @@ function App() {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <LocationContext>
-                    <Header />
-                    <Container maxWidth="lg" sx={{ pt: '2rem', pb: '3rem' }}>
-                        <QueryClientProvider client={queryClient}>
-                            <Weather />
-                        </QueryClientProvider>
-                    </Container>
-                    <Footer />
+                    <Box sx={{ minWidth: '22.5rem' }}>
+                        <Header />
+                        <Container maxWidth="lg" sx={{ pt: '2rem', pb: '3rem' }}>
+                            <QueryClientProvider client={queryClient}>
+                                <Weather />
+                            </QueryClientProvider>
+                        </Container>
+                        <Footer />
+                    </Box>
                 </LocationContext>
             </ThemeProvider>
         </ColorModeContext.Provider>
