@@ -22,7 +22,7 @@ const setDiffTempComment = (past, current) => {
 const TodayCard = ({ current, yesterdays }) => {
     const hourIndex = useMemo(() => getHourIndex(new Date(current.dt.date).getHours()), []);
     const diffTempComment = useMemo(
-        () => setDiffTempComment(yesterdays[hourIndex].temp, current.temp),
+        () => setDiffTempComment(yesterdays[hourIndex]?.temp, current?.temp),
         []
     );
     const weatherCondition = useMemo(

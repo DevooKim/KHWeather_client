@@ -9,6 +9,7 @@ const AutocompleteSearchInput = ({ label, options, size, sx, ...props }) => (
         disableClearable
         autoComplete
         autoHighlight
+        fullWidth
         filterOptions={(_options) => _options}
         options={options}
         {...props}

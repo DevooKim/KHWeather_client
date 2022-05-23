@@ -27,7 +27,6 @@ const AddressInput = memo(() => {
     );
 
     const setLocation = useLocationActionContext();
-    console.log('render');
 
     useEffect(() => {
         if (prevValue !== value.value && addressesRef.current[value?.value]) {
@@ -69,7 +68,7 @@ const AddressInput = memo(() => {
             onChange={onChange}
             onInputChange={onInputChange}
             value={value}
-            sx={{ width: '15rem' }}
+            // sx={{ width: '15rem' }}
         />
     );
 });

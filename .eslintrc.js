@@ -28,7 +28,7 @@ module.exports = {
         'no-console': 'off',
         // 'react/destructuring-assignment': 'off',
         'react/jsx-props-no-spreading': 'off',
-        // 'react/prop-types': 'off',
+        'react/prop-types': 'off',
         // 'react/no-did-update-set-state': 'off',
         'react/function-component-definition': 'off',
         // 'jsx-a11y/click-events-have-key-events': 'off',
