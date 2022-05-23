@@ -46,7 +46,10 @@ function App() {
                 <LocationContext>
                     <Box sx={{ minWidth: '22.5rem' }}>
                         <Header />
-                        <Container maxWidth="lg" sx={{ pt: '2rem', pb: '3rem' }}>
+                        <Container
+                            maxWidth="lg"
+                            sx={{ pt: '2rem', pb: '3rem', minHeight: 'calc(100vh - 6.8125rem)' }}
+                        >
                             <QueryClientProvider client={queryClient}>
                                 <Weather />
                             </QueryClientProvider>
