@@ -25,29 +25,43 @@ const Wrapper = styled(Paper)(({ theme }) => ({
     }
 }));
 
-const Title = () => {
+const Title = ({ matches }) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const toggleTheme = useCallback(() => setIsDarkMode((prev) => !prev), []);
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h4">KHWeather</Typography>
-            <IconButton onClick={toggleTheme}>
-                {isDarkMode ? <Brightness4 /> : <Brightness7 />}
-            </IconButton>
-        </Box>
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+            {matches ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography variant="h4">KHWeather</Typography>
+                    <IconButton onClick={toggleTheme}>
+                        {isDarkMode ? <Brightness4 /> : <Brightness7 />}
+                    </IconButton>
+                </Box>
+            ) : (
+                <>
+                    <IconButton onClick={toggleTheme}>
+                        {isDarkMode ? <Brightness4 /> : <Brightness7 />}
+                    </IconButton>
+                    <Typography variant="h4">KHWeather</Typography>
+                </>
+            )}
+        </>
     );
 };
 
 const SearchBar = () => {
-    const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const { loading, executeNavigator } = useNavigator({ isManual: true });
     return (
         <Box
             sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1,
-                width: matches ? '20rem' : '100%'
+
+                width: {
+                    xs: '100%',
+                    md: '20rem'
+                }
             }}
         >
             {loading ? (
@@ -74,7 +88,7 @@ const Header = () => {
         <Wrapper elevation={3}>
             {matches ? (
                 <>
-                    <Title />
+                    <Title matches={matches} />
                     <SearchBar />
                 </>
             ) : (
@@ -96,7 +110,7 @@ const Header = () => {
                         </Box>
                     ) : (
                         <>
-                            <Title />
+                            <Title matches={matches} />
                             <IconButton onClick={toggleSearchBar}>
                                 <SearchIcon />
                             </IconButton>
