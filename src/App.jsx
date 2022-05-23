@@ -44,7 +44,7 @@ function App() {
                 <CssBaseline />
                 <LocationContext>
                     <Header />
-                    <Container maxWidth="md" sx={{ pt: '2rem', pb: '3rem' }}>
+                    <Container maxWidth="lg" sx={{ pt: '2rem', pb: '3rem' }}>
                         <QueryClientProvider client={queryClient}>
                             <Weather />
                         </QueryClientProvider>
