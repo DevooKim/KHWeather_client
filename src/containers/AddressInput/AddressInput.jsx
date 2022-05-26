@@ -35,7 +35,6 @@ const AddressInput = memo(() => {
     }, [value, addressesRef.current]);
 
     useEffect(() => {
-        // console.log(currentPosition)
         setValue({ value: currentPosition.name });
     }, [currentPosition]);
 

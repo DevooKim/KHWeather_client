@@ -3,7 +3,7 @@ import fetchAddress from '../apis/fetchAddress';
 
 import { useLocationActionContext } from '../contexts/locationContext';
 
-const defaultOption = {isManual: false}
+const defaultOption = { isManual: false };
 
 const useNavigator = (options = defaultOption) => {
     const setLocation = useLocationActionContext();
@@ -19,7 +19,7 @@ const useNavigator = (options = defaultOption) => {
                         latitude: position.coords.latitude
                     };
                     const address = await fetchAddress(coords);
-                    console.log('nav: ', address, coords);
+
                     setLocation({ coords, name: address }, false);
                     setLoading(false);
                 },
@@ -30,7 +30,7 @@ const useNavigator = (options = defaultOption) => {
                         2: POSITION_UNAVAILABLE
                         3: TIMEOUT
                     */
-                    console.log('nav error: ', error.message);
+                    console.error('nav error: ', error.message);
                     setLoading(false);
                 },
                 {
@@ -43,7 +43,7 @@ const useNavigator = (options = defaultOption) => {
     }, []);
 
     useEffect(() => {
-        if(!options.isManual){
+        if (!options.isManual) {
             executeNavigator();
         }
     }, []);

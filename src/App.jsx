@@ -4,13 +4,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { Box } from '@mui/system';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { LocationContext } from './contexts/locationContext';
 import Weather from './containers/Weather/Weather';
-import { themeLight, themeDark, chartLight, chartDark } from './theme/theme.js';
+import { themeLight, themeDark, chartLight } from './theme/theme';
 import './theme/App.css';
-import { Box } from '@mui/system';
 
 export const ColorModeContext = createContext();
 export const ChartTheme = createContext(chartLight);
