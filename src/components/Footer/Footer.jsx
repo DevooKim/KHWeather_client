@@ -16,9 +16,7 @@ const Footer = () => (
     >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <p>DevooKim</p>
-            <IconButton
-                onClick={() => window.open('https://github.com/DevooKim/KHWeather_client')}
-            >
+            <IconButton onClick={() => window.open('https://github.com/DevooKim/KHWeather_client')}>
                 <GitHubIcon />
             </IconButton>
         </Box>
