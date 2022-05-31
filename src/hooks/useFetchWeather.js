@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
 import { useQuery } from 'react-query';
-import { fetchCurrentWeather, fetchPastWeather } from '../apis/fetchWeather.js';
-import { filterData, parseToCombineArray } from '../utils/weather.js';
+import { fetchCurrentWeather, fetchPastWeather } from '../apis/fetchWeather';
+import { filterData, parseToCombineArray } from '../utils/weather';
 
 const getPastWeather = async (date, coords) => {
     const today = date.unix();

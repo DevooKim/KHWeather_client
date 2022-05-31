@@ -5,6 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import 'chart.js/auto';
 import {
     Chart as ChartJS,
+    registerables,
     LinearScale,
     CategoryScale,
     BarElement,
@@ -27,7 +28,8 @@ ChartJS.register(
     Legend,
     Tooltip,
     ChartDataLabels,
-    ChartDataLabels
+    ChartDataLabels,
+    ...registerables
 );
 // ChartJS.register(ChartDataLabels);
 
@@ -63,23 +65,23 @@ const convertData = ({ yesterdays, todays, tomorrows }) => {
     return { labels, todayChartData, yesterdayChartData, tomorrowChartData, rainData };
 };
 
-function getGradient(ctx, chartArea) {
-    let width, height, gradient;
-    const chartWidth = chartArea.right - chartArea.left;
-    const chartHeight = chartArea.bottom - chartArea.top;
-    if (!gradient || width !== chartWidth || height !== chartHeight) {
-        // Create the gradient because this is either the first render
-        // or the size of the chart has changed
-        width = chartWidth;
-        height = chartHeight;
-        gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-        gradient.addColorStop(0, 'blue');
-        gradient.addColorStop(0.5, 'yellow');
-        gradient.addColorStop(1, 'red');
-    }
+// function getGradient(ctx, chartArea) {
+//     let width, height, gradient;
+//     const chartWidth = chartArea.right - chartArea.left;
+//     const chartHeight = chartArea.bottom - chartArea.top;
+//     if (!gradient || width !== chartWidth || height !== chartHeight) {
+//         // Create the gradient because this is either the first render
+//         // or the size of the chart has changed
+//         width = chartWidth;
+//         height = chartHeight;
+//         gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+//         gradient.addColorStop(0, 'blue');
+//         gradient.addColorStop(0.5, 'yellow');
+//         gradient.addColorStop(1, 'red');
+//     }
 
-    return gradient;
-}
+//     return gradient;
+// }
 const setupData = ({
     labels,
     todayChartData,
@@ -259,7 +261,6 @@ const setupOptions = ({ maxTemp, minTemp, maxRain }) => ({
 });
 
 const WeatherChart = ({ lastUpdate, yesterdays, todays, tomorrows }) => {
-    console.log('chartRender');
     const updateTime = useMemo(() => {
         const date = new Date(lastUpdate);
         return `${date.getDate()}시 ${date.getMinutes()}분`;
