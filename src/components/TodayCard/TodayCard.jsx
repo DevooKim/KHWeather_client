@@ -69,7 +69,7 @@ const TodayCard = ({ current, yesterdays }) => {
                 }}
             >
                 <p>{weatherCondition}</p>
-                <p>체감온도: {current.feels_like}℃</p>
+                <p>체감온도: {current.feelsLike}℃</p>
             </Box>
         </WeatherCard>
     );
@@ -77,7 +77,8 @@ const TodayCard = ({ current, yesterdays }) => {
 
 TodayCard.propTypes = {
     current: PropTypes.shape({
-        dt: PropTypes.shape({ date: PropTypes.string.isRequired }),
+        // eslint-disable-next-line react/forbid-prop-types
+        dt: PropTypes.shape({ date: PropTypes.any.isRequired }),
         temp: PropTypes.number.isRequired,
         weather: PropTypes.arrayOf(
             PropTypes.shape({
@@ -87,7 +88,7 @@ TodayCard.propTypes = {
             })
         ),
         rain: PropTypes.oneOfType([PropTypes.oneOf([undefined]), PropTypes.array]),
-        feels_like: PropTypes.number.isRequired
+        feelsLike: PropTypes.number.isRequired
     }).isRequired,
     yesterdays: PropTypes.arrayOf(PropTypes.shape({ temp: PropTypes.number.isRequired })).isRequired
 };
